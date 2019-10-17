@@ -7,31 +7,14 @@
  */
 
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-} from 'react-native';
-import MapView from 'react-native-maps';
+import { View, Text } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import AppNavigator from './AppNavigator';
 
-const App: () => React$Node = () => {
-  return (
-    <View style={{ flex: 1 }}>
-      <MapView style={styles.map}
-        showsUserLocation={true}
-        followsUserLocation={true}
-        showsMyLocationButton={true}
-        showsCompass={true}
-      >
-      </MapView>
-    </View>
-  );
-};
+const AppContainer = createAppContainer(AppNavigator);
 
-const styles = StyleSheet.create({
-  map: {
-    ...StyleSheet.absoluteFillObject,
+export default class App extends React.Component {
+  render() {
+    return <AppContainer />;
   }
-});
-
-export default App;
+}
