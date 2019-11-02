@@ -12,6 +12,7 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
         lowercase: true,
         validate: value => {
             if (!validator.isEmail(value)) {
@@ -22,7 +23,7 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minLength: 8
+        minLength: 7
     },
     tokens: [{
         token: {
@@ -33,7 +34,7 @@ const userSchema = mongoose.Schema({
 })
 
 userSchema.pre('save', async function (next) {
-    // Hask password before saving the user model
+    // Hash the password before saving the user model
     const user = this
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8)
@@ -51,8 +52,8 @@ userSchema.methods.generateAuthToken = async function() {
 }
 
 userSchema.statics.findByCredentials = async (email, password) => {
-    // Search for a user by email and password
-    const user = await User.findOne({ email })
+    // Search for a user by email and password.
+    const user = await User.findOne({ email} )
     if (!user) {
         throw new Error({ error: 'Invalid login credentials' })
     }
@@ -63,6 +64,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
     return user
 }
 
-const User =  mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema)
 
-module.export = User
+module.exports = User

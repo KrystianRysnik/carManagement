@@ -4,6 +4,15 @@ const auth = require('../middleware/auth')
 
 const router = express.Router()
 
+router.get('/hello', async (req, res) => {
+    try {
+        res.send('Hello world!')
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.post('/user/register', async (req, res) => {
     // Create new user
     try {
@@ -21,11 +30,11 @@ router.post('/user/login', async (req, res) => {
     // Login a registered user
     try {
         const { email, password } = req.body
-        const user = await User.findCredentials(email, password)
+        const user = await User.findByCredentials(email, password)
         if (!user) {
             return res.status(401).send({ error: 'Logind failed! Check authentication credentials' })
         }
-        const token = await User.generateAuthToken()
+        const token = await user.generateAuthToken()
         res.send({ user, token })
     }
     catch (error) {
