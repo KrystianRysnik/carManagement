@@ -1,7 +1,7 @@
 import React from 'react';
 import { AsyncStorage, View, ActivityIndicator, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-import { getProfileFetch } from '../_actions';
+import { userProfile } from '../_actions';
 
 class LoadingScreen extends React.Component {
     componentDidMount() {
@@ -10,7 +10,7 @@ class LoadingScreen extends React.Component {
 
     _bootstrapAsync = async () => {
         const token = await AsyncStorage.getItem('token');
-        this.props.getProfileFetch(token)
+        this.props.userProfile(token)
     }
 
     render() {
@@ -24,7 +24,7 @@ class LoadingScreen extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    getProfileFetch: token => dispatch(getProfileFetch(token))
+    userProfile: token => dispatch(userProfile(token))
 })
 
 export default connect(null, mapDispatchToProps)(LoadingScreen);

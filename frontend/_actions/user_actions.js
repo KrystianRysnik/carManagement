@@ -2,16 +2,23 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import NavigationService from '../NavigationService';
 
+
+const instance = axios.create({
+    baseURL: 'http://192.168.0.19:3000'
+});
+
+//instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+
+
 export const userSignUp = user => {
     return dispatch => {
-        axios.post('http://192.168.0.19:3000/user/register', {
+        instance.post('/user/register', {
             name: user.name,
             email: user.email,
             password: user.password
         })
             .then(res => {
                 console.log('🟢 Register Succesfull!')
-                console.log(res.data.user);
                 AsyncStorage.setItem('token', res.data.token)
                 dispatch(loginUser(res.data.user));
                 NavigationService.navigate('App', null);
@@ -25,14 +32,12 @@ export const userSignUp = user => {
 
 export const userSignIn = user => {
     return dispatch => {
-        axios.post('http://192.168.0.19:3000/user/login', {
+        instance.post('/user/login', {
             email: user.email,
             password: user.password
         })
             .then(res => {
                 console.log('🟢 Login Succesfull! /w Login Form')
-                console.log(res.data.user);
-                console.log( res.data.token);
                 AsyncStorage.setItem('token', res.data.token)
                 dispatch(loginUser(res.data.user));
                 NavigationService.navigate('App', null);
@@ -44,17 +49,28 @@ export const userSignIn = user => {
     }
 }
 
-export const getProfileFetch = token => {
+export const userSignOut = token => {
+    return dispatch => {
+        instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        instance.post('/user/logout')
+            .then(res => {
+                console.log('🟢 Logout Succesfull!')
+                AsyncStorage.removeItem('token')
+                dispatch(logoutUser());
+                NavigationService.navigate('Auth', null);
+            })
+            .catch(error => {
+                console.log('🔴 Logout Error!')
+                console.log(error);
+            })
+    }
+}
+
+export const userProfile = token => {
     return dispatch => {
         if (token) {
-            console.log(token)
-            axios.get('http://192.168.0.19:3000/user/profile', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+            instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            instance.get('/user/profile')
                 .then(res => {
                     console.log('🟢 Login Succesfull! /w Reopen App')
                     dispatch(loginUser(res.data))
@@ -75,4 +91,8 @@ export const getProfileFetch = token => {
 const loginUser = userObj => ({
     type: 'LOGIN_USER',
     payload: userObj
+})
+
+const logoutUser = () => ({
+    type: 'LOGOUT_USER'
 })

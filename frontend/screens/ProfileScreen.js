@@ -1,11 +1,14 @@
 import React from 'react';
 import { AsyncStorage, View, Text, Button } from 'react-native';
 import store from '../_store/store';
+import { connect } from 'react-redux';
+import { userSignOut } from '../_actions';
 
-export default class ProfileScreen extends React.Component {
+class ProfileScreen extends React.Component {
 
-    handleClick = () => {
-        AsyncStorage.removeItem('token');
+    handleClick = async () => {
+        const token = await AsyncStorage.getItem('token')
+        this.props.userSignOut(token)
     }
 
     render() {
@@ -19,3 +22,10 @@ export default class ProfileScreen extends React.Component {
         );
     }
 }
+
+
+const mapDispatchToProps = dispatch => ({
+    userSignOut: token => dispatch(userSignOut(token))
+})
+
+export default connect(null, mapDispatchToProps)(ProfileScreen);
