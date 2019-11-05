@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, Text, Button } from 'react-native';
+import { View, TextInput, Text, Button, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { userSignUp } from '../_actions';
 import NavigationService from '../NavigationService';
@@ -30,32 +30,39 @@ class SignUpScreen extends React.Component {
     render() {
         return (
             <View>
-                <Text>Sign Up For An Account</Text>
+                <ImageBackground source={require('../_assets/background.png')} style={{ width: '100%', height: '100%' }}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={require('../_assets/logo_white.png')} style={{ width: 180, height: 180 }} />
 
-                <Text>Username</Text>
-                <TextInput
-                    value={this.state.name}
-                    placeholder='Username'
-                    onChangeText={this.handleNameChange}
-                />
+                        <View style={{ width: '80%' }}>
 
-                <Text>email</Text>
-                <TextInput
-                    value={this.state.email}
-                    placeholder='Email'
-                    onChangeText={this.handleEmailChange}
-                />
+                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Full Name</Text>
+                            <TextInput
+                                value={this.state.name}
+                                onChangeText={this.handleNameChange}
+                                style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            />
 
-                <Text>Password</Text>
-                <TextInput
-                    secureTextEntry
-                    value={this.state.password}
-                    placeholder='Password'
-                    onChangeText={this.handlePasswordChange}
-                />
+                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Email</Text>
+                            <TextInput
+                                value={this.state.email}
+                                onChangeText={this.handleEmailChange}
+                                style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            />
 
-                <Button title='Sign Up' onPress={this.handleSubmit}/>
-                <Text>Have an account? <Text onPress={() => NavigationService.navigate('SignIn', null)}>Sign In</Text></Text>
+                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Password</Text>
+                            <TextInput
+                                secureTextEntry
+                                value={this.state.password}
+                                onChangeText={this.handlePasswordChange}
+                                style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            />
+
+                            <Button style={{ marginVertical: 15 }} title='Sign Up' onPress={this.handleSubmit} />
+                            <Text style={{ color: '#ffffff', textAlign: 'center', marginTop: 15 }}>Already Have An Account? <Text style={{ fontWeight: 'bold' }} onPress={() => NavigationService.navigate('SignIn', null)}>Sign In</Text></Text>
+                        </View>
+                    </View>
+                </ImageBackground>
             </View>
         )
     }

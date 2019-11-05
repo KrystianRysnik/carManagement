@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, Text, Button } from 'react-native';
+import { View, TextInput, Text, Button, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { userSignIn } from '../_actions';
 import NavigationService from '../NavigationService';
@@ -25,25 +25,32 @@ class SignInScreen extends React.Component {
     render() {
         return (
             <View>
-                <Text>Login</Text>
+                <ImageBackground source={require('../_assets/background.png')} style={{ width: '100%', height: '100%' }}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={require('../_assets/logo_white.png')} style={{ width: 180, height: 180 }} />
 
-                <Text>Username</Text>
-                <TextInput
-                    placeholder='Email'
-                    value={this.state.email}
-                    onChangeText={this.handleEmailChange}
-                />
+                        <View style={{ width: '80%' }}>
+                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Email</Text>
+                            <TextInput
+                                value={this.state.email}
+                                onChangeText={this.handleEmailChange}
+                                style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            />
 
-                <Text>Password</Text>
-                <TextInput
-                    secureTextEntry
-                    value={this.state.password}
-                    placeholder='Password'
-                    onChangeText={this.handlePasswordChange}
-                />
+                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Password</Text>
+                            <TextInput
+                                secureTextEntry
+                                value={this.state.password}
+                                onChangeText={this.handlePasswordChange}
+                                style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            />
 
-                <Button title="Sign In" onPress={this.handleSubmit} />
-                <Text>Don't have an account? <Text onPress={() => NavigationService.navigate('SignUp', null)}>Create account</Text></Text>
+                            <Button style={{ marginVertical: 15 }} title="Sign In" onPress={this.handleSubmit} />
+                            <Text style={{ color: '#ffffff', textAlign: 'center', marginTop: 15 }}>Don't Have An Account? <Text style={{ fontWeight: 'bold' }} onPress={() => NavigationService.navigate('SignUp', null)}>Sign Up</Text></Text>
+                        </View>
+                    </View>
+                </ImageBackground>
+
             </View>
         )
     }
