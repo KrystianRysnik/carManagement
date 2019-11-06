@@ -3,7 +3,7 @@ import { View, Text, ImageBackground } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import LoadingScreen from './screens/LoadingScreen';
 
@@ -34,16 +34,21 @@ const AuthStack = createStackNavigator(
 const CustomDrawer = (props) => (
   <View style={{ flex: 1 }}>
     <View>
-    <ImageBackground source={require('./_assets/background.png')} style={{ width: '100%' }}>
-      <View style={{margin: 15, height: 50, width: 50, borderRadius: 25, backgroundColor: '#0000bb'}}>
-        <Text style={{textAlign: 'center', lineHeight: 50, color: '#ffffff', fontSize: 26, textTransform: 'uppercase'}}>{store.getState().user.currentUser.name.charAt(0)}</Text>
-      </View>
-      <Text style={{marginHorizontal: 15, color: '#ffffff'}}>{store.getState().user.currentUser.name}</Text>
-      <Text style={{marginHorizontal: 15, marginBottom: 15, color: '#ffffff', fontSize: 11}}>{store.getState().user.currentUser.email}</Text>
+      <ImageBackground source={require('./_assets/background.png')} style={{ width: '100%' }}>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ margin: 15, height: 50, width: 50, borderRadius: 25, backgroundColor: '#b6b6b6' }}>
+            <Text style={{ textAlign: 'center', lineHeight: 50, color: '#ffffff', fontSize: 26, textTransform: 'uppercase' }}>{store.getState().user.currentUser.name.charAt(0)}</Text>
+          </View>
+          <View>
+            <Text style={{ color: '#ffffff', fontSize: 15, fontWeight: 'bold' }}>{store.getState().user.currentUser.name}</Text>
+            <Text style={{ color: '#ffffff', fontSize: 10 }}>Zobacz profil</Text>
+          </View>
+        </View>
       </ImageBackground>
     </View>
     <ScrollView>
-      <DrawerItems {...props}/>
+      <DrawerItems {...props} />
     </ScrollView>
   </View>
 )
@@ -56,7 +61,6 @@ const AppDrawer = createDrawerNavigator(
   },
   {
     contentComponent: CustomDrawer,
-    headerMode: 'none'
   }
 )
 
