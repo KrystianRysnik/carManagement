@@ -47,7 +47,7 @@ const CustomDrawer = (props) => (
         </View>
       </ImageBackground>
     </View>
-    <ScrollView>
+    <ScrollView style={{ marginTop: -5}}>
       <DrawerItems {...props} />
     </ScrollView>
   </View>
