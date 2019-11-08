@@ -60,7 +60,8 @@ const AppDrawer = createDrawerNavigator(
     Car: CarScreen
   },
   {
-    contentComponent: CustomDrawer,
+    initialRouteName: 'Map',
+    contentComponent: CustomDrawer
   }
 )
 
