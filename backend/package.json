@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "env-cmd -f ./.env nodemon src/app.js",
-    "start": "node src/app.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Krystian Rysnik",
