@@ -4,7 +4,8 @@ import NavigationService from '../NavigationService';
 
 
 const instance = axios.create({
-    baseURL: 'http://192.168.0.19:3000'
+    //baseURL: 'http://192.168.0.19:3000'
+    baseURL: 'https://car-management-backend.herokuapp.com/'
 });
 
 //instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
