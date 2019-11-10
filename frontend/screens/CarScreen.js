@@ -52,7 +52,7 @@ class CarScreen extends React.Component {
                 <View style={{ flex: 1 }}>
                     <FlatList data={cars} style={{ flex: 1 }}
                         renderItem={({ item }) => (
-                            <View style={{ borderBottomWidth: 1 }}>
+                            <View style={{borderBottomWidth: 1, borderBottomColor: '#e3e3e3' }}>
                                 <TouchableOpacity style={{ padding: 15 }} onPress={() => this.handleSelect(item)}>
                                     <Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
                                     <Text>License plate: {item.licensePlate}</Text>
