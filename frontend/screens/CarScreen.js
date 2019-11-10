@@ -61,6 +61,7 @@ class CarScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                         )}
+                        keyExtractor={(item => item.vin)}
                     />
                 </View>
             </View>
