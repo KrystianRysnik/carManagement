@@ -14,7 +14,7 @@ class CarScreen extends React.Component {
     }
 
     carsList = () => {
-        axios.get('http://192.168.0.19:3000/car/list')
+        axios.get('https://car-management-backend.herokuapp.com/car/list')
             .then(res => {
                 console.log('🟢 List Cars Succesfull!')
                 this.setState({ cars: res.data })
@@ -47,7 +47,7 @@ class CarScreen extends React.Component {
                         <Icon name='keyboard-backspace' size={24} color='#000' />
                         <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Cars</Text>
                     </TouchableOpacity>
-                    <Text style={{ paddingHorizontal: 10, lineHeight: 45, fontSize: 10, color: '#8f8f8f', textTransform: 'uppercase' }}>{store.getState().car.currentCar.carRegistration}</Text>
+                    <Text style={{ paddingHorizontal: 10, lineHeight: 45, fontSize: 10, color: '#8f8f8f', textTransform: 'uppercase' }}>Selected car: <Text style={{ fontWeight: 'bold' }}>{this.props.licensePlate}</Text></Text>
                 </View>
                 <View style={{ flex: 1 }}>
                     <FlatList data={cars} style={{ flex: 1 }}
@@ -68,8 +68,12 @@ class CarScreen extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return { licensePlate: state.car.currentCar.licensePlate };
+ }
+
 const mapDispatchToProps = dispatch => ({
     carSelect: car => dispatch(carSelect(car))
 })
 
-export default connect(null, mapDispatchToProps)(CarScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(CarScreen);
