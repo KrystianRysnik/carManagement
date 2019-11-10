@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import NavigationService from '../NavigationService';
 
 
@@ -20,7 +20,7 @@ export const userSignUp = user => {
         })
             .then(res => {
                 console.log('🟢 Register Succesfull!')
-                AsyncStorage.setItem('token', res.data.token)
+                AsyncStorage.setItem('@token', res.data.token)
                 dispatch(loginUser(res.data.user));
                 NavigationService.navigate('App', null);
             })
@@ -39,7 +39,7 @@ export const userSignIn = user => {
         })
             .then(res => {
                 console.log('🟢 Login Succesfull! /w Login Form')
-                AsyncStorage.setItem('token', res.data.token)
+                AsyncStorage.setItem('@token', res.data.token)
                 dispatch(loginUser(res.data.user));
                 NavigationService.navigate('App', null);
             })
@@ -56,7 +56,7 @@ export const userSignOut = token => {
         instance.post('/user/logout')
             .then(res => {
                 console.log('🟢 Logout Succesfull!')
-                AsyncStorage.removeItem('token')
+                AsyncStorage.removeItem('@token')
                 dispatch(logoutUser());
                 NavigationService.navigate('Auth', null);
             })

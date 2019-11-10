@@ -1,5 +1,6 @@
 import React from 'react';
-import { AsyncStorage, View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import store from '../_store/store';
 import { connect } from 'react-redux';
 import { userSignOut } from '../_actions';
@@ -8,7 +9,7 @@ import NavigationService from '../NavigationService';
 
 class ProfileScreen extends React.Component {
     handleLogout = async () => {
-        const token = await AsyncStorage.getItem('token')
+        const token = await AsyncStorage.getItem('@token')
         this.props.userSignOut(token)
     }
 
@@ -35,7 +36,6 @@ class ProfileScreen extends React.Component {
         );
     }
 }
-
 
 const mapDispatchToProps = dispatch => ({
     userSignOut: token => dispatch(userSignOut(token))
