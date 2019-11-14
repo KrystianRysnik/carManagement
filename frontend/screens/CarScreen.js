@@ -9,26 +9,6 @@ import NavigationService from '../NavigationService';
 import axios from 'axios';
 
 class CarScreen extends React.Component {
-    state = {
-        cars: []
-    }
-
-    carsList = () => {
-        axios.get('https://car-management-backend.herokuapp.com/car/list')
-            .then(res => {
-                console.log('🟢 List Cars Succesfull!')
-                this.setState({ cars: res.data })
-            })
-            .catch(error => {
-                console.log('🔴 List Cars Error!')
-                console.log(error)
-            })
-    }
-
-    componentDidMount() {
-        this.carsList()
-    }
-
     handleBack = () => {
         NavigationService.goBack()
     }
@@ -38,8 +18,6 @@ class CarScreen extends React.Component {
     }
 
     render() {
-        const { cars } = this.state;
-
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -50,7 +28,7 @@ class CarScreen extends React.Component {
                     <Text style={{ paddingHorizontal: 10, lineHeight: 45, fontSize: 10, color: '#8f8f8f', textTransform: 'uppercase' }}>Selected car: <Text style={{ fontWeight: 'bold' }}>{this.props.licensePlate}</Text></Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                    <FlatList data={cars} style={{ flex: 1 }}
+                    <FlatList data={this.props.cars} style={{ flex: 1 }}
                         renderItem={({ item }) => (
                             <View style={{borderBottomWidth: 1, borderBottomColor: '#e3e3e3' }}>
                                 <TouchableOpacity style={{ padding: 15 }} onPress={() => this.handleSelect(item)}>
@@ -70,7 +48,10 @@ class CarScreen extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return { licensePlate: state.car.currentCar.licensePlate };
+    return {
+        cars: state.car.cars,
+        licensePlate: state.car.currentCar.licensePlate
+    };
  }
 
 const mapDispatchToProps = dispatch => ({
