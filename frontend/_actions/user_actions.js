@@ -1,5 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+import { carsList } from './car_actions';
 import NavigationService from '../NavigationService';
 
 
@@ -21,8 +22,9 @@ export const userSignUp = user => {
             .then(res => {
                 console.log('🟢 Register Succesfull!')
                 AsyncStorage.setItem('@token', res.data.token)
-                dispatch(loginUser(res.data.user));
-                NavigationService.navigate('App', null);
+                dispatch(loginUser(res.data.user))
+                dispatch(carsList())
+                NavigationService.navigate('App', null)
             })
             .catch(error => {
                 console.log('🔴 Register Error!')
@@ -40,8 +42,9 @@ export const userSignIn = user => {
             .then(res => {
                 console.log('🟢 Login Succesfull! /w Login Form')
                 AsyncStorage.setItem('@token', res.data.token)
-                dispatch(loginUser(res.data.user));
-                NavigationService.navigate('App', null);
+                dispatch(loginUser(res.data.user))
+                dispatch(carsList())
+                NavigationService.navigate('App', null)
             })
             .catch(error => {
                 console.log('🔴 Login Error! /w Login Form')
@@ -57,8 +60,8 @@ export const userSignOut = token => {
             .then(res => {
                 console.log('🟢 Logout Succesfull!')
                 AsyncStorage.removeItem('@token')
-                dispatch(logoutUser());
-                NavigationService.navigate('Auth', null);
+                dispatch(logoutUser())
+                NavigationService.navigate('Auth', null)
             })
             .catch(error => {
                 console.log('🔴 Logout Error!')
@@ -75,6 +78,7 @@ export const userProfile = token => {
                 .then(res => {
                     console.log('🟢 Login Succesfull! /w Reopen App')
                     dispatch(loginUser(res.data))
+                    dispatch(carsList())
                     NavigationService.navigate('App', null)
                 })
                 .catch(error => {
