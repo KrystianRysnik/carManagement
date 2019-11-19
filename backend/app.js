@@ -1,6 +1,7 @@
 const express = require('express')
 const userRouter = require('./routers/user')
 const carRouter = require('./routers/car')
+const routeRouter = require('./routers/route')
 const port = process.env.PORT
 require('./db/db')
 
@@ -9,6 +10,7 @@ const app = express()
 app.use(express.json())
 app.use(userRouter)
 app.use(carRouter)
+app.use(routeRouter)
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)
