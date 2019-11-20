@@ -57,7 +57,8 @@ const AppDrawer = createDrawerNavigator(
   {
     Profile: ProfileScreen,
     Map: MapScreen,
-    Car: CarScreen
+    Car: CarScreen,
+    Routes: RouteScreen
   },
   {
     initialRouteName: 'Map',
