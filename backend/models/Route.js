@@ -24,7 +24,23 @@ const routeSchema = mongoose.Schema({
     distance: {
         type: Number,
         required: true
-    }
+    },
+    markers: [{
+       coordinate: [{
+            longitude: {
+                type: Number,
+                required: true
+            },
+            latitude: {
+                type: Number,
+                required: true
+            }
+        }],
+        key: {
+            type: Number,
+            required: true
+        }
+    }]
 })
 
 routeSchema.statics.findByCredentials = async id => {
