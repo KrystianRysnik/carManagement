@@ -26,7 +26,7 @@ const routeSchema = mongoose.Schema({
         required: true
     },
     markers: [{
-       coordinate: [{
+       coordinate: {
             longitude: {
                 type: Number,
                 required: true
@@ -34,8 +34,8 @@ const routeSchema = mongoose.Schema({
             latitude: {
                 type: Number,
                 required: true
-            }
-        }],
+            },
+        },
         key: {
             type: Number,
             required: true
