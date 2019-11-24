@@ -22,12 +22,18 @@ class MapScreen extends React.Component {
             distance: 0,
             isTracking: false,
             startTrace: '',
-            stopTrace: ''
+            stopTrace: '',
+            diffTime: ''
         }
+    }
+
+    componentDidMount() {
+        this.handleMyLocation()
     }
 
     componentWillUnmount() {
         Geolocation.clearWatch(this.state.watchID)
+        clearInterval(this.interval)
     }
 
     startTracking = () => {
@@ -52,12 +58,12 @@ class MapScreen extends React.Component {
                     ],
                     previousCoordinate: position.coords,
                     distance
-
                 })
             }, null, { enableHighAccuracy: true, distanceFilter: 10, interval: 1000, fastestInterval: 1000 })
             this.setState({ watchID })
             this.setState({ startTrace: moment(new Date).toJSON() })
             this.setState({ isTracking: true })
+            this.interval = setInterval(() => this.setState({ diffTime: moment().diff(moment(this.state.startTrace)) }), 1000)
         }
     }
 
@@ -77,6 +83,7 @@ class MapScreen extends React.Component {
                 id = 0
                 this.setState({ isTracking: false, markers: [], distance: 0 })
                 Geolocation.clearWatch(this.state.watchID)
+                clearInterval(this.interval)
             })
             .catch(error => {
                 console.log('🔴 Add Route Error!')
@@ -102,7 +109,6 @@ class MapScreen extends React.Component {
                 this.setState({
                     initialRegion: region
                 });
-                console.log(region)
             },
             error => console.log(error),
             {
@@ -119,7 +125,11 @@ class MapScreen extends React.Component {
                 <MapView style={{ ...StyleSheet.absoluteFillObject }}
                     showsUserLocation={true}
                     showsMyLocationButton={false}
-                    rotateEnabled={false} >
+                    rotateEnabled={false}
+                    showsCompass={false}
+                    initialRegion={this.state.initialRegion}
+                    region={this.state.initialRegion}
+                    onUserLocationChange={this.handleMyLocation}>
                     <Polyline
                         coordinates={this.state.markers.map((marker) => marker.coordinate)}
                         strokeWidth={5} />
@@ -127,11 +137,6 @@ class MapScreen extends React.Component {
                 <View style={{ backgroundColor: '#Fff', width: 48, height: 48, position: 'absolute', top: 20, left: 20, borderRadius: 24, borderWidth: 1, borderColor: '#b6b6b6', alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity onPress={this.handleNavigation}>
                         <Icon name='menu' size={28} color='#888888' />
-                    </TouchableOpacity>
-                </View>
-                <View style={{ backgroundColor: '#Fff', width: 48, height: 48, position: 'absolute', top: 20, right: 20, borderRadius: 24, borderWidth: 1, borderColor: '#b6b6b6', alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity onPress={this.handleMyLocation}>
-                        <Icon name='my-location' size={28} color='#888888' />
                     </TouchableOpacity>
                 </View>
 
@@ -148,7 +153,7 @@ class MapScreen extends React.Component {
                 </View>
 
                 <View style={{ backgroundColor: '#fff', width: '100%', paddingVertical: 15, position: 'absolute', bottom: 0 }}>
-                    <Text style={{ textAlign: 'center' }}>Distance: {parseFloat(this.state.distance).toFixed(2)} km</Text>
+                    <Text style={{ textAlign: 'center' }}>Distance: {parseFloat(this.state.distance).toFixed(2)} km / Time: {this.state.diffTime ? moment(this.state.diffTime).format('HH:mm:ss') : '00:00:00'}</Text>
                 </View>
                 <KeepAwake />
             </View>
