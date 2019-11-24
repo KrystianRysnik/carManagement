@@ -17,7 +17,7 @@ router.post('/route/add', async (req, res) => {
 
 router.get('/route/list', async (req, res) => {
     // List of routes
-    Route.find({}, (err, routes) => {
+    Route.find({}, { 'markers.coordinate._id' : 0, 'markers._id' : 0 }, (err, routes) => {
         if (err) {
             res.status(400).send('Something went wrong!')
             next()
