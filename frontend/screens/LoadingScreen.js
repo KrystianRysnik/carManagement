@@ -18,7 +18,6 @@ class LoadingScreen extends React.Component {
         return (
             <View>
                 <ActivityIndicator />
-                <StatusBar barStyle="Default" />
             </View>
         )
     }
