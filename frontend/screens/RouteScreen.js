@@ -46,7 +46,6 @@ export default class RouteScreen extends React.Component {
                         <Icon name='keyboard-backspace' size={24} color='#000' />
                         <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Routes history</Text>
                     </TouchableOpacity>
-                    <Text style={{ paddingHorizontal: 10, lineHeight: 45, fontSize: 10, color: '#8f8f8f', textTransform: 'uppercase' }}>Generate report</Text>
                 </View>
                 <View style={{ flex: 1 }}>
                     <FlatList data={routes} style={{ flex: 1 }}
@@ -57,7 +56,7 @@ export default class RouteScreen extends React.Component {
                                     <Text>User: {item.userEmail}</Text>
                                     <Text>Car: {item.carVin} </Text>
                                     <Text>Distance: {item.distance.toFixed(2)}km</Text>
-                                    <Text>Time: {moment(item.stopTrace).diff(moment(item.startTrace), 'hours', true).toFixed(2)}h</Text>
+                                    <Text>Duration: { moment(moment(item.stopTrace).diff(moment(item.startTrace))).format('HH:mm:ss') }</Text>
                                 </TouchableOpacity>
                             </View>
                         )}
