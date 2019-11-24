@@ -14,6 +14,7 @@ import MapScreen from './screens/MapScreen';
 import CarScreen from './screens/CarScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import RouteScreen from './screens/RouteScreen';
+import RouteMapScreen from './screens/RouteMapScreen';
 import ReportScreen from './screens/ReportScreen';
 
 import { ScrollView } from 'react-native-gesture-handler';
@@ -61,6 +62,7 @@ const AppDrawer = createDrawerNavigator(
     Map: MapScreen,
     Car: CarScreen,
     Routes: RouteScreen,
+    RouteMap: RouteMapScreen,
     Report: ReportScreen
   },
   {

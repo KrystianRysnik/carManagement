@@ -51,8 +51,8 @@ export default class RouteScreen extends React.Component {
                     <FlatList data={routes} style={{ flex: 1 }}
                         renderItem={({ item }) => (
                             <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3' }}>
-                                <TouchableOpacity style={{ padding: 15 }} >
-                                    <Text>Date: <Text style={{ fontWeight: 'bold' }}>{moment(item.startTrace).format('DD.MM.YYYY HH:mm')}</Text></Text>
+                                <TouchableOpacity style={{ padding: 15 }} onPress={() => NavigationService.navigate('RouteMap', {item})}>
+                                    <Text>Date: <Text style={{ fontWeight: 'bold' }}>{moment(item.startTrace).format('DD MMM YYYY, HH:mm')}</Text></Text>
                                     <Text>User: {item.userEmail}</Text>
                                     <Text>Car: {item.carVin} </Text>
                                     <Text>Distance: {item.distance.toFixed(2)}km</Text>
