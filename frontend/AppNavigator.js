@@ -13,7 +13,9 @@ import SigunUpScreen from './screens/SignUpScreen';
 import MapScreen from './screens/MapScreen';
 import CarScreen from './screens/CarScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import SettingsScreen from './screens/SettingsScreen';
+import RouteScreen from './screens/RouteScreen';
+import ReportScreen from './screens/ReportScreen';
+
 import { ScrollView } from 'react-native-gesture-handler';
 
 import store from './_store/store';
@@ -47,7 +49,7 @@ const CustomDrawer = (props) => (
         </View>
       </ImageBackground>
     </View>
-    <ScrollView style={{ marginTop: -5}}>
+    <ScrollView>
       <DrawerItems {...props} />
     </ScrollView>
   </View>
@@ -58,7 +60,8 @@ const AppDrawer = createDrawerNavigator(
     Profile: ProfileScreen,
     Map: MapScreen,
     Car: CarScreen,
-    Routes: RouteScreen
+    Routes: RouteScreen,
+    Report: ReportScreen
   },
   {
     initialRouteName: 'Map',
