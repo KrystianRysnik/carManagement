@@ -9,6 +9,12 @@ import NavigationService from '../NavigationService';
 import axios from 'axios';
 
 class CarScreen extends React.Component {
+    static navigationOptions = {
+        drawerIcon: (
+            <Icon name='directions-car' size={24} color='#000' />
+        )
+    }
+
     handleBack = () => {
         NavigationService.goBack()
     }

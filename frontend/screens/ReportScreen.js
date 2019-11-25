@@ -10,6 +10,12 @@ import axios from 'axios';
 import { carsList } from '../_actions';
 
 class RouteScreen extends React.Component {
+    static navigationOptions = {
+        drawerIcon: (
+            <Icon name='picture-as-pdf' size={24} color='#000' />
+        )
+    }
+
     state = {
         value: '',
         showDateStart: false,

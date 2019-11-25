@@ -19,6 +19,8 @@ import ReportScreen from './screens/ReportScreen';
 
 import { ScrollView } from 'react-native-gesture-handler';
 
+import Hidden from './_components/Hidden'
+
 import store from './_store/store';
 
 
@@ -58,12 +60,42 @@ const CustomDrawer = (props) => (
 
 const AppDrawer = createDrawerNavigator(
   {
-    Profile: ProfileScreen,
-    Map: MapScreen,
-    Car: CarScreen,
-    Routes: RouteScreen,
-    RouteMap: RouteMapScreen,
-    Report: ReportScreen
+    Profile: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        drawerLabel: <Hidden />
+      }
+    },
+    Map: {
+      screen: MapScreen,
+      navigationOptions: {
+        drawerLabel: <Hidden />
+      }
+    },
+    Car: {
+      screen: CarScreen,
+      navigationOptions: {
+        drawerLabel: 'Select Car'
+      }
+    },
+    Routes: {
+      screen: RouteScreen,
+      navigationOptions: {
+        drawerLabel: 'Routes History'
+      }
+    },
+    RouteMap: {
+      screen: RouteMapScreen,
+      navigationOptions: {
+        drawerLabel: <Hidden />
+      }
+    },
+    Report: {
+      screen: ReportScreen,
+      navigationOptions: {
+        drawerLabel: 'Generate Report'
+      }
+    }
   },
   {
     initialRouteName: 'Map',
