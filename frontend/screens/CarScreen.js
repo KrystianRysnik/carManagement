@@ -7,6 +7,7 @@ import { carSelect } from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NavigationService from '../NavigationService';
 import axios from 'axios';
+import LicensePlate from '../_components/LicensePlate';
 
 class CarScreen extends React.Component {
     static navigationOptions = {
@@ -36,11 +37,11 @@ class CarScreen extends React.Component {
                 <View style={{ flex: 1 }}>
                     <FlatList data={this.props.cars} style={{ flex: 1 }}
                         renderItem={({ item }) => (
-                            <View style={{borderBottomWidth: 1, borderBottomColor: '#e3e3e3' }}>
+                            <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3' }}>
                                 <TouchableOpacity style={{ padding: 15 }} onPress={() => this.handleSelect(item)}>
                                     <Text style={{ fontWeight: 'bold' }}>{item.name} <Text style={{ color: '#39e600' }}>{this.props.licensePlate == item.licensePlate ? '[ SELECTED ]' : ''}</Text></Text>
-                                    <Text>License plate: {item.licensePlate}</Text>
-                                    <Text>Mileage: {item.mileage}</Text>
+                                    <LicensePlate value={item.licensePlate}/>
+                                    <Text>Mileage: {item.mileage} km</Text>
                                     <Text>VIN number: {item.vin}</Text>
                                 </TouchableOpacity>
                             </View>
@@ -58,7 +59,7 @@ const mapStateToProps = state => {
         cars: state.car.cars,
         licensePlate: state.car.currentCar.licensePlate
     };
- }
+}
 
 const mapDispatchToProps = dispatch => ({
     carSelect: car => dispatch(carSelect(car))

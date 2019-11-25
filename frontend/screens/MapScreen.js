@@ -1,14 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import MapView, { Polyline, AnimatedRegion, Animated } from 'react-native-maps';
+import MapView, { Polyline } from 'react-native-maps';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import NavigationService from '../NavigationService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Geolocation from 'react-native-geolocation-service';
 import KeepAwake from 'react-native-keep-awake';
 import haversine from 'haversine';
 import moment from 'moment';
 import axios from 'axios';
+import LicensePlate from '../_components/LicensePlate';
 
 let id = 0;
 
@@ -68,7 +70,6 @@ class MapScreen extends React.Component {
     }
 
     stopTracking = async () => {
-
         await this.setState({ stopTrace: moment(new Date).toJSON() })
         axios.post('https://car-management-backend.herokuapp.com/route/add', {
             userEmail: this.props.email,
@@ -89,8 +90,6 @@ class MapScreen extends React.Component {
                 console.log('🔴 Add Route Error!')
                 console.log(error);
             })
-
-
     }
 
     handleNavigation = () => {
@@ -103,8 +102,8 @@ class MapScreen extends React.Component {
                 let region = {
                     latitude: parseFloat(position.coords.latitude),
                     longitude: parseFloat(position.coords.longitude),
-                    latitudeDelta: 0.02,
-                    longitudeDelta: 0.02
+                    latitudeDelta: 0.004,
+                    longitudeDelta: 0.004
                 };
                 this.setState({
                     initialRegion: region
@@ -134,6 +133,36 @@ class MapScreen extends React.Component {
                         coordinates={this.state.markers.map((marker) => marker.coordinate)}
                         strokeWidth={5} />
                 </MapView>
+
+                <View style={{ width: '100%', position: 'absolute', bottom: 100 }}>
+                    <View style={{ paddingHorizontal: 20 }}>
+                        {!this.state.isTracking ? (
+                            <Button title='START TRACE' color='#2ecc71' onPress={this.startTracking} />
+                        ) : (
+                                <Button title='STOP & SEND' color='#e74c3c' onPress={this.stopTracking} />
+                            )}
+                    </View>
+                </View>
+
+
+
+                <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', width: '100%', paddingVertical: 15, position: 'absolute', bottom: 0, flex: 1, flexDirection: 'row' }}>
+                    <View style={{ width: '50%' }}>
+                        <Text style={{ textAlign: 'center', fontSize: 12 }}>DISTANCE</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 24 }}>{parseFloat(this.state.distance).toFixed(2)} km</Text>
+                    </View>
+                    <View style={{ width: '50%' }}>
+                        <Text style={{ textAlign: 'center', fontSize: 12 }}>DURATION</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 24 }}>{this.state.diffTime ? moment(this.state.diffTime).format('HH:mm:ss') : '00:00:00'}</Text>
+                    </View>
+                </View>
+
+                <View style={{ position: 'absolute', top: 24, flex: 1, width: '100%', alignItems: 'center' }} >
+                    <TouchableOpacity onPress={() => NavigationService.navigate('Car')}>
+                        <LicensePlate value={this.props.licensePlate ? this.props.licensePlate : 'NO CAR'} />
+                    </TouchableOpacity>
+                </View>
+
                 <View style={{ backgroundColor: '#Fff', width: 48, height: 48, position: 'absolute', top: 20, left: 20, borderRadius: 24, borderWidth: 1, borderColor: '#b6b6b6', alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity onPress={this.handleNavigation}>
                         <Icon name='menu' size={28} color='#888888' />
@@ -144,16 +173,6 @@ class MapScreen extends React.Component {
                     <TouchableOpacity onPress={this.handleMyLocation}>
                         <Icon name='my-location' size={28} color='#888888' />
                     </TouchableOpacity>
-                </View>
-
-                <View style={{ backgroundColor: '#fff', width: '100%', paddingVertical: 15, position: 'absolute', bottom: 55 }}>
-                    <TouchableOpacity onPress={this.state.isTracking == false ? this.startTracking : this.stopTracking}>
-                        <Text style={{ textAlign: 'center' }}>{this.state.isTracking == false ? 'START' : 'STOP'} [{this.props.licensePlate == null ? 'no car selected' : this.props.licensePlate}]</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{ backgroundColor: '#fff', width: '100%', paddingVertical: 15, position: 'absolute', bottom: 0 }}>
-                    <Text style={{ textAlign: 'center' }}>Distance: {parseFloat(this.state.distance).toFixed(2)} km / Time: {this.state.diffTime ? moment(this.state.diffTime).format('HH:mm:ss') : '00:00:00'}</Text>
                 </View>
                 <KeepAwake />
             </View>
