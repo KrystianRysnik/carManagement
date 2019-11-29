@@ -1,13 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Button, Picker } from 'react-native';
-import store from '../_store/store';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NavigationService from '../NavigationService';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import axios from 'axios';
-import { carsList } from '../_actions';
 
 class RouteScreen extends React.Component {
     static navigationOptions = {
@@ -24,7 +22,7 @@ class RouteScreen extends React.Component {
         dateEnd: moment().toDate(),
         mode: 'date',
         show: false,
-        car: ''
+        car: 'all'
     }
 
     setDateStart = (event, date) => {
@@ -58,7 +56,7 @@ class RouteScreen extends React.Component {
 
         let carsList =
             this.props.cars.map((item, index) => {
-                return (<Picker.Item label={item.name} key={item.vin} value={item.vin} />)
+                return (<Picker.Item label={item.name + ' - LP: ' + item.licensePlate} key={item.vin} value={item.vin} />)
             });
 
         return (
@@ -70,20 +68,23 @@ class RouteScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1, padding: 20 }}>
-                    <Text>Generate report for car:</Text>
+                    <Text>Select Car:</Text>
                     <Picker
                         selectedValue={this.state.car}
-                        style={{ height: 50 }}
+                        style={{ height: 37 }}
                         onValueChange={(itemValue, itemIndex) =>
                             this.setState({ car: itemValue })
                         }>
+                        <Picker.Item label='All Cars' key='all' value='all'/>
                         {carsList}
                     </Picker>
-                    <Text>from:</Text>
-                    <TouchableOpacity onPress={() => this.setState({ showDateStart: true })}><Text>{moment(dateStart).format('Do MMM YYYY')}</Text></TouchableOpacity>
-                    <Text>to:</Text>
-                    <TouchableOpacity onPress={() => this.setState({ showDateEnd: true })}><Text>{moment(dateEnd).format('Do MMM YYYY')}</Text></TouchableOpacity>
-                    <Button title='Generate & Download PDF' onPress={this.handleSubmit}/>
+                    <View style={{ marginVertical: 8, width: '100%', height: 1, backgroundColor: '#b6b6b6'}}></View>
+                    <Text>Select Start Date:</Text>
+                    <TouchableOpacity onPress={() => this.setState({ showDateStart: true })}><Text style={{ padding: 8, fontSize: 16 }}>{moment(dateStart).format('Do MMM YYYY')}</Text></TouchableOpacity>
+                    <View style={{ marginVertical: 8, width: '100%', height: 1, backgroundColor: '#b6b6b6'}}></View>
+                    <Text>Select End Date:</Text>
+                    <TouchableOpacity onPress={() => this.setState({ showDateEnd: true })}><Text style={{ padding: 8, marginBottom: 6, fontSize: 16 }}>{moment(dateEnd).format('Do MMM YYYY')}</Text></TouchableOpacity>
+                    <Button title='Generate & Download PDF' onPress={this.handleSubmit} />
                 </View>
                 {showDateStart && <DateTimePicker value={dateStart}
                     mode={mode}
