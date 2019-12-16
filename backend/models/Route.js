@@ -1,11 +1,6 @@
 const mongoose = require('mongoose')
 
 const routeSchema = mongoose.Schema({
-    userEmail: {
-        type: String,
-        required: true,
-        trim: true
-    },
     carVin: {
         type: String,
         required: true,
@@ -25,22 +20,36 @@ const routeSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    markers: [{
-       coordinate: {
-            longitude: {
-                type: Number,
-                required: true
-            },
-            latitude: {
-                type: Number,
-                required: true
-            },
+    driver: [{
+        email: {
+            type: String,
+            required: true
         },
-        key: {
-            type: Number,
+        firstName: {
+            type: String,
+            required: true
+        },
+        lastName: {
+            type: String,
             required: true
         }
-    }]
+    }],
+    markers: [{
+        coordinate: {
+             longitude: {
+                 type: Number,
+                 required: true
+             },
+             latitude: {
+                 type: Number,
+                 required: true
+             },
+         },
+         key: {
+             type: Number,
+             required: true
+         }
+     }]
 })
 
 routeSchema.statics.findByCredentials = async id => {

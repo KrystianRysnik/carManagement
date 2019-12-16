@@ -18,6 +18,10 @@ const carSchema = mongoose.Schema({
     mileage: {
         type: Number,
         required: true
+    },
+    enginseSize: {
+        type: Number,
+        required: true
     }
 })
 
