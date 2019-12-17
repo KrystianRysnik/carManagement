@@ -20,7 +20,7 @@ const routeSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    driver: [{
+    driver: {
         email: {
             type: String,
             required: true
@@ -33,7 +33,7 @@ const routeSchema = mongoose.Schema({
             type: String,
             required: true
         }
-    }],
+    },
     markers: [{
         coordinate: {
              longitude: {
