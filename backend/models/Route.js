@@ -7,12 +7,12 @@ const routeSchema = mongoose.Schema({
         trim: true
     },
     startTrace: {
-        type: String,
+        type: Date,
         required: true,
         trim: true
     },
     stopTrace: {
-        type: String,
+        type: Date,
         required: true,
         trim: true
     },
