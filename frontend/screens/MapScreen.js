@@ -72,11 +72,15 @@ class MapScreen extends React.Component {
     stopTracking = async () => {
         await this.setState({ stopTrace: moment(new Date).toJSON() })
         axios.post('https://car-management-backend.herokuapp.com/route/add', {
-            userEmail: this.props.email,
             carVin: this.props.vin,
             startTrace: this.state.startTrace,
             stopTrace: this.state.stopTrace,
             distance: this.state.distance,
+            driver: {
+                email: this.props.currentUser.email,
+                firstName: this.props.currentUser.firstName,
+                lastName: this.props.currentUser.lastName
+            },
             markers: this.state.markers
         })
             .then(res => {
@@ -182,7 +186,7 @@ class MapScreen extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        email: state.user.currentUser.email,
+        currentUser: state.user.currentUser,
         vin: state.car.currentCar.vin,
         licensePlate: state.car.currentCar.licensePlate
     };

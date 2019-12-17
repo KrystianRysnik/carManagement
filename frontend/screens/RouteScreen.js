@@ -59,9 +59,9 @@ export default class RouteScreen extends React.Component {
                             <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3' }}>
                                 <TouchableOpacity style={{ padding: 15 }} onPress={() => NavigationService.navigate('RouteMap', {item})}>
                                     <Text>Date: <Text style={{ fontWeight: 'bold' }}>{moment(item.startTrace).format('DD MMM YYYY, HH:mm')}</Text></Text>
-                                    <Text>User: {item.userEmail}</Text>
+                                    <Text>Driver: {item.driver.firstName} {item.driver.lastName}</Text>
                                     <Text>Car: {item.carVin} </Text>
-                                    <Text>Distance: {item.distance.toFixed(2)}km</Text>
+                                    <Text>Distance: {item.distance.toFixed(2)} km</Text>
                                     <Text>Duration: { moment(moment(item.stopTrace).diff(moment(item.startTrace))).format('HH:mm:ss') }</Text>
                                 </TouchableOpacity>
                             </View>

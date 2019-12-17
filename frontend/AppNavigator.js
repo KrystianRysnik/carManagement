@@ -22,6 +22,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Hidden from './_components/Hidden'
 
 import store from './_store/store';
+import NavigationService from './NavigationService';
 
 
 
@@ -43,11 +44,11 @@ const CustomDrawer = (props) => (
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ margin: 15, height: 50, width: 50, borderRadius: 25, backgroundColor: '#b6b6b6' }}>
-            <Text style={{ textAlign: 'center', lineHeight: 50, color: '#ffffff', fontSize: 26, textTransform: 'uppercase' }}>{store.getState().user.currentUser.name.charAt(0)}</Text>
+            <Text style={{ textAlign: 'center', lineHeight: 50, color: '#ffffff', fontSize: 26, textTransform: 'uppercase' }}>FL</Text>
           </View>
           <View>
-            <Text style={{ color: '#ffffff', fontSize: 15, fontWeight: 'bold' }}>{store.getState().user.currentUser.name}</Text>
-            <Text style={{ color: '#ffffff', fontSize: 10 }}>Zobacz profil</Text>
+            <Text style={{ color: '#ffffff', fontSize: 15, fontWeight: 'bold' }}>Firstname Lastname</Text>
+            <Text style={{ color: '#ffffff', fontSize: 10 }} onPress={() => NavigationService.navigate('Profile')}>Zobacz profil</Text>
           </View>
         </View>
       </ImageBackground>

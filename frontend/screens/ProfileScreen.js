@@ -29,16 +29,24 @@ class ProfileScreen extends React.Component {
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Text>Profile Screen</Text>
-                    <Text>Name: {store.getState().user.currentUser.name}</Text>
-                    <Text>Email: {store.getState().user.currentUser.email}</Text>
+                    <Text>{this.props.profile.firstName} {this.props.profile.lastName}</Text>
+                    <Text>{this.props.profile.email}</Text>
                 </View>
             </View>
         );
     }
 }
 
+
+
+const mapStateToProps = state => {
+    return {
+        profile: state.user.currentUser,
+    };
+}
+
 const mapDispatchToProps = dispatch => ({
     userSignOut: token => dispatch(userSignOut(token))
 })
 
-export default connect(null, mapDispatchToProps)(ProfileScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

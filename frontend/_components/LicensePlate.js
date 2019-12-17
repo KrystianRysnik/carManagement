@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 
 export default class LicensePlate extends React.Component {
     static propTypes = {
-        value: PropTypes.string,
-        style: PropTypes.style
+        value: PropTypes.string
     }
 
     render() {
