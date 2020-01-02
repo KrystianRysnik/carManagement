@@ -20,6 +20,7 @@ import ReportScreen from './screens/ReportScreen';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import Hidden from './_components/Hidden'
+import Header from './_components/Header'
 
 import store from './_store/store';
 import NavigationService from './NavigationService';
@@ -39,20 +40,7 @@ const AuthStack = createStackNavigator(
 
 const CustomDrawer = (props) => (
   <View style={{ flex: 1 }}>
-    <View>
-      <ImageBackground source={require('./_assets/background.png')} style={{ width: '100%' }}>
-
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{ margin: 15, height: 50, width: 50, borderRadius: 25, backgroundColor: '#b6b6b6' }}>
-            <Text style={{ textAlign: 'center', lineHeight: 50, color: '#ffffff', fontSize: 26, textTransform: 'uppercase' }}>FL</Text>
-          </View>
-          <View>
-            <Text style={{ color: '#ffffff', fontSize: 15, fontWeight: 'bold' }}>Firstname Lastname</Text>
-            <Text style={{ color: '#ffffff', fontSize: 10 }} onPress={() => NavigationService.navigate('Profile')}>Zobacz profil</Text>
-          </View>
-        </View>
-      </ImageBackground>
-    </View>
+    <Header />
     <ScrollView>
       <DrawerItems {...props} />
     </ScrollView>
