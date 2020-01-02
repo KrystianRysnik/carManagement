@@ -76,13 +76,13 @@ const AppDrawer = createDrawerNavigator(
     Car: {
       screen: CarScreen,
       navigationOptions: {
-        drawerLabel: 'Select Car'
+        drawerLabel: 'Lista Samochodów'
       }
     },
     Routes: {
       screen: RouteScreen,
       navigationOptions: {
-        drawerLabel: 'Routes History'
+        drawerLabel: 'Historia Tras'
       }
     },
     RouteMap: {
@@ -94,7 +94,7 @@ const AppDrawer = createDrawerNavigator(
     Report: {
       screen: ReportScreen,
       navigationOptions: {
-        drawerLabel: 'Generate Report'
+        drawerLabel: 'Generowanie Raportu'
       }
     }
   },

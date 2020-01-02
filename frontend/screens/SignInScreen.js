@@ -37,7 +37,7 @@ class SignInScreen extends React.Component {
                                 style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
                             />
 
-                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Password</Text>
+                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Hasło</Text>
                             <TextInput
                                 secureTextEntry
                                 value={this.state.password}
@@ -45,8 +45,8 @@ class SignInScreen extends React.Component {
                                 style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
                             />
 
-                            <Button style={{ marginVertical: 15 }} title="Sign In" onPress={this.handleSubmit} />
-                            <Text style={{ color: '#ffffff', textAlign: 'center', marginTop: 15 }}>Don't Have An Account? <Text style={{ fontWeight: 'bold' }} onPress={() => NavigationService.navigate('SignUp', null)}>Sign Up</Text></Text>
+                            <Button style={{ marginVertical: 15 }} title="Zaloguj Się" onPress={this.handleSubmit} />
+                            <Text style={{ color: '#ffffff', textAlign: 'center', marginTop: 15 }} onPress={() => NavigationService.navigate('SignUp', null)}>Nie Posiadasz Konta? <Text style={{ fontWeight: 'bold' }}>Zarejestruj Się</Text></Text>
                         </View>
                     </View>
                 </ImageBackground>

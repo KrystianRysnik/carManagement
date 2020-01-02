@@ -141,9 +141,9 @@ class MapScreen extends React.Component {
                 <View style={{ width: '100%', position: 'absolute', bottom: 100 }}>
                     <View style={{ paddingHorizontal: 20 }}>
                         {!this.state.isTracking ? (
-                            <Button title='START TRACE' color='#2ecc71' onPress={this.startTracking} />
+                            <Button title='START' color='#2ecc71' onPress={this.startTracking} />
                         ) : (
-                                <Button title='STOP & SEND' color='#e74c3c' onPress={this.stopTracking} />
+                                <Button title='ZATRZYMAJ I WYŚLIJ' color='#e74c3c' onPress={this.stopTracking} />
                             )}
                     </View>
                 </View>
@@ -152,11 +152,11 @@ class MapScreen extends React.Component {
 
                 <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', width: '100%', paddingVertical: 15, position: 'absolute', bottom: 0, flex: 1, flexDirection: 'row' }}>
                     <View style={{ width: '50%' }}>
-                        <Text style={{ textAlign: 'center', fontSize: 12 }}>DISTANCE</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 12 }}>DYSTANS</Text>
                         <Text style={{ textAlign: 'center', fontSize: 24 }}>{parseFloat(this.state.distance).toFixed(2)} km</Text>
                     </View>
                     <View style={{ width: '50%' }}>
-                        <Text style={{ textAlign: 'center', fontSize: 12 }}>DURATION</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 12 }}>CZAS TRWANIA</Text>
                         <Text style={{ textAlign: 'center', fontSize: 24 }}>{this.state.diffTime ? moment(this.state.diffTime).format('HH:mm:ss') : '00:00:00'}</Text>
                     </View>
                 </View>

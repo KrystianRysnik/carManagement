@@ -147,11 +147,11 @@ class RouteScreen extends React.Component {
                 <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <TouchableOpacity style={{ paddingHorizontal: 10, height: 45, flexDirection: 'row', alignItems: 'center' }} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
-                        <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Generate Report</Text>
+                        <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Generowanie Raportu</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1, padding: 20 }}>
-                    <Text>Select Car:</Text>
+                    <Text>Wybierz samochód:</Text>
                     <Picker
                         selectedValue={this.state.car}
                         style={{ height: 37 }}
@@ -161,12 +161,12 @@ class RouteScreen extends React.Component {
                         {carsList}
                     </Picker>
                     <View style={{ marginVertical: 8, width: '100%', height: 1, backgroundColor: '#b6b6b6' }}></View>
-                    <Text>Select Start Date:</Text>
-                    <TouchableOpacity onPress={() => this.setState({ showDateStart: true })}><Text style={{ padding: 8, fontSize: 16 }}>{moment(dateStart).format('Do MMM YYYY')}</Text></TouchableOpacity>
+                    <Text>Wybierz datę początkową:</Text>
+                    <TouchableOpacity onPress={() => this.setState({ showDateStart: true })}><Text style={{ padding: 8, fontSize: 16 }}>{moment(dateStart).format('DD.MM.YYYY')}</Text></TouchableOpacity>
                     <View style={{ marginVertical: 8, width: '100%', height: 1, backgroundColor: '#b6b6b6' }}></View>
-                    <Text>Select End Date:</Text>
-                    <TouchableOpacity onPress={() => this.setState({ showDateEnd: true })}><Text style={{ padding: 8, marginBottom: 6, fontSize: 16 }}>{moment(dateEnd).format('Do MMM YYYY')}</Text></TouchableOpacity>
-                    <Button title='Generate & Download PDF' onPress={this.handleSubmit} />
+                    <Text>Wybierz datę końcową:</Text>
+                    <TouchableOpacity onPress={() => this.setState({ showDateEnd: true })}><Text style={{ padding: 8, marginBottom: 6, fontSize: 16 }}>{moment(dateEnd).format('DD.MM.YYYY')}</Text></TouchableOpacity>
+                    <Button title='Generuj raport' onPress={this.handleSubmit} />
                 </View>
                 {showDateStart && <DateTimePicker value={dateStart}
                     mode={mode}

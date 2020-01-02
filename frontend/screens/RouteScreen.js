@@ -50,7 +50,7 @@ export default class RouteScreen extends React.Component {
                 <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <TouchableOpacity style={{ paddingHorizontal: 10, height: 45, flexDirection: 'row', alignItems: 'center' }} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
-                        <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Routes history</Text>
+                        <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Historia Tras</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1 }}>
@@ -58,11 +58,11 @@ export default class RouteScreen extends React.Component {
                         renderItem={({ item }) => (
                             <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3' }}>
                                 <TouchableOpacity style={{ padding: 15 }} onPress={() => NavigationService.navigate('RouteMap', {item})}>
-                                    <Text>Date: <Text style={{ fontWeight: 'bold' }}>{moment(item.startTrace).format('DD MMM YYYY, HH:mm')}</Text></Text>
-                                    <Text>Driver: {item.driver.firstName} {item.driver.lastName}</Text>
-                                    <Text>Car: {item.carVin} </Text>
-                                    <Text>Distance: {item.distance.toFixed(2)} km</Text>
-                                    <Text>Duration: { moment(moment(item.stopTrace).diff(moment(item.startTrace))).format('HH:mm:ss') }</Text>
+                                    <Text>Data: <Text style={{ fontWeight: 'bold' }}>{moment(item.startTrace).format('DD MMM YYYY, HH:mm')}</Text></Text>
+                                    <Text>Kierowca: {item.driver.firstName} {item.driver.lastName}</Text>
+                                    <Text>Samochód: {item.carVin} </Text>
+                                    <Text>Dystans: {item.distance.toFixed(2)} km</Text>
+                                    <Text>Czas trwania: { moment(moment(item.stopTrace).diff(moment(item.startTrace))).format('HH:mm:ss') }</Text>
                                 </TouchableOpacity>
                             </View>
                         )}

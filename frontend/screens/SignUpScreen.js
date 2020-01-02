@@ -6,13 +6,18 @@ import NavigationService from '../NavigationService';
 
 class SignUpScreen extends React.Component {
     state = {
-        name: "",
+        firstName: "",
+        lastName: "",
         email: "",
         password: ""
     }
 
-    handleNameChange = name => {
-        this.setState({ name: name })
+    handleFirstNameChange = firstName => {
+        this.setState({ firstName: firstName })
+    }
+
+    handleLastNameChange = lastName => {
+        this.setState({ lastName: lastName })
     }
 
     handleEmailChange = email => {
@@ -36,10 +41,17 @@ class SignUpScreen extends React.Component {
 
                         <View style={{ width: '80%' }}>
 
-                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Full Name</Text>
+                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Imię</Text>
                             <TextInput
-                                value={this.state.name}
-                                onChangeText={this.handleNameChange}
+                                value={this.state.firstName}
+                                onChangeText={this.handleFirstNameChange}
+                                style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            />
+
+<Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Nazwisko</Text>
+                            <TextInput
+                                value={this.state.lastName}
+                                onChangeText={this.handleLastNameChange}
                                 style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
                             />
 
@@ -50,7 +62,7 @@ class SignUpScreen extends React.Component {
                                 style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
                             />
 
-                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Password</Text>
+                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Hasło</Text>
                             <TextInput
                                 secureTextEntry
                                 value={this.state.password}
@@ -58,8 +70,8 @@ class SignUpScreen extends React.Component {
                                 style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
                             />
 
-                            <Button style={{ marginVertical: 15 }} title='Sign Up' onPress={this.handleSubmit} />
-                            <Text style={{ color: '#ffffff', textAlign: 'center', marginTop: 15 }}>Already Have An Account? <Text style={{ fontWeight: 'bold' }} onPress={() => NavigationService.navigate('SignIn', null)}>Sign In</Text></Text>
+                            <Button style={{ marginVertical: 15 }} title='Zarejestruj Się' onPress={this.handleSubmit} />
+                            <Text style={{ color: '#ffffff', textAlign: 'center', marginTop: 15 }}>Posiadasz Konto? <Text style={{ fontWeight: 'bold' }} onPress={() => NavigationService.navigate('SignIn', null)}>Zaloguj Się</Text></Text>
                         </View>
                     </View>
                 </ImageBackground>

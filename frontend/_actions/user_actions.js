@@ -15,7 +15,8 @@ const instance = axios.create({
 export const userSignUp = user => {
     return dispatch => {
         instance.post('/user/register', {
-            name: user.name,
+            firstName: user.firstName,
+            lastName: user.lastName,
             email: user.email,
             password: user.password
         })

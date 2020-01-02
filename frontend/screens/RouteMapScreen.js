@@ -36,17 +36,17 @@ export default class RouteMapScreen extends React.Component {
                 <View style={{ backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e3e3e3', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <TouchableOpacity style={{ paddingHorizontal: 10, height: 45, flexDirection: 'row', alignItems: 'center' }} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
-                        <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Route from: {moment(route.startTrace).format('DD MMM YYYY, HH:mm')} </Text>
+                        <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Traza z {moment(route.startTrace).format('DD.MM.YYYY, HH:mm')} </Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', width: '100%', paddingVertical: 15, position: 'absolute', bottom: 0, flex: 1, flexDirection: 'row' }}>
                     <View style={{width: '50%'}}>
-                        <Text style={{ textAlign: 'center', fontSize: 12 }}>DISTANCE</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 12 }}>DYSTANS</Text>
                         <Text style={{ textAlign: 'center', fontSize: 24 }}>{parseFloat(route.distance).toFixed(2)} km</Text>
                     </View>
                     <View style={{width: '50%'}}>
-                        <Text style={{ textAlign: 'center', fontSize: 12 }}>DURATION</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 12 }}>CZAS TRWANIA</Text>
                         <Text style={{ textAlign: 'center', fontSize: 24 }}>{moment(moment(route.stopTrace).diff(moment(route.startTrace))).format('HH:mm:ss')}</Text>
                     </View>
                 </View>
