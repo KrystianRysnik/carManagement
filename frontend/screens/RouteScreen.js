@@ -7,12 +7,6 @@ import axios from 'axios';
 import moment from 'moment';
 
 export default class RouteScreen extends React.Component {
-    static navigationOptions = {
-        drawerIcon: (
-            <Icon name='history' size={24} color='#000' />
-        )
-    }
-
     state = {
         car: '',
         routes: [],

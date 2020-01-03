@@ -10,12 +10,6 @@ import axios from 'axios';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
 class RouteScreen extends React.Component {
-    static navigationOptions = {
-        drawerIcon: (
-            <Icon name='picture-as-pdf' size={24} color='#000' />
-        )
-    }
-
     state = {
         value: '',
         showDateStart: false,

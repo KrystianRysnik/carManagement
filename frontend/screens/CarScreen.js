@@ -10,12 +10,6 @@ import axios from 'axios';
 import LicensePlate from '../_components/LicensePlate';
 
 class CarScreen extends React.Component {
-    static navigationOptions = {
-        drawerIcon: (
-            <Icon name='directions-car' size={24} color='#000' />
-        )
-    }
-
     handleBack = () => {
         NavigationService.goBack()
     }

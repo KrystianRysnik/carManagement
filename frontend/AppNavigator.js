@@ -25,9 +25,6 @@ import Header from './_components/Header'
 import store from './_store/store';
 import NavigationService from './NavigationService';
 
-
-
-
 const AuthStack = createStackNavigator(
   {
     SignIn: SignInScreen,
@@ -64,13 +61,19 @@ const AppDrawer = createDrawerNavigator(
     Car: {
       screen: CarScreen,
       navigationOptions: {
-        drawerLabel: 'Lista Samochodów'
+        drawerLabel: 'Lista Samochodów',
+        drawerIcon: (
+          <Icon name='directions-car' size={24} color='#000' />
+        )
       }
     },
     Routes: {
       screen: RouteScreen,
       navigationOptions: {
-        drawerLabel: 'Historia Tras'
+        drawerLabel: 'Historia Tras',
+        drawerIcon: (
+          <Icon name='history' size={24} color='#000' />
+        )
       }
     },
     RouteMap: {
@@ -82,7 +85,10 @@ const AppDrawer = createDrawerNavigator(
     Report: {
       screen: ReportScreen,
       navigationOptions: {
-        drawerLabel: 'Generowanie Raportu'
+        drawerLabel: 'Generowanie Raportu',
+        drawerIcon: (
+          <Icon name='picture-as-pdf' size={24} color='#000' />
+        )
       }
     }
   },
