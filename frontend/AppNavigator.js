@@ -16,6 +16,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import RouteScreen from './screens/RouteScreen';
 import RouteMapScreen from './screens/RouteMapScreen';
 import ReportScreen from './screens/ReportScreen';
+import AdminScreen from './screens/AdminScreen';
 
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -88,6 +89,15 @@ const AppDrawer = createDrawerNavigator(
         drawerLabel: 'Generowanie Raportu',
         drawerIcon: (
           <Icon name='picture-as-pdf' size={24} color='#000' />
+        )
+      }
+    },
+    Admin: {
+      screen: AdminScreen,
+      navigationOptions: {
+        drawerLabel: 'Panel Administratora',
+        drawerIcon: (
+          <Icon name='security' size={24} color='#000' />
         )
       }
     }
