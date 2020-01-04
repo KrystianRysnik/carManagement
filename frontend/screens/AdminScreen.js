@@ -25,7 +25,7 @@ class AdminScreen extends React.Component {
                         <Text style={{ fontWeight: 'bold', fontSize: 18, paddingLeft: 15 }}>Użytkownicy</Text>
                     </View>
 
-                    <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
                         <View style={{ width: '33.33%', paddingHorizontal: 5 }}>
                             <Button title="DODAJ" color='#2ecc71'/>
                         </View>
@@ -42,10 +42,25 @@ class AdminScreen extends React.Component {
                         <Text style={{ fontWeight: 'bold', fontSize: 18, paddingLeft: 15 }}>Pojazdy</Text>
                     </View>
 
-                    <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
                         <View style={{ width: '33.33%', paddingHorizontal: 5 }}>
-                            <Button title="DODAJ" color='#2ecc71'/>
+                            <Button title="DODAJ" color='#2ecc71'  onPress={() => NavigationService.navigate('AddEditCar', {name: '', mileage: '', engineSize: '', vin: '', licensePlate: ''})}/>
                         </View>
+                        <View style={{ width: '33.33%', paddingHorizontal: 5  }}>
+                            <Button title="EDYTUJ" color='#f39c12' onPress={() => NavigationService.navigate('AdminCar')}/>
+                        </View>
+                        <View style={{ width: '33.33%', paddingHorizontal: 5  }}>
+                            <Button title="USUŃ" color='#e74c3c' onPress={() => NavigationService.navigate('AdminCar')}/>
+                        </View>
+                    </View>
+
+                    <View style={{ paddingVertical: 15, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center' }} >
+                        <Icon name='history' size={36} color='#000' />
+                        <Text style={{ fontWeight: 'bold', fontSize: 18, paddingLeft: 15 }}>Trasy</Text>
+                    </View>
+
+                    <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
+
                         <View style={{ width: '33.33%', paddingHorizontal: 5  }}>
                             <Button title="EDYTUJ" color='#f39c12' />
                         </View>

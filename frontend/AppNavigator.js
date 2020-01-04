@@ -17,6 +17,8 @@ import RouteScreen from './screens/RouteScreen';
 import RouteMapScreen from './screens/RouteMapScreen';
 import ReportScreen from './screens/ReportScreen';
 import AdminScreen from './screens/AdminScreen';
+import AdminAddEditScreen from './screens/AdminAddEditScreen';
+import AdminCarScreen from './screens/AdminCarScreen';
 
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -99,6 +101,18 @@ const AppDrawer = createDrawerNavigator(
         drawerIcon: (
           <Icon name='security' size={24} color='#000' />
         )
+      }
+    },
+    AddEditCar: {
+      screen: AdminAddEditScreen,
+      navigationOptions: {
+        drawerLabel: <Hidden />
+      }
+    },
+    AdminCar: {
+      screen: AdminCarScreen,
+      navigationOptions: {
+        drawerLabel: <Hidden />
       }
     }
   },
