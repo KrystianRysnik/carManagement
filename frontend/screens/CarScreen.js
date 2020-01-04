@@ -35,6 +35,10 @@ class CarScreen extends React.Component {
                                 <TouchableOpacity style={{ padding: 15 }} onPress={() => this.handleSelect(item)}>
                                     <Text style={{ fontWeight: 'bold' }}>{item.name} <Text style={{ color: '#39e600' }}>{this.props.licensePlate == item.licensePlate ? '[ WYBRANY ]' : ''}</Text></Text>
                                     <LicensePlate value={item.licensePlate}/>
+                                    <View style={{flexDirection: 'row' }}>
+                                        <Text>Pojemność silnika: {item.engineSize} cm</Text>
+                                        <Text style={{ fontSize: 10, lineHeight: 14 }}>3</Text>
+                                    </View>
                                     <Text>Przebieg: {item.mileage} km</Text>
                                     <Text>Numer VIN: {item.vin}</Text>
                                 </TouchableOpacity>
