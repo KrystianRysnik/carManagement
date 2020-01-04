@@ -19,7 +19,7 @@ const carSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    enginseSize: {
+    engineSize: {
         type: Number,
         required: true
     }
