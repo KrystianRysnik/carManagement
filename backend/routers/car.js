@@ -38,6 +38,19 @@ router.put('/car/update', async (req, res) => {
     }
 })
 
+router.delete('/car/delete/:vin', async (req, res) => {
+    // Update car
+    try {
+        await Car.deleteOne({
+            vin: req.params.vin
+        })
+        res.status(200).send('Done')
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.get('/car/list', async (req, res) => {
     // List of cars
     Car.find({}, (err, cars) => {

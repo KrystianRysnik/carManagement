@@ -60,6 +60,19 @@ export const carUpdate = car => {
     }
 }
 
+export const carDelete = vin => {
+    return dispatch => {
+        axios.delete(`http://192.168.0.18:3000/car/delete/${vin}`)
+            .then(res => {
+                console.log('🟢 Delete Car Succesfull!')
+            })
+            .catch(error => {
+                console.log('🔴 Delete Car Error!')
+                console.log(error);
+            })
+    }
+}
+
 export const carSelect = car => {
     return dispatch => {
         dispatch(selectCar(car))

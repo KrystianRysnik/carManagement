@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, FlatList, Button } from 'react-native';
+import { Alert, View, Text, TouchableOpacity, FlatList, Button } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import store from '../_store/store';
 import { connect } from 'react-redux';
-import { carSelect } from '../_actions';
+import { carDelete } from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NavigationService from '../NavigationService';
 import axios from 'axios';
@@ -14,8 +14,23 @@ class AdminCarScreen extends React.Component {
         super(props);
     }
 
-    handleSelect = car => {
-        this.props.carSelect(car)
+    handleDelete = car => {
+        Alert.alert(
+            `Usuwanie Pojazdu`,
+            `Czy napewno chcesz usunąć pojazd ${car.name} o numerze rejestracyjnym ${car.licensePlate}?`,
+            [
+                {
+                    text: 'Anuluj',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Usuń',
+                    onPress: () => this.props.carDelete(car.vin)
+                 },
+            ],
+            { cancelable: false },
+        )
+
     }
 
     render() {
@@ -47,7 +62,7 @@ class AdminCarScreen extends React.Component {
                                             </TouchableOpacity>
                                         </View>
                                         <View style={{ marginLeft: 15, width: 44, height: 44, borderWidth: 1, borderColor: '#000', borderRadius: 4, justifyContent: 'center', alignItems: 'center' }}>
-                                            <TouchableOpacity onPress={this.handleNavigation}>
+                                            <TouchableOpacity onPress={() => this.handleDelete(item)}>
                                                 <Icon name='delete-forever' size={36} color='#888888' />
                                             </TouchableOpacity>
                                         </View>
@@ -71,7 +86,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    carSelect: car => dispatch(carSelect(car))
+    carDelete: car => dispatch(carDelete(car))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminCarScreen);
