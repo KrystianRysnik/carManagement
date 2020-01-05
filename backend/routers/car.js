@@ -15,6 +15,29 @@ router.post('/car/add', async (req, res) => {
     }
 })
 
+router.put('/car/update', async (req, res) => {
+    // Update car
+    try {
+        await Car.updateOne(
+            {
+                "vin": req.body.originalVin
+            },
+            {
+                $set: {
+                    name: req.body.name,
+                    vin: req.body.vin,
+                    licensePlate: req.body.licensePlate,
+                    engineSize: req.body.engineSize,
+                    mileage: req.body.mileage
+                }
+            })
+        res.status(200).send('Done')
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.get('/car/list', async (req, res) => {
     // List of cars
     Car.find({}, (err, cars) => {

@@ -41,8 +41,8 @@ class AdminCarScreen extends React.Component {
                                     <Text>Przebieg: {item.mileage} km</Text>
                                     <Text>Numer VIN: {item.vin}</Text>
                                     <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'flex-end', position: 'absolute', right: 20, top: 10 }}>
-                                        <View style={{ width: 44, height: 44, borderWidth: 1, borderColor: '#000', borderRadius: 4,  justifyContent: 'center', alignItems: 'center' }}>
-                                            <TouchableOpacity onPress={ () => NavigationService.navigate('AddEditCar', item)}>
+                                        <View style={{ width: 44, height: 44, borderWidth: 1, borderColor: '#000', borderRadius: 4, justifyContent: 'center', alignItems: 'center' }}>
+                                            <TouchableOpacity onPress={() => NavigationService.navigate('AddEditCar', item)}>
                                                 <Icon name='edit' size={36} color='#888888' />
                                             </TouchableOpacity>
                                         </View>

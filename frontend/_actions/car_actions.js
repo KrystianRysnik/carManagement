@@ -21,6 +21,45 @@ export const carsList = () => {
     }
 }
 
+export const carAdd = car => {
+    return dispatch => {
+        instance.post('/car/add', {
+            name: car.name,
+            vin: car.vin,
+            mileage: car.mileage,
+            licensePlate: car.licensePlate,
+            engineSize: car.engineSize
+        })
+            .then(res => {
+                console.log('🟢 Add Car Succesfull!')
+            })
+            .catch(error => {
+                console.log('🔴 Add Car Error!')
+                console.log(error);
+            })
+    }
+}
+
+export const carUpdate = car => {
+    return dispatch => {
+        axios.put('http://192.168.0.18:3000/car/update', {
+            originalVin: car.originalVin,
+            name: car.name,
+            vin: car.vin,
+            mileage: car.mileage,
+            licensePlate: car.licensePlate,
+            engineSize: car.engineSize
+        })
+            .then(res => {
+                console.log('🟢 Update Car Succesfull!')
+            })
+            .catch(error => {
+                console.log('🔴 Update Car Error!')
+                console.log(error);
+            })
+    }
+}
+
 export const carSelect = car => {
     return dispatch => {
         dispatch(selectCar(car))
