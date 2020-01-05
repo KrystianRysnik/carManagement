@@ -42,7 +42,7 @@ export const carAdd = car => {
 
 export const carUpdate = car => {
     return dispatch => {
-        axios.put('http://192.168.0.18:3000/car/update', {
+        instance.put('/car/update', {
             originalVin: car.originalVin,
             name: car.name,
             vin: car.vin,
@@ -62,7 +62,7 @@ export const carUpdate = car => {
 
 export const carDelete = vin => {
     return dispatch => {
-        axios.delete(`http://192.168.0.18:3000/car/delete/${vin}`)
+        instance.delete(`/car/delete/${vin}`)
             .then(res => {
                 console.log('🟢 Delete Car Succesfull!')
             })

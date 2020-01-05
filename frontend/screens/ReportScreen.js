@@ -95,7 +95,7 @@ class RouteScreen extends React.Component {
     }
 
     getReport = (car) => {
-        axios.post('http://192.168.0.19:3000/route/report', {
+        axios.post('https://car-management-backend.herokuapp.com/route/report', {
             dateStart: this.state.dateStart,
             dateEnd: this.state.dateEnd,
             licensePlate: car.licensePlate,
