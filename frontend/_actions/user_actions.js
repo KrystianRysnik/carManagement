@@ -71,6 +71,24 @@ export const userSignOut = token => {
     }
 }
 
+export const userUpdate = user => {
+    return dispatch => {
+        instance.put('/user/update', {
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName
+        })
+            .then(res => {
+                dispatch(loginUser(res.data))
+                console.log('🟢 Update User Succesfull!')
+            })
+            .catch(error => {
+                console.log('🔴 Update Car Error!')
+                console.log(error);
+            })
+    }
+}
+
 export const userProfile = token => {
     return dispatch => {
         if (token) {

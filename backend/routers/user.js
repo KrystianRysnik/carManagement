@@ -33,6 +33,28 @@ router.post('/user/login', async (req, res) => {
     }
 })
 
+router.put('/user/update', async (req, res) => {
+    // Update user
+    console.log(req.body)
+    try {
+        await User.updateOne(
+            {
+                "email": req.body.email
+            },
+            {
+                $set: {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName
+                }
+            })
+        const user = await User.findOne({ email: req.body.email })
+        res.status(200).send(user)
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.get('/user/profile', auth, async (req, res) => {
     // View logged in user profile
     res.send(req.user)
