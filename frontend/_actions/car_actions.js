@@ -31,6 +31,7 @@ export const carAdd = car => {
             engineSize: car.engineSize
         })
             .then(res => {
+                dispatch(carsList())
                 console.log('🟢 Add Car Succesfull!')
             })
             .catch(error => {
@@ -51,6 +52,7 @@ export const carUpdate = car => {
             engineSize: car.engineSize
         })
             .then(res => {
+                dispatch(carsList())
                 console.log('🟢 Update Car Succesfull!')
             })
             .catch(error => {
@@ -64,6 +66,7 @@ export const carDelete = vin => {
     return dispatch => {
         instance.delete(`/car/delete/${vin}`)
             .then(res => {
+                dispatch(carsList())
                 console.log('🟢 Delete Car Succesfull!')
             })
             .catch(error => {
