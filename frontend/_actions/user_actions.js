@@ -71,15 +71,68 @@ export const userSignOut = token => {
     }
 }
 
-export const userUpdate = user => {
+export const userProfileUpdate = user => {
     return dispatch => {
-        instance.put('/user/update', {
+        instance.put('/user/profile/update', {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName
         })
             .then(res => {
                 dispatch(loginUser(res.data))
+                console.log('🟢 Update User Succesfull!')
+            })
+            .catch(error => {
+                console.log('🔴 Update Car Error!')
+                console.log(error);
+            })
+    }
+}
+
+export const userAdd = user => {
+    return dispatch => {
+        instance.post('/user/add', {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            password: user.password
+        })
+            .then(res => {
+                console.log('🟢 Add User Succesfull!')
+                dispatch(userList())
+            })
+            .catch(error => {
+                console.log('🔴 Add User Error!')
+                console.log(error);
+            })
+    }
+}
+
+
+export const userUpdate = user => {
+    return dispatch => {
+        instance.put('/user/update', {
+            originalEmail: user.originalEmail,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName
+        })
+            .then(res => {
+                dispatch(userList())
+                console.log('🟢 Update User Succesfull!')
+            })
+            .catch(error => {
+                console.log('🔴 Update Car Error!')
+                console.log(error);
+            })
+    }
+}
+
+export const userDelete = email => {
+    return dispatch => {
+        instance.delete(`/user/delete/${email}`)
+            .then(res => {
+                dispatch(userList())
                 console.log('🟢 Update User Succesfull!')
             })
             .catch(error => {
@@ -112,8 +165,27 @@ export const userProfile = token => {
     }
 }
 
+export const userList = () => {
+    return dispatch => {
+        instance.get('/user/list')
+            .then(res => {
+                console.log('🟢 List User Succesfull!')
+                dispatch(listUser(res.data))
+            })
+            .catch(error => {
+                console.log('🔴 List User Error!')
+                console.log(error)
+            })
+    }
+}
+
 const loginUser = userObj => ({
     type: 'LOGIN_USER',
+    payload: userObj
+})
+
+const listUser = userObj => ({
+    type: 'LIST_USER',
     payload: userObj
 })
 

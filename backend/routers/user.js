@@ -33,7 +33,7 @@ router.post('/user/login', async (req, res) => {
     }
 })
 
-router.put('/user/update', async (req, res) => {
+router.put('/user/profile/update', async (req, res) => {
     // Update user
     console.log(req.body)
     try {
@@ -49,6 +49,55 @@ router.put('/user/update', async (req, res) => {
             })
         const user = await User.findOne({ email: req.body.email })
         res.status(200).send(user)
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.post('/user/add', async (req, res) => {
+    // Create new user
+    try {
+        const user = new User(req.body)
+        await user.save()
+       // const token = await user.generateAuthToken()
+        res.status(201).send('Dodano')
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.put('/user/update', async (req, res) => {
+    // Update user
+    console.log(req.body)
+    try {
+        await User.updateOne(
+            {
+                "email": req.body.originalEmail
+            },
+            {
+                $set: {
+                    email: req.body.email,
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName
+                }
+            })
+        const user = await User.findOne({ email: req.body.email })
+        res.status(200).send(user)
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.delete('/user/delete/:email', async (req, res) => {
+    // Delete user
+    try {
+        await User.deleteOne({
+            email: req.params.email
+        })
+        res.status(200).send('Done')
     }
     catch (error) {
         res.status(400).send(error)
@@ -72,6 +121,17 @@ router.post('/user/logout', auth, async (req, res) => {
     catch (error) {
         res.status(500).send(error)
     }
+})
+
+router.get('/user/list', async (req, res) => {
+    // List of users
+    User.find({}, { '_id': 0, 'password': 0, 'tokens': 0 }, (err, users) => {
+        if (err) {
+            res.status(400).send('Something went wrong!')
+            next()
+        }
+        res.status(200).send(users);
+    });
 })
 
 module.exports = router

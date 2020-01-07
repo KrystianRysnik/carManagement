@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NavigationService from '../NavigationService';
 
-class AdminScreen extends React.Component {
+export default class AdminScreen extends React.Component {
     handleBack = () => {
         NavigationService.goBack()
     }
@@ -27,13 +27,13 @@ class AdminScreen extends React.Component {
 
                     <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
                         <View style={{ width: '33.33%', paddingHorizontal: 5 }}>
-                            <Button title="DODAJ" color='#2ecc71'/>
+                            <Button title="DODAJ" color='#2ecc71' onPress={() => NavigationService.navigate('AddEditUser', {email: '', firstName: '', lastName: ''})} />
+                        </View>
+                        <View style={{ width: '33.33%', paddingHorizontal: 5  }} >
+                            <Button title="EDYTUJ" color='#f39c12' onPress={() => NavigationService.navigate('AdminUser')} />
                         </View>
                         <View style={{ width: '33.33%', paddingHorizontal: 5  }}>
-                            <Button title="EDYTUJ" color='#f39c12' />
-                        </View>
-                        <View style={{ width: '33.33%', paddingHorizontal: 5  }}>
-                            <Button title="USUŃ" color='#e74c3c' />
+                            <Button title="USUŃ" color='#e74c3c' onPress={() => NavigationService.navigate('AdminUser')} />
                         </View>
                     </View>
 
@@ -74,13 +74,3 @@ class AdminScreen extends React.Component {
         );
     }
 }
-
-
-
-const mapStateToProps = state => {
-    return {
-        profile: state.user.currentUser,
-    };
-}
-
-export default connect(mapStateToProps)(AdminScreen);

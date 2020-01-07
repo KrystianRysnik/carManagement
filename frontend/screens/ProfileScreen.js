@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import store from '../_store/store';
 import { connect } from 'react-redux';
-import { userSignOut, userUpdate } from '../_actions';
+import { userSignOut, userProfileUpdate } from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NavigationService from '../NavigationService';
 
@@ -12,6 +12,7 @@ class ProfileScreen extends React.Component {
         firstName: '',
         lastName: '',
         email: '',
+        disableButton: true
     }
 
     componentDidMount() {
@@ -28,20 +29,36 @@ class ProfileScreen extends React.Component {
     }
 
     handleUpdate = () => {
-        this.props.userUpdate(this.state)
+        this.props.userProfileUpdate(this.state)
+        this.setState({ disableButton: true })
     }
 
     handleBack = () => {
         NavigationService.goBack()
     }
 
-    handleFirstNameChange = firstName => {
-        this.setState({ firstName: firstName })
+    checkDifferences = () => {
+        if (this.state.firstName == this.props.profile.firstName
+            && this.state.lastName == this.props.profile.lastName
+            || this.state.firstName == ''
+            || this.state.lastName == '')
+            this.setState({ disableButton: true })
+        else
+            this.setState({ disableButton: false })
     }
 
-    handleLastNameChange = lastName => {
-        this.setState({ lastName: lastName })
+    handleFirstNameChange = async firstName => {
+        await this.setState({ firstName: firstName })
+        this.checkDifferences()
+
     }
+
+    handleLastNameChange = async lastName => {
+        await this.setState({ lastName: lastName })
+        this.checkDifferences()
+    }
+
+
 
     render() {
         return (
@@ -55,21 +72,35 @@ class ProfileScreen extends React.Component {
                 </View>
 
                 <View style={{ flex: 1 }}>
-                <View style={{ paddingHorizontal: 20, paddingVertical: 15 }}>
-                    <Text>{this.state.email}</Text>
+                    <View style={{ paddingHorizontal: 20, paddingVertical: 15 }}>
+                        <Text style={{ color: '#000', marginTop: 15 }}>Email</Text>
+                        <TextInput
+                            value={this.state.email}
+                            style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 0, paddingVertical: 5 }}
+                            editable={false}
+                        />
                     </View>
                     <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <TextInput
-                        value={this.state.firstName}
-                        onChangeText={this.handleFirstNameChange}
-                        style={{ width: '45%', borderBottomWidth: 1, borderBottomColor: '#000' }} />
-                        <TextInput
-                        value={this.state.lastName}
-                        onChangeText={this.handleLastNameChange}
-                        style={{ width: '45%', borderBottomWidth: 1, borderBottomColor: '#000' }} />
+                        <View style={{ width: '45%' }}>
+                            <Text style={{ color: '#000', marginTop: 15 }}>Imię</Text>
+                            <TextInput
+                                value={this.state.firstName}
+                                onChangeText={this.handleFirstNameChange}
+                                style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 1, paddingVertical: 5 }}
+                            />
+                        </View>
+                        <View style={{ width: '45%' }}>
+                            <Text style={{ color: '#000', marginTop: 15 }}>Nazwisko</Text>
+                            <TextInput
+                                value={this.state.lastName}
+                                onChangeText={this.handleLastNameChange}
+                                style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 1, paddingVertical: 5 }}
+                            />
+                        </View>
+
                     </View>
                     <View style={{ paddingHorizontal: 20, paddingVertical: 15 }}>
-                        <Button title='Aktualizuj Profil' onPress={this.handleUpdate}/>
+                        <Button title='Aktualizuj Profil' onPress={this.handleUpdate} disabled={this.state.disableButton} />
                     </View>
                 </View>
             </View>
@@ -87,7 +118,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
     userSignOut: token => dispatch(userSignOut(token)),
-    userUpdate: user => dispatch(userUpdate(user))
+    userProfileUpdate: user => dispatch(userProfileUpdate(user))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
