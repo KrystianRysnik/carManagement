@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, Modal, TouchableHighlight, Alert, StyleSheet } from 'react-native';
 import MapView, { Polyline } from 'react-native-maps';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
 import NavigationService from '../NavigationService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Geolocation from 'react-native-geolocation-service';
@@ -22,10 +22,12 @@ class MapScreen extends React.Component {
             markers: [],
             watchID: '',
             distance: 0,
+            purpose: '',
             isTracking: false,
             startTrace: '',
             stopTrace: '',
-            diffTime: ''
+            diffTime: '',
+            modalVisible: false
         }
     }
 
@@ -36,6 +38,24 @@ class MapScreen extends React.Component {
     componentWillUnmount() {
         Geolocation.clearWatch(this.state.watchID)
         clearInterval(this.interval)
+    }
+
+    openModal = () => {
+        this.setState({ modalVisible: true });
+    }
+
+    saveModal = () => {
+        this.setState({ modalVisible: false });
+        this.startTracking();
+    }
+
+    closeModal = () => {
+        this.setState({ modalVisible: false });
+        this.setState({ purpose: '' })
+    }
+
+    handlePurposeChange = purpose => {
+        this.setState({ purpose: purpose })
     }
 
     startTracking = () => {
@@ -76,6 +96,7 @@ class MapScreen extends React.Component {
             startTrace: this.state.startTrace,
             stopTrace: this.state.stopTrace,
             distance: this.state.distance,
+            purpose: this.state.purpose,
             driver: {
                 email: this.props.currentUser.email,
                 firstName: this.props.currentUser.firstName,
@@ -122,6 +143,26 @@ class MapScreen extends React.Component {
         );
     }
 
+    handleStop = () => {
+        Alert.alert(
+            `Czy napewno...`,
+            `chcesz zatrzymać proces śledzenia trasy i wysłać dane do bazy?`,
+            [
+                {
+                    text: 'Nie',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Tak',
+                    onPress: () => this.stopTracking()
+                 },
+            ],
+            { cancelable: false },
+        )
+
+    }
+
+
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -138,12 +179,46 @@ class MapScreen extends React.Component {
                         strokeWidth={5} />
                 </MapView>
 
+                <Modal
+                    visible={this.state.modalVisible}
+                    animationType={'fade'}
+                    onRequestClose={() => this.closeModal()}
+                    presentationStyle={'overFullScreen'}
+                    transparent>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.innerContainer}>
+                            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Podaj cel wyjazdu:</Text>
+                            <TextInput multiline
+                                numberOfLines={4}
+                                value={this.state.purpose}
+                                onChangeText={this.handlePurposeChange}
+                                style={{ borderColor: 'gray', borderWidth: 1, width: '100%', marginVertical: 10 }}></TextInput>
+                            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <View style={{ width: '45%' }}>
+                                    <Button
+                                        onPress={() => this.saveModal()}
+                                        title="Zapisz"
+                                        color='#2ecc71'
+                                    />
+                                </View>
+                                <View style={{ width: '45%' }}>
+                                    <Button
+                                        onPress={() => this.closeModal()}
+                                        title="Zamknij"
+                                        color='#e74c3c'
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+
                 <View style={{ width: '100%', position: 'absolute', bottom: 100 }}>
                     <View style={{ paddingHorizontal: 20 }}>
                         {!this.state.isTracking ? (
-                            <Button title='START' color='#2ecc71' onPress={this.startTracking} />
+                            <Button title='START' color='#2ecc71' onPress={this.openModal} />
                         ) : (
-                                <Button title='ZATRZYMAJ I WYŚLIJ' color='#e74c3c' onPress={this.stopTracking} />
+                                <Button title='ZATRZYMAJ I WYŚLIJ' color='#e74c3c' onPress={this.handleStop} />
                             )}
                     </View>
                 </View>
@@ -152,7 +227,7 @@ class MapScreen extends React.Component {
 
                 <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', width: '100%', paddingVertical: 15, position: 'absolute', bottom: 0, flex: 1, flexDirection: 'row' }}>
                     <View style={{ width: '50%' }}>
-                        <Text style={{ textAlign: 'center', fontSize: 12 }}>DYSTANS</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 12 }}>DYSTANS {this.state.purpose}</Text>
                         <Text style={{ textAlign: 'center', fontSize: 24 }}>{parseFloat(this.state.distance).toFixed(2)} km</Text>
                     </View>
                     <View style={{ width: '50%' }}>
@@ -183,6 +258,25 @@ class MapScreen extends React.Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    innerContainer: {
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        padding: 25,
+        width: '80%',
+    },
+});
 
 const mapStateToProps = state => {
     return {
