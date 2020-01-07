@@ -18,7 +18,7 @@ import RouteMapScreen from './screens/RouteMapScreen';
 import ReportScreen from './screens/ReportScreen';
 import AdminScreen from './screens/AdminScreen';
 import AdminCarScreen from './screens/AdminCarScreen';
-import AdminAddEditScreen from './screens/AdminAddEditScreen';
+import AdminCarCuScreen from './screens/AdminCarCuScreen';
 import AdminUserScreen from './screens/AdminUserScreen';
 import AdminUserCuScreen from './screens/AdminUserCuScreen';
 
@@ -112,7 +112,7 @@ const AppDrawer = createDrawerNavigator(
       }
     },
     AddEditCar: {
-      screen: AdminAddEditScreen,
+      screen: AdminCarCuScreen,
       navigationOptions: {
         drawerLabel: <Hidden />
       }

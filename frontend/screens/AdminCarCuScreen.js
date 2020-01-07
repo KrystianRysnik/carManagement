@@ -5,7 +5,7 @@ import { carAdd, carUpdate } from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NavigationService from '../NavigationService';
 
-class AdminAddEditScreen extends React.Component {
+class AdminCarCuScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,20 +14,35 @@ class AdminAddEditScreen extends React.Component {
             vin: '',
             mileage: '',
             licensePlate: '',
-            engineSize: ''
+            engineSize: '',
+            disableButton: true
         }
+    }
+
+    componentDidMount() {
+        let item = this.props.navigation.state.params
+        this.setState({
+            originalVin: `${item.vin}`,
+            name: `${item.name}`,
+            vin: `${item.vin}`,
+            mileage: `${item.mileage}`,
+            licensePlate: `${item.licensePlate}`,
+            engineSize: `${item.engineSize}`,
+            disableButton: true
+        })
     }
 
     componentDidUpdate(prevProps) {
         let item = this.props.navigation.state.params
         if (item != prevProps.navigation.state.params) {
             this.setState({
-                    originalVin: `${item.vin}`,
-                    name: `${item.name}`,
-                    vin: `${item.vin}`,
-                    mileage: `${item.mileage}`,
-                    licensePlate: `${item.licensePlate}`,
-                    engineSize: `${item.engineSize}`
+                originalVin: `${item.vin}`,
+                name: `${item.name}`,
+                vin: `${item.vin}`,
+                mileage: `${item.mileage}`,
+                licensePlate: `${item.licensePlate}`,
+                engineSize: `${item.engineSize}`,
+                disableButton: true
             })
         }
     }
@@ -36,24 +51,56 @@ class AdminAddEditScreen extends React.Component {
         NavigationService.navigate('Admin')
     }
 
-    handleNameChange = name => {
-        this.setState({ name: name })
+    handleNameChange = async name => {
+        await this.setState({ name: name })
+        this.checkDifferences()
     }
 
-    handleVinChange = vin => {
-        this.setState({ vin: vin })
+    handleVinChange = async vin => {
+        await this.setState({ vin: vin })
+        this.checkDifferences()
     }
 
-    handleMileageChange = mileage => {
-        this.setState({ mileage: mileage })
+    handleMileageChange = async mileage => {
+        await this.setState({ mileage: mileage })
+        this.checkDifferences()
     }
 
-    handleLicensePlateChange = licensePlate => {
-        this.setState({ licensePlate: licensePlate })
+    handleLicensePlateChange = async licensePlate => {
+        await this.setState({ licensePlate: licensePlate })
+        this.checkDifferences()
     }
 
-    handleEngineSizeChange = engineSize => {
-        this.setState({ engineSize: engineSize })
+    handleEngineSizeChange = async engineSize => {
+        await this.setState({ engineSize: engineSize })
+        this.checkDifferences()
+    }
+
+    checkDifferences = () => {
+        let item = this.props.navigation.state.params
+        if (this.state.name == item.name
+            && this.state.vin == item.vin
+            && this.state.mileage == item.mileage
+            && this.state.licensePlate == item.licensePlate
+            && this.state.engineSize == item.engineSize
+            || this.state.name == ''
+            || this.state.vin == ''
+            || this.state.mileage == ''
+            || this.state.licensePlate == ''
+            || this.state.engineSize == '')
+            this.setState({ disableButton: true })
+        else
+            this.setState({ disableButton: false })
+    }
+
+    handleCreate = () => {
+        this.props.carAdd(this.state)
+        this.setState({ disableButton: true })
+    }
+
+    handleUpdate = () => {
+        this.props.carUpdate(this.state)
+        this.setState({ disableButton: true })
     }
 
     render() {
@@ -102,9 +149,9 @@ class AdminAddEditScreen extends React.Component {
                             style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
                         />
                         {this.props.navigation.state.params.vin == '' ? (
-                            <Button title="DODAJ POJAZD" color='#2ecc71' onPress={() => this.props.carAdd(this.state)} />
+                            <Button title="DODAJ POJAZD" color='#2ecc71' onPress={this.handleCreate} disabled={this.state.disableButton} />
                         ) : (
-                                <Button title="EDYTUJ POJAZD" color='#2ecc71' onPress={() => this.props.carUpdate(this.state)} />
+                                <Button title="EDYTUJ POJAZD" color='#2ecc71' onPress={this.handleUpdate} disabled={this.state.disableButton} />
                             )}
                     </View>
                 </ScrollView>
@@ -118,4 +165,4 @@ const mapDispatchToProps = dispatch => ({
     carUpdate: car => dispatch(carUpdate(car))
 })
 
-export default connect(null, mapDispatchToProps)(AdminAddEditScreen);
+export default connect(null, mapDispatchToProps)(AdminCarCuScreen);
