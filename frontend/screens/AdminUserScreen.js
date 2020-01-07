@@ -1,13 +1,9 @@
 import React from 'react';
 import { Alert, View, Text, TouchableOpacity, FlatList, Button } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import store from '../_store/store';
 import { connect } from 'react-redux';
 import { userList, userDelete } from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NavigationService from '../NavigationService';
-import axios from 'axios';
-import LicensePlate from '../_components/LicensePlate';
 
 class AdminUserScreen extends React.Component {
     constructor(props) {
@@ -54,14 +50,14 @@ class AdminUserScreen extends React.Component {
                                     <Text style={{ fontWeight: 'bold' }}>{item.firstName} {item.lastName}</Text>
                                     <Text>{item.email}</Text>
                                     <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'flex-end', position: 'absolute', right: 20, top: 10 }}>
-                                        <View style={{ width: 32, height: 32, borderWidth: 1, borderColor: '#000', borderRadius: 4, justifyContent: 'center', alignItems: 'center' }}>
-                                            <TouchableOpacity onPress={() => NavigationService.navigate('AddEditUser', item)}>
-                                                <Icon name='edit' size={28} color='#888888' />
+                                        <View style={{ width: 32, height: 32, backgroundColor: '#f39c12', borderWidth: 1, borderColor: '#e67e22', borderRadius: 4, justifyContent: 'center', alignItems: 'center' }}>
+                                            <TouchableOpacity activeOpacity={0.5} onPress={() => NavigationService.navigate('AddEditUser', item)}>
+                                                <Icon name='edit' size={28} color='#fff' />
                                             </TouchableOpacity>
                                         </View>
-                                        <View style={{ marginLeft: 15, width: 32, height: 32, borderWidth: 1, borderColor: '#000', borderRadius: 4, justifyContent: 'center', alignItems: 'center' }}>
-                                            <TouchableOpacity onPress={() => this.handleDelete(item)}>
-                                                <Icon name='delete-forever' size={28} color='#888888' />
+                                        <View style={{ marginLeft: 15, width: 32, height: 32, backgroundColor: '#e74c3c', borderWidth: 1, borderColor: '#c0392b', borderRadius: 4, justifyContent: 'center', alignItems: 'center' }}>
+                                            <TouchableOpacity activeOpacity={0.5} onPress={() => this.handleDelete(item)}>
+                                                <Icon name='delete-forever' size={28} color='#fff' />
                                             </TouchableOpacity>
                                         </View>
                                     </View>

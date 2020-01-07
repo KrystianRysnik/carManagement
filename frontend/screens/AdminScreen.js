@@ -26,14 +26,11 @@ export default class AdminScreen extends React.Component {
                     </View>
 
                     <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
+                        <View style={{ width: '66.66%', paddingHorizontal: 5 }}>
+                            <Button title="LISTA UŻYTKOWNIKÓW" onPress={() => NavigationService.navigate('AdminUser')} />
+                        </View>
                         <View style={{ width: '33.33%', paddingHorizontal: 5 }}>
                             <Button title="DODAJ" color='#2ecc71' onPress={() => NavigationService.navigate('AddEditUser', {email: '', firstName: '', lastName: ''})} />
-                        </View>
-                        <View style={{ width: '33.33%', paddingHorizontal: 5  }} >
-                            <Button title="EDYTUJ" color='#f39c12' onPress={() => NavigationService.navigate('AdminUser')} />
-                        </View>
-                        <View style={{ width: '33.33%', paddingHorizontal: 5  }}>
-                            <Button title="USUŃ" color='#e74c3c' onPress={() => NavigationService.navigate('AdminUser')} />
                         </View>
                     </View>
 
@@ -43,14 +40,11 @@ export default class AdminScreen extends React.Component {
                     </View>
 
                     <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
+                        <View style={{ width: '66.66%', paddingHorizontal: 5 }}>
+                            <Button title="LISTA POJAZDÓW" onPress={() => NavigationService.navigate('AdminCar')} />
+                        </View>
                         <View style={{ width: '33.33%', paddingHorizontal: 5 }}>
                             <Button title="DODAJ" color='#2ecc71'  onPress={() => NavigationService.navigate('AddEditCar', {name: '', mileage: '', engineSize: '', vin: '', licensePlate: ''})}/>
-                        </View>
-                        <View style={{ width: '33.33%', paddingHorizontal: 5  }}>
-                            <Button title="EDYTUJ" color='#f39c12' onPress={() => NavigationService.navigate('AdminCar')}/>
-                        </View>
-                        <View style={{ width: '33.33%', paddingHorizontal: 5  }}>
-                            <Button title="USUŃ" color='#e74c3c' onPress={() => NavigationService.navigate('AdminCar')}/>
                         </View>
                     </View>
 
