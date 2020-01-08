@@ -22,6 +22,7 @@ import AdminCarCuScreen from './screens/AdminCarCuScreen';
 import AdminUserScreen from './screens/AdminUserScreen';
 import AdminUserCuScreen from './screens/AdminUserCuScreen';
 import AdminRouteScreen from './screens/AdminRouteScreen';
+import AdminRouteCuScreen from './screens/AdminRouteCuScreen';
 
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -132,6 +133,12 @@ const AppDrawer = createDrawerNavigator(
     },
     AdminRoute: {
       screen: AdminRouteScreen,
+      navigationOptions: {
+        drawerLabel: <Hidden />
+      }
+    },
+    EditRoute: {
+      screen: AdminRouteCuScreen,
       navigationOptions: {
         drawerLabel: <Hidden />
       }
