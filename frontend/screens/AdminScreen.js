@@ -1,12 +1,17 @@
 import React from 'react';
 import { View, ScrollView, Text, Button, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import { userList } from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import NavigationService from '../NavigationService';
 
-export default class AdminScreen extends React.Component {
+class AdminScreen extends React.Component {
     handleBack = () => {
         NavigationService.goBack()
+    }
+
+    componentDidMount() {
+        this.props.userList()
     }
 
     render() {
@@ -68,3 +73,9 @@ export default class AdminScreen extends React.Component {
         );
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+    userList: () => dispatch(userList())
+})
+
+export default connect(null, mapDispatchToProps)(AdminScreen);
