@@ -58,13 +58,9 @@ class AdminScreen extends React.Component {
                         <Text style={{ fontWeight: 'bold', fontSize: 18, paddingLeft: 15 }}>Trasy</Text>
                     </View>
 
-                    <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
-
-                        <View style={{ width: '33.33%', paddingHorizontal: 5  }}>
-                            <Button title="EDYTUJ" color='#f39c12' />
-                        </View>
-                        <View style={{ width: '33.33%', paddingHorizontal: 5  }}>
-                            <Button title="USUŃ" color='#e74c3c' />
+                    <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'flex-start' }}>
+                        <View style={{ width: '66.66%', paddingHorizontal: 5  }}>
+                            <Button title="LISTA OSTATNICH TRAS" onPress={() => NavigationService.navigate('AdminRoute')} />
                         </View>
                     </View>
 
