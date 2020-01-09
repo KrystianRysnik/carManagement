@@ -1,10 +1,9 @@
 import React from 'react'
 import { View, Text, Alert, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { routeDelete } from '../_actions'
+import { routeDelete, routeList } from '../_actions'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import NavigationService from '../NavigationService'
-import axios from 'axios'
 import moment from 'moment'
 
 class AdminRouteScreen extends React.Component {
@@ -16,20 +15,8 @@ class AdminRouteScreen extends React.Component {
         }
     }
 
-    routesList = () => {
-        axios.get('https://car-management-backend.herokuapp.com/route/list')
-            .then(res => {
-                console.log('🟢 List Routes Succesfull!')
-                this.setState({ routes: res.data })
-            })
-            .catch(error => {
-                console.log('🔴 List Cars Error!')
-                console.log(error)
-            })
-    }
-
     componentDidMount() {
-        this.routesList()
+        this.props.routeList()
     }
 
     handleDelete = route => {
@@ -51,7 +38,7 @@ class AdminRouteScreen extends React.Component {
     }
 
     render() {
-        const { routes } = this.state
+        const { routes } = this.props
 
         return (
             <View style={{ flex: 1 }}>
@@ -93,11 +80,18 @@ class AdminRouteScreen extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        routes: state.route.routes
+    }
+}
+
 const mapDispatchToProps = dispatch => ({
-    routeDelete: id => dispatch(routeDelete(id))
+    routeDelete: id => dispatch(routeDelete(id)),
+    routeList: () => dispatch(routeList())
 })
 
-export default connect(null, mapDispatchToProps)(AdminRouteScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(AdminRouteScreen)
 
 const styles = StyleSheet.create({
     header: {

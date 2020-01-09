@@ -1,30 +1,15 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
+import { routeList } from '../_actions'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import NavigationService from '../NavigationService'
-import axios from 'axios'
 import moment from 'moment'
 
-export default class RouteScreen extends React.Component {
-    state = {
-        car: '',
-        routes: [],
-    }
-
-    routesList = () => {
-        axios.get('https://car-management-backend.herokuapp.com/route/list')
-            .then(res => {
-                console.log('🟢 List Routes Succesfull!')
-                this.setState({ routes: res.data })
-            })
-            .catch(error => {
-                console.log('🔴 List Cars Error!')
-                console.log(error)
-            })
-    }
+class RouteScreen extends React.Component {
 
     componentDidMount() {
-        this.routesList()
+        this.props.routeList()
     }
 
     handleBack = () => {
@@ -32,7 +17,7 @@ export default class RouteScreen extends React.Component {
     }
 
     render() {
-        const { routes } = this.state
+        const { routes } = this.props
 
         return (
             <View style={{ flex: 1 }}>
@@ -62,6 +47,18 @@ export default class RouteScreen extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        routes: state.route.routes
+    }
+}
+
+const mapDispatchToProps = dispatch => ({
+    routeList: () => dispatch(routeList())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(RouteScreen)
 
 const styles = StyleSheet.create({
     header: {

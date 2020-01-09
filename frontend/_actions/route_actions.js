@@ -44,3 +44,22 @@ export const routeUpdate = route => {
             })
     }
 }
+
+export const routeList = () => {
+    return dispatch => {
+        instance.get('/route/list')
+            .then(res => {
+                console.log('🟢 List Routes Succesfull!')
+                dispatch(getAllRoutes(res.data))
+            })
+            .catch(error => {
+                console.log('🔴 List Cars Error!')
+                console.log(error)
+            })
+    }
+}
+
+const getAllRoutes = routes => ({
+    type: 'GET_ALL_ROUTES',
+    payload: routes
+})
