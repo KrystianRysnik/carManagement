@@ -1,15 +1,15 @@
-import React from 'react';
-import { View, ScrollView, Text, TextInput, Picker, Button, TouchableOpacity } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { connect } from 'react-redux';
-import { routeUpdate } from '../_actions';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavigationService from '../NavigationService';
-import moment from 'moment';
+import React from 'react'
+import { View, ScrollView, Text, TextInput, Picker, Button, TouchableOpacity, StyleSheet } from 'react-native'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { connect } from 'react-redux'
+import { routeUpdate } from '../_actions'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import NavigationService from '../NavigationService'
+import moment from 'moment'
 
 class AdminRouteCuScreen extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             _id: '',
             carVin: '',
@@ -83,17 +83,17 @@ class AdminRouteCuScreen extends React.Component {
                     driverLastName: element.lastName
                 })
             }
-        });
+        })
         this.checkDifferences()
     }
 
     handleStartTraceChange = async (event, date) => {
-        startTrace = date || this.state.startTrace;
+        startTrace = date || this.state.startTrace
 
         await this.setState({
             showDateStart: Platform.OS === 'ios' ? true : false,
             startTrace: startTrace,
-        });
+        })
         this.checkDifferences()
     }
 
@@ -130,7 +130,7 @@ class AdminRouteCuScreen extends React.Component {
     handleUpdate = async () => {
         let time = this.state.duration.split(':')
         await this.setState({ stopTrace: this.state.startTrace })
-        await this.setState({ stopTrace: moment(this.state.stopTrace).add({hours:parseInt(time[0]), minutes:parseInt(time[1]), seconds:parseInt(time[2])}).toDate() })
+        await this.setState({ stopTrace: moment(this.state.stopTrace).add({ hours: parseInt(time[0]), minutes: parseInt(time[1]), seconds: parseInt(time[2]) }).toDate() })
         this.props.routeUpdate(this.state)
         this.setState({ disableButton: true })
     }
@@ -138,61 +138,67 @@ class AdminRouteCuScreen extends React.Component {
     render() {
         let carsList = this.props.cars.map((item, index) => {
             return (<Picker.Item label={`${item.licensePlate} - ${item.vin}`} key={item.vin} value={item.vin} />)
-        });
+        })
 
         let usersList = this.props.users.map((item, index) => {
             return (<Picker.Item label={`${item.email} - ${item.firstName} ${item.lastName}`} key={item.email} value={item.email} />)
-        });
+        })
 
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ paddingHorizontal: 10, height: 45, flexDirection: 'row', alignItems: 'center' }} onPress={this.handleBack}>
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
-                        <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Edytowanie Trasy</Text>
+                        <Text style={styles.headerTitle}>Edytowanie Trasy</Text>
                     </TouchableOpacity>
                 </View>
                 <ScrollView style={{ flex: 1 }}>
-                    <View style={{ paddingVertical: 15, paddingHorizontal: 20 }}>
-                        <Text style={{ color: '#000', marginTop: 7 }}>Numer Vin</Text>
+                    <View style={styles.container}>
+                        <Text style={{ color: '#000' }}>Numer Vin</Text>
                         <Picker
                             selectedValue={this.state.carVin}
                             style={{ height: 37 }}
                             onValueChange={this.handleVinChange}>
                             {carsList}
                         </Picker>
-                        <View style={{ marginVertical: 8, width: '100%', height: 1, backgroundColor: '#b6b6b6' }}></View>
-                        <Text style={{ color: '#000', marginTop: 7 }}>Kierowca</Text>
+                        <View style={styles.separator}></View>
+
+                        <Text style={styles.inputLabel}>Kierowca</Text>
                         <Picker
                             selectedValue={this.state.driverEmail}
                             style={{ height: 37 }}
                             onValueChange={this.handleDriverEmailChange}>
                             {usersList}
                         </Picker>
-                        <View style={{ marginVertical: 8, width: '100%', height: 1, backgroundColor: '#b6b6b6' }}></View>
-                        <Text style={{ color: '#000', marginTop: 7 }}>Data rozpoczęcia trasy</Text>
-                        <TouchableOpacity onPress={() => this.setState({ showDateStart: true })}><Text style={{ padding: 8, fontSize: 16 }}>{moment(this.state.startTrace).format('DD.MM.YYYY')}</Text></TouchableOpacity>
-                        <View style={{ marginVertical: 8, width: '100%', height: 1, backgroundColor: '#b6b6b6' }}></View>
+                        <View style={styles.separator}></View>
 
-                        <Text style={{ color: '#000', marginTop: 7 }}>Cel wyjazdu</Text>
+                        <Text style={styles.inputLabel}>Data rozpoczęcia trasy</Text>
+                        <TouchableOpacity onPress={() => this.setState({ showDateStart: true })}><Text style={{ padding: 8, fontSize: 16 }}>{moment(this.state.startTrace).format('DD.MM.YYYY')}</Text></TouchableOpacity>
+                        <View style={styles.separator}></View>
+
+                        <Text style={styles.inputLabel}>Cel wyjazdu</Text>
                         <TextInput
                             value={this.state.purpose}
                             onChangeText={this.handlePurposeChange}
-                            style={{ color: '#000', borderBottomColor: '#e3e3e3', borderBottomWidth: 1, marginBottom: 15, paddingVertical: 5 }}
+                            style={styles.input}
                         />
-                        <Text style={{ color: '#000', marginTop: 7 }}>Czas trwania (hh:mm:ss)</Text>
+
+                        <Text style={styles.inputLabel}>Czas trwania (hh:mm:ss)</Text>
                         <TextInput
                             value={this.state.duration}
                             onChangeText={this.handleDurationChange}
-                            style={{ color: '#000', borderBottomColor: '#e3e3e3', borderBottomWidth: 1, marginBottom: 15, paddingVertical: 5 }}
+                            style={styles.input}
                         />
-                        <Text style={{ color: '#000', marginTop: 7 }}>Dystans (km)</Text>
+
+                        <Text style={styles.inputLabel}>Dystans (km)</Text>
                         <TextInput
                             value={this.state.distance}
                             onChangeText={this.handleDistanceChange}
-                            style={{ color: '#000', borderBottomColor: '#e3e3e3', borderBottomWidth: 1, marginBottom: 15, paddingVertical: 5 }}
+                            style={styles.input}
                         />
-                        <Button title="EDYTUJ TRASĘ" color='#2ecc71' onPress={this.handleUpdate} disabled={this.state.disableButton} />
+                    </View>
+                    <View style={styles.container}>
+                        <Button title="EDYTUJ TRASE" color='#2ecc71' onPress={this.handleUpdate} disabled={this.state.disableButton} />
                     </View>
                 </ScrollView>
                 {this.state.showDateStart && <DateTimePicker value={this.state.startTrace}
@@ -201,7 +207,7 @@ class AdminRouteCuScreen extends React.Component {
                     onChange={this.handleStartTraceChange} />
                 }
             </View>
-        );
+        )
     }
 }
 
@@ -209,11 +215,52 @@ const mapStateToProps = state => {
     return {
         cars: state.car.cars,
         users: state.user.users
-    };
+    }
 }
 
 const mapDispatchToProps = dispatch => ({
-    routeUpdate: route => dispatch(routeUpdate(route)),
+    routeUpdate: route => dispatch(routeUpdate(route))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminRouteCuScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminRouteCuScreen)
+
+const styles = StyleSheet.create({
+    header: {
+        backgroundColor: '#fff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e3e3e3',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    headerTouchable: {
+        paddingHorizontal: 10,
+        height: 45,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    headerTitle: {
+        marginLeft: 15,
+        fontWeight: 'bold'
+    },
+    container: {
+        paddingVertical: 15,
+        paddingHorizontal: 20
+    },
+    separator: {
+        width: '100%',
+        height: 1,
+        backgroundColor: '#e3e3e3'
+    },
+    input: {
+        paddingVertical: 5,
+        paddingHorizontal: 8,
+        color: '#000',
+        borderBottomColor: '#e3e3e3',
+        borderBottomWidth: 1
+    },
+    inputLabel: {
+        marginTop: 20,
+        color: '#000'
+    }
+})

@@ -1,15 +1,15 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import MapView, { Polyline } from 'react-native-maps';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavigationService from '../NavigationService';
-import moment from 'moment';
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import MapView, { Polyline } from 'react-native-maps'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import NavigationService from '../NavigationService'
+import moment from 'moment'
 
 export default class RouteMapScreen extends React.Component {
     constructor(props) {
-        super(props);
-        this.mapRef = null;
+        super(props)
+        this.mapRef = null
     }
 
     handleBack = () => {
@@ -33,24 +33,61 @@ export default class RouteMapScreen extends React.Component {
                         strokeWidth={5} />
                 </MapView>
 
-                <View style={{ backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e3e3e3', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ paddingHorizontal: 10, height: 45, flexDirection: 'row', alignItems: 'center' }} onPress={this.handleBack}>
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
-                        <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Traza z {moment(route.startTrace).format('DD.MM.YYYY, HH:mm')} </Text>
+                        <Text style={styles.headerTitle}>Traza z {moment(route.startTrace).format('DD/MM/YYYY, HH:mm')} </Text>
                     </TouchableOpacity>
                 </View>
 
-                <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', width: '100%', paddingVertical: 15, position: 'absolute', bottom: 0, flex: 1, flexDirection: 'row' }}>
+                <View style={styles.details}>
                     <View style={{width: '50%'}}>
-                        <Text style={{ textAlign: 'center', fontSize: 12 }}>DYSTANS</Text>
-                        <Text style={{ textAlign: 'center', fontSize: 24 }}>{parseFloat(route.distance).toFixed(2)} km</Text>
+                        <Text style={styles.detailsSubheading}>DYSTANS</Text>
+                        <Text style={styles.detailsHeading}>{parseFloat(route.distance).toFixed(2)} km</Text>
                     </View>
                     <View style={{width: '50%'}}>
-                        <Text style={{ textAlign: 'center', fontSize: 12 }}>CZAS TRWANIA</Text>
-                        <Text style={{ textAlign: 'center', fontSize: 24 }}>{moment(moment(route.stopTrace).diff(moment(route.startTrace))).format('HH:mm:ss')}</Text>
+                        <Text style={styles.detailsSubheading}>CZAS TRWANIA</Text>
+                        <Text style={styles.detailsHeading}>{moment(moment(route.stopTrace).diff(moment(route.startTrace))).format('HH:mm:ss')}</Text>
                     </View>
                 </View>
             </View >
-        );
+        )
     }
 }
+
+const styles = StyleSheet.create({
+    header: {
+        backgroundColor: '#fff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e3e3e3',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    headerTouchable: {
+        paddingHorizontal: 10,
+        height: 45,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    headerTitle: {
+        marginLeft: 15,
+        fontWeight: 'bold'
+    },
+    details: {
+        width: '100%',
+        paddingVertical: 15,
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        position: 'absolute',
+        bottom: 0,
+        flexDirection: 'row'
+    },
+    detailsSubheading: {
+        textAlign: 'center',
+        fontSize: 12
+    },
+    detailsHeading: {
+        textAlign: 'center',
+        fontSize: 24
+    },
+})

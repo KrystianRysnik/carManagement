@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, TextInput, Text, Button, Image, ImageBackground } from 'react-native';
-import { connect } from 'react-redux';
-import { userSignUp } from '../_actions';
-import NavigationService from '../NavigationService';
+import React from 'react'
+import { View, TextInput, Text, Button, Image, ImageBackground, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
+import { userSignUp } from '../_actions'
+import NavigationService from '../NavigationService'
 
 class SignUpScreen extends React.Component {
     state = {
@@ -37,41 +37,41 @@ class SignUpScreen extends React.Component {
             <View>
                 <ImageBackground source={require('../_assets/background.png')} style={{ width: '100%', height: '100%' }}>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Image source={require('../_assets/logo_white.png')} style={{ width: 180, height: 180 }} />
+                        <Image source={require('../_assets/logo_white.png')} style={styles.logo} />
 
                         <View style={{ width: '80%' }}>
 
-                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Imię</Text>
+                            <Text style={styles.inputLabel}>Imię</Text>
                             <TextInput
                                 value={this.state.firstName}
                                 onChangeText={this.handleFirstNameChange}
-                                style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                                style={styles.input}
                             />
 
-<Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Nazwisko</Text>
+                            <Text style={styles.inputLabel}>Nazwisko</Text>
                             <TextInput
                                 value={this.state.lastName}
                                 onChangeText={this.handleLastNameChange}
-                                style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                                style={styles.input}
                             />
 
-                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Email</Text>
+                            <Text style={styles.inputLabel}>Email</Text>
                             <TextInput
                                 value={this.state.email}
                                 onChangeText={this.handleEmailChange}
-                                style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                                style={styles.input}
                             />
 
-                            <Text style={{ color: '#ffffff', marginTop: 15, fontSize: 12 }}>Hasło</Text>
+                            <Text style={styles.inputLabel}>Hasło</Text>
                             <TextInput
                                 secureTextEntry
                                 value={this.state.password}
                                 onChangeText={this.handlePasswordChange}
-                                style={{ color: '#ffffff', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                                style={styles.input}
                             />
 
-                            <Button style={{ marginVertical: 15 }} title='Zarejestruj Się' onPress={this.handleSubmit} />
-                            <Text style={{ color: '#ffffff', textAlign: 'center', marginTop: 15 }}>Posiadasz Konto? <Text style={{ fontWeight: 'bold' }} onPress={() => NavigationService.navigate('SignIn', null)}>Zaloguj Się</Text></Text>
+                            <Button title='Zarejestruj Się' onPress={this.handleSubmit} />
+                            <Text style={styles.hint}>Posiadasz Konto? <Text style={{ fontWeight: 'bold' }} onPress={() => NavigationService.navigate('SignIn', null)}>Zaloguj Się</Text></Text>
                         </View>
                     </View>
                 </ImageBackground>
@@ -84,4 +84,28 @@ const mapDispatchToProps = dispatch => ({
     userSignUp: userInfo => dispatch(userSignUp(userInfo))
 })
 
-export default connect(null, mapDispatchToProps)(SignUpScreen);
+export default connect(null, mapDispatchToProps)(SignUpScreen)
+
+const styles = StyleSheet.create({
+    logo: {
+        width: 180,
+        height: 180
+    },
+    inputLabel: {
+        marginTop: 15,
+        fontSize: 12,
+        color: '#fff'
+    },
+    input: {
+        marginBottom: 15,
+        paddingVertical: 5,
+        color: '#fff',
+        borderBottomColor: '#fff',
+        borderBottomWidth: 2,
+    },
+    hint: {
+        marginTop: 15,
+        color: '#fff',
+        textAlign: 'center'
+    }
+})

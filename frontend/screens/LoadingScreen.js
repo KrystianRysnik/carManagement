@@ -1,17 +1,17 @@
-import React from 'react';
-import { View, ActivityIndicator, PermissionsAndroid } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import { connect } from 'react-redux';
-import { userProfile } from '../_actions';
+import React from 'react'
+import { View, ActivityIndicator, PermissionsAndroid, Text } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
+import { connect } from 'react-redux'
+import { userProfile } from '../_actions'
 
 class LoadingScreen extends React.Component {
     componentDidMount() {
         this.requestForPermission()
-        this._bootstrapAsync();
+        this._bootstrapAsync()
     }
 
     _bootstrapAsync = async () => {
-        const token = await AsyncStorage.getItem('@token');
+        const token = await AsyncStorage.getItem('@token')
         this.props.userProfile(token)
     }
 
@@ -21,22 +21,23 @@ class LoadingScreen extends React.Component {
                 const granted = await PermissionsAndroid.requestMultiple([
                     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-                ]);
+                ])
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    console.log('You can use the location & external storage');
+                    console.log('You can use the location & external storage')
                 } else {
-                    console.log('Location and/or external storage permission denied');
+                    console.log('Location and/or external storage permission denied')
                 }
             }
         } catch (err) {
-            console.warn(err);
+            console.warn(err)
         }
     }
 
     render() {
         return (
-            <View>
-                <ActivityIndicator />
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                <ActivityIndicator size={'large'} />
+                <Text>Ładowanie</Text>
             </View>
         )
     }
@@ -46,4 +47,4 @@ const mapDispatchToProps = dispatch => ({
     userProfile: token => dispatch(userProfile(token))
 })
 
-export default connect(null, mapDispatchToProps)(LoadingScreen);
+export default connect(null, mapDispatchToProps)(LoadingScreen)

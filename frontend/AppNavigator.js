@@ -1,36 +1,33 @@
-import React from 'react';
-import { View, Text, ImageBackground } from 'react-native';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
-import { createAppContainer } from 'react-navigation';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React from 'react'
+import { View, Text, ImageBackground } from 'react-native'
+import { createStackNavigator } from 'react-navigation-stack'
+import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer'
+import { createAppContainer } from 'react-navigation'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
-import LoadingScreen from './screens/LoadingScreen';
+import LoadingScreen from './screens/LoadingScreen'
 
-import SignInScreen from './screens/SignInScreen';
-import SigunUpScreen from './screens/SignUpScreen';
+import SignInScreen from './screens/SignInScreen'
+import SigunUpScreen from './screens/SignUpScreen'
 
-import MapScreen from './screens/MapScreen';
-import CarScreen from './screens/CarScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import RouteScreen from './screens/RouteScreen';
-import RouteMapScreen from './screens/RouteMapScreen';
-import ReportScreen from './screens/ReportScreen';
-import AdminScreen from './screens/AdminScreen';
-import AdminCarScreen from './screens/AdminCarScreen';
-import AdminCarCuScreen from './screens/AdminCarCuScreen';
-import AdminUserScreen from './screens/AdminUserScreen';
-import AdminUserCuScreen from './screens/AdminUserCuScreen';
-import AdminRouteScreen from './screens/AdminRouteScreen';
-import AdminRouteCuScreen from './screens/AdminRouteCuScreen';
+import MapScreen from './screens/MapScreen'
+import CarScreen from './screens/CarScreen'
+import ProfileScreen from './screens/ProfileScreen'
+import RouteScreen from './screens/RouteScreen'
+import RouteMapScreen from './screens/RouteMapScreen'
+import ReportScreen from './screens/ReportScreen'
+import AdminScreen from './screens/AdminScreen'
+import AdminCarScreen from './screens/AdminCarScreen'
+import AdminCarCuScreen from './screens/AdminCarCuScreen'
+import AdminUserScreen from './screens/AdminUserScreen'
+import AdminUserCuScreen from './screens/AdminUserCuScreen'
+import AdminRouteScreen from './screens/AdminRouteScreen'
+import AdminRouteCuScreen from './screens/AdminRouteCuScreen'
 
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler'
 
 import Hidden from './_components/Hidden'
 import Header from './_components/Header'
-
-import store from './_store/store';
-import NavigationService from './NavigationService';
 
 const AuthStack = createStackNavigator(
   {
@@ -40,7 +37,7 @@ const AuthStack = createStackNavigator(
   {
     headerMode: 'none'
   }
-);
+)
 
 const CustomDrawer = (props) => (
   <View style={{ flex: 1 }}>
@@ -162,4 +159,4 @@ export default createAppContainer(
       headerMode: 'none'
     }
   )
-);
+)

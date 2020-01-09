@@ -1,11 +1,11 @@
 // NavigationService.js
 
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation'
 
-let _navigator;
+let _navigator
 
 function setNavigator(navigatorRef) {
-  _navigator = navigatorRef;
+  _navigator = navigatorRef
 }
 
 function navigate(routeName, params) {
@@ -14,17 +14,17 @@ function navigate(routeName, params) {
       routeName,
       params,
     })
-  );
+  )
 }
 
 function goBack() {
   _navigator.dispatch(
     NavigationActions.back()
-  );
+  )
 }
 
 export default {
   navigate,
   goBack,
   setNavigator
-};
+}

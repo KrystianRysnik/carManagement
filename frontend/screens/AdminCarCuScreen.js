@@ -1,13 +1,13 @@
-import React from 'react';
-import { View, ScrollView, Text, TextInput, Button, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
-import { carAdd, carUpdate } from '../_actions';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavigationService from '../NavigationService';
+import React from 'react'
+import { View, ScrollView, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
+import { carAdd, carUpdate } from '../_actions'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import NavigationService from '../NavigationService'
 
 class AdminCarCuScreen extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             originalVin: '',
             name: '',
@@ -106,48 +106,50 @@ class AdminCarCuScreen extends React.Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ paddingHorizontal: 10, height: 45, flexDirection: 'row', alignItems: 'center' }} onPress={this.handleBack}>
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
                         {this.props.navigation.state.params.vin == '' ? (
-                            <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Dodawanie Pojazdu</Text>
+                            <Text style={styles.headerTitle}>Dodawanie Pojazdu</Text>
                         ) : (
-                                <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Edytowanie Pojazdu</Text>
+                                <Text style={styles.headerTitle}>Edytowanie Pojazdu</Text>
                             )}
                     </TouchableOpacity>
                 </View>
                 <ScrollView style={{ flex: 1 }}>
-                    <View style={{ paddingVertical: 15, paddingHorizontal: 20 }}>
-                        <Text style={{ color: '#000', marginTop: 15 }}>Nazwa samochodu</Text>
+                    <View style={styles.container}>
+                        <Text style={{ color: '#000' }}>Nazwa samochodu</Text>
                         <TextInput
                             value={this.state.name}
                             onChangeText={this.handleNameChange}
-                            style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            style={styles.input}
                         />
-                        <Text style={{ color: '#000', marginTop: 15 }}>Numer VIN</Text>
+                        <Text style={styles.inputLabel}>Numer VIN</Text>
                         <TextInput
                             value={this.state.vin}
                             onChangeText={this.handleVinChange}
-                            style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            style={styles.input}
                         />
-                        <Text style={{ color: '#000', marginTop: 15 }}>Tablica rejestracyjna</Text>
+                        <Text style={styles.inputLabel}>Tablica rejestracyjna</Text>
                         <TextInput
                             value={this.state.licensePlate}
                             onChangeText={this.handleLicensePlateChange}
-                            style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            style={styles.input}
                         />
-                        <Text style={{ color: '#000', marginTop: 15 }}>Przebieg</Text>
+                        <Text style={styles.inputLabel}>Przebieg</Text>
                         <TextInput
                             value={this.state.mileage}
                             onChangeText={this.handleMileageChange}
-                            style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            style={styles.input}
                         />
-                        <Text style={{ color: '#000', marginTop: 15 }}>Pojemność silnika</Text>
+                        <Text style={styles.inputLabel}>Pojemność silnika</Text>
                         <TextInput
                             value={this.state.engineSize}
                             onChangeText={this.handleEngineSizeChange}
-                            style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            style={styles.input}
                         />
+                    </View>
+                    <View style={styles.container}>
                         {this.props.navigation.state.params.vin == '' ? (
                             <Button title="DODAJ POJAZD" color='#2ecc71' onPress={this.handleCreate} disabled={this.state.disableButton} />
                         ) : (
@@ -156,7 +158,7 @@ class AdminCarCuScreen extends React.Component {
                     </View>
                 </ScrollView>
             </View>
-        );
+        )
     }
 }
 
@@ -165,4 +167,39 @@ const mapDispatchToProps = dispatch => ({
     carUpdate: car => dispatch(carUpdate(car))
 })
 
-export default connect(null, mapDispatchToProps)(AdminCarCuScreen);
+export default connect(null, mapDispatchToProps)(AdminCarCuScreen)
+
+const styles = StyleSheet.create({
+    header: {
+        backgroundColor: '#fff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e3e3e3',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    headerTouchable: {
+        paddingHorizontal: 10,
+        height: 45,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    headerTitle: {
+        marginLeft: 15,
+        fontWeight: 'bold'
+    },
+    container: {
+        paddingVertical: 15,
+        paddingHorizontal: 20
+    },
+    input: {
+        paddingVertical: 5,
+        color: '#000',
+        borderBottomColor: '#e3e3e3',
+        borderBottomWidth: 1
+    },
+    inputLabel: {
+        marginTop: 20,
+        color: '#000'
+    }
+})

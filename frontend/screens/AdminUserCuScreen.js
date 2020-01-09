@@ -1,13 +1,13 @@
-import React from 'react';
-import { View, ScrollView, Text, TextInput, Button, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
-import { userAdd, userUpdate } from '../_actions';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavigationService from '../NavigationService';
+import React from 'react'
+import { View, ScrollView, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
+import { userAdd, userUpdate } from '../_actions'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import NavigationService from '../NavigationService'
 
 class AdminUserCuScreen extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             firstName: '',
             lastName: '',
@@ -93,52 +93,54 @@ class AdminUserCuScreen extends React.Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ paddingHorizontal: 10, height: 45, flexDirection: 'row', alignItems: 'center' }} onPress={this.handleBack}>
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
                         {this.props.navigation.state.params.email == '' ? (
-                            <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Dodawanie Użytkownika</Text>
+                            <Text style={styles.headerTitle}>Dodawanie Użytkownika</Text>
                         ) : (
-                                <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Edytowanie Użytkownika</Text>
+                                <Text style={styles.headerTitle}>Edytowanie Użytkownika</Text>
                             )}
                     </TouchableOpacity>
                 </View>
                 <ScrollView style={{ flex: 1 }}>
-                    <View style={{ paddingVertical: 15, paddingHorizontal: 20 }}>
-                        <Text style={{ color: '#000', marginTop: 15 }}>Email</Text>
+                    <View style={styles.container}>
+                        <Text style={{ color: '#000' }}>Email</Text>
                         <TextInput
                             value={this.state.email}
                             onChangeText={this.handleEmailChange}
-                            style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            style={styles.input}
                         />
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={{ width: '45%' }}>
-                                <Text style={{ color: '#000', marginTop: 15 }}>Imię</Text>
+                                <Text style={styles.inputLabel}>Imię</Text>
                                 <TextInput
                                     value={this.state.firstName}
                                     onChangeText={this.handleFirstNameChange}
-                                    style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                                    style={styles.input}
                                 />
                             </View>
                             <View style={{ width: '45%' }}>
-                                <Text style={{ color: '#000', marginTop: 15 }}>Nazwisko</Text>
+                                <Text style={styles.inputLabel}>Nazwisko</Text>
                                 <TextInput
                                     value={this.state.lastName}
                                     onChangeText={this.handleLastNameChange}
-                                    style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                                    style={styles.input}
                                 />
                             </View>
                         </View>
                         {this.props.navigation.state.params.email == '' && (
-                            <Text style={{ color: '#000', marginTop: 15 }}>Password</Text>
+                            <Text style={styles.inputLabel}>Hasło</Text>
 
                         )}
                         {this.props.navigation.state.params.email == '' && (<TextInput
                             value={this.state.password}
                             onChangeText={this.handlePasswordChange}
-                            style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 2, marginBottom: 15, paddingVertical: 5 }}
+                            style={styles.input}
                         />
                         )}
+                    </View>
+                    <View style={styles.container}>
                         {this.props.navigation.state.params.email == '' ? (
                             <Button title="DODAJ UŻYTKOWNIKA" color='#2ecc71' onPress={this.handleCreate} disabled={this.state.disableButton} />
                         ) : (
@@ -147,7 +149,7 @@ class AdminUserCuScreen extends React.Component {
                     </View>
                 </ScrollView>
             </View>
-        );
+        )
     }
 }
 
@@ -156,4 +158,39 @@ const mapDispatchToProps = dispatch => ({
     userUpdate: user => dispatch(userUpdate(user))
 })
 
-export default connect(null, mapDispatchToProps)(AdminUserCuScreen);
+export default connect(null, mapDispatchToProps)(AdminUserCuScreen)
+
+const styles = StyleSheet.create({
+    header: {
+        backgroundColor: '#fff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e3e3e3',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    headerTouchable: {
+        paddingHorizontal: 10,
+        height: 45,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    headerTitle: {
+        marginLeft: 15,
+        fontWeight: 'bold'
+    },
+    container: {
+        paddingVertical: 15,
+        paddingHorizontal: 20
+    },
+    input: {
+        paddingVertical: 5,
+        color: '#000',
+        borderBottomColor: '#e3e3e3',
+        borderBottomWidth: 1
+    },
+    inputLabel: {
+        marginTop: 20,
+        color: '#000'
+    }
+})

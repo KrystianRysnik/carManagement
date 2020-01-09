@@ -1,10 +1,9 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, FlatList, Picker } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavigationService from '../NavigationService';
-import axios from 'axios';
-import moment from 'moment';
+import React from 'react'
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import NavigationService from '../NavigationService'
+import axios from 'axios'
+import moment from 'moment'
 
 export default class RouteScreen extends React.Component {
     state = {
@@ -32,31 +31,27 @@ export default class RouteScreen extends React.Component {
         NavigationService.goBack()
     }
 
-    handleSelect = car => {
-        // this.props.carSelect(car)
-    }
-
     render() {
-        const { routes } = this.state;
+        const { routes } = this.state
 
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ paddingHorizontal: 10, height: 45, flexDirection: 'row', alignItems: 'center' }} onPress={this.handleBack}>
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
-                        <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Historia Tras</Text>
+                        <Text style={styles.headerTitle}>Historia Tras</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1 }}>
-                    <FlatList data={routes} style={{ flex: 1 }}
+                    <FlatList data={routes}
                         renderItem={({ item }) => (
-                            <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3' }}>
-                                <TouchableOpacity style={{ padding: 15 }} onPress={() => NavigationService.navigate('RouteMap', {item})}>
+                            <View style={styles.listItem}>
+                                <TouchableOpacity style={{ padding: 15 }} onPress={() => NavigationService.navigate('RouteMap', { item })}>
                                     <Text>Data: <Text style={{ fontWeight: 'bold' }}>{moment(item.startTrace).format('DD MMM YYYY, HH:mm')}</Text></Text>
                                     <Text>Kierowca: {item.driver.firstName} {item.driver.lastName}</Text>
                                     <Text>Samochód: {item.carVin} </Text>
                                     <Text>Dystans: {item.distance.toFixed(2)} km</Text>
-                                    <Text>Czas trwania: { moment(moment(item.stopTrace).diff(moment(item.startTrace))).format('HH:mm:ss') }</Text>
+                                    <Text>Czas trwania: {moment(moment(item.stopTrace).diff(moment(item.startTrace))).format('HH:mm:ss')}</Text>
                                 </TouchableOpacity>
                             </View>
                         )}
@@ -64,6 +59,31 @@ export default class RouteScreen extends React.Component {
                     />
                 </View>
             </View>
-        );
+        )
     }
 }
+
+const styles = StyleSheet.create({
+    header: {
+        backgroundColor: '#fff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e3e3e3',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    headerTouchable: {
+        paddingHorizontal: 10,
+        height: 45,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    headerTitle: {
+        marginLeft: 15,
+        fontWeight: 'bold'
+    },
+    listItem: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#e3e3e3'
+    }
+})

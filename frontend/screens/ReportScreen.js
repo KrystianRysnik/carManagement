@@ -1,13 +1,13 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Button, Picker } from 'react-native';
-import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavigationService from '../NavigationService';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment';
-import axios from 'axios';
+import React from 'react'
+import { View, Text, TouchableOpacity, Button, Picker, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import NavigationService from '../NavigationService'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import moment from 'moment'
+import axios from 'axios'
 
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import RNHTMLtoPDF from 'react-native-html-to-pdf'
 
 class RouteScreen extends React.Component {
     state = {
@@ -22,21 +22,21 @@ class RouteScreen extends React.Component {
     }
 
     setDateStart = (event, date) => {
-        dateStart = date || this.state.dateStart;
+        dateStart = date || this.state.dateStart
 
         this.setState({
             showDateStart: Platform.OS === 'ios' ? true : false,
             dateStart,
-        });
+        })
     }
 
     setDateEnd = (event, date) => {
-        dateEnd = date || this.state.dateEnd;
+        dateEnd = date || this.state.dateEnd
 
         this.setState({
             showDateEnd: Platform.OS === 'ios' ? true : false,
             dateEnd,
-        });
+        })
     }
 
     async createPDF(data, car) {
@@ -63,7 +63,7 @@ class RouteScreen extends React.Component {
             directory: 'Downloads',
             width: 595,
             height: 842
-        };
+        }
 
         options.html += `<table class="border">
             <tr>
@@ -74,7 +74,7 @@ class RouteScreen extends React.Component {
                 <th>Imię i nazwisko osoby kierującej</th>
             </tr>`
 
-        let i = 1;
+        let i = 1
         for (let item of data) {
             options.html += `<tr>
                 <td>${i}</td>
@@ -91,7 +91,7 @@ class RouteScreen extends React.Component {
 
         let file = await RNHTMLtoPDF.convert(options)
         // console.log(file.filePath);
-        alert(file.filePath);
+        alert(file.filePath)
     }
 
     getReport = (car) => {
@@ -125,41 +125,45 @@ class RouteScreen extends React.Component {
                 }
                 this.getReport(car)
             }
-        });
+        })
     }
 
     render() {
-        const { dateStart, dateEnd, mode, showDateStart, showDateEnd } = this.state;
+        const { dateStart, dateEnd, mode, showDateStart, showDateEnd, car } = this.state
 
         let carsList =
             this.props.cars.map((item, index) => {
                 return (<Picker.Item label={`${item.licensePlate} - ${item.name}`} key={item.vin} value={item.vin} />)
-            });
+            })
 
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ paddingHorizontal: 10, height: 45, flexDirection: 'row', alignItems: 'center' }} onPress={this.handleBack}>
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
-                        <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Generowanie Raportu</Text>
+                        <Text style={styles.headerTitle}>Generowanie Raportu</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1, padding: 20 }}>
                     <Text>Wybierz samochód:</Text>
                     <Picker
-                        selectedValue={this.state.car}
+                        selectedValue={car}
                         style={{ height: 37 }}
                         onValueChange={(itemValue, itemIndex) =>
                             this.setState({ car: itemValue })
                         }>
                         {carsList}
                     </Picker>
-                    <View style={{ marginVertical: 8, width: '100%', height: 1, backgroundColor: '#b6b6b6' }}></View>
+                    <View style={styles.separator}></View>
                     <Text>Wybierz datę początkową:</Text>
-                    <TouchableOpacity onPress={() => this.setState({ showDateStart: true })}><Text style={{ padding: 8, fontSize: 16 }}>{moment(dateStart).format('DD.MM.YYYY')}</Text></TouchableOpacity>
-                    <View style={{ marginVertical: 8, width: '100%', height: 1, backgroundColor: '#b6b6b6' }}></View>
+                    <TouchableOpacity onPress={() => this.setState({ showDateStart: true })}>
+                        <Text style={{ padding: 8, fontSize: 16 }}>{moment(dateStart).format('DD.MM.YYYY')}</Text>
+                    </TouchableOpacity>
+                    <View style={styles.separator}></View>
                     <Text>Wybierz datę końcową:</Text>
-                    <TouchableOpacity onPress={() => this.setState({ showDateEnd: true })}><Text style={{ padding: 8, marginBottom: 6, fontSize: 16 }}>{moment(dateEnd).format('DD.MM.YYYY')}</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.setState({ showDateEnd: true })}>
+                        <Text style={{ padding: 8, marginBottom: 6, fontSize: 16 }}>{moment(dateEnd).format('DD.MM.YYYY')}</Text>
+                    </TouchableOpacity>
                     <Button title='Generuj raport' onPress={this.handleSubmit} />
                 </View>
                 {showDateStart && <DateTimePicker value={dateStart}
@@ -173,14 +177,41 @@ class RouteScreen extends React.Component {
                     onChange={this.setDateEnd} />
                 }
             </View>
-        );
+        )
     }
 }
 
 const mapStateToProps = state => {
     return {
         cars: state.car.cars
-    };
+    }
 }
 
-export default connect(mapStateToProps)(RouteScreen);
+export default connect(mapStateToProps)(RouteScreen)
+
+const styles = StyleSheet.create({
+    header: {
+        backgroundColor: '#fff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e3e3e3',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    headerTouchable: {
+        paddingHorizontal: 10,
+        height: 45,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    headerTitle: {
+        marginLeft: 15,
+        fontWeight: 'bold'
+    },
+    separator: {
+        marginVertical: 8,
+        width: '100%',
+        height: 1,
+        backgroundColor: '#b6b6b6'
+    }
+})

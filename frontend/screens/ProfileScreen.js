@@ -1,11 +1,10 @@
-import React from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import store from '../_store/store';
-import { connect } from 'react-redux';
-import { userSignOut, userProfileUpdate } from '../_actions';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavigationService from '../NavigationService';
+import React from 'react'
+import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
+import { connect } from 'react-redux'
+import { userSignOut, userProfileUpdate } from '../_actions'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import NavigationService from '../NavigationService'
 
 class ProfileScreen extends React.Component {
     state = {
@@ -58,25 +57,23 @@ class ProfileScreen extends React.Component {
         this.checkDifferences()
     }
 
-
-
     render() {
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ borderBottomWidth: 1, borderBottomColor: '#e3e3e3', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ paddingHorizontal: 10, height: 45, flexDirection: 'row', alignItems: 'center' }} onPress={this.handleBack}>
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
-                        <Text style={{ marginLeft: 15, fontWeight: 'bold' }}>Profil</Text>
+                        <Text style={styles.headerTitle}>Profil</Text>
                     </TouchableOpacity>
-                    <Text style={{ paddingHorizontal: 10, lineHeight: 45, fontSize: 10, color: '#8f8f8f', textTransform: 'uppercase' }} onPress={this.handleLogout}>Wyloguj się</Text>
+                    <Text style={styles.headerSubtitle} onPress={this.handleLogout}>Wyloguj się</Text>
                 </View>
 
                 <View style={{ flex: 1 }}>
-                    <View style={{ paddingHorizontal: 20, paddingVertical: 15 }}>
+                    <View style={styles.container}>
                         <Text style={{ color: '#000', marginTop: 15 }}>Email</Text>
                         <TextInput
                             value={this.state.email}
-                            style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 0, paddingVertical: 5 }}
+                            style={styles.inputDisabled}
                             editable={false}
                         />
                     </View>
@@ -86,7 +83,7 @@ class ProfileScreen extends React.Component {
                             <TextInput
                                 value={this.state.firstName}
                                 onChangeText={this.handleFirstNameChange}
-                                style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 1, paddingVertical: 5 }}
+                                style={styles.input}
                             />
                         </View>
                         <View style={{ width: '45%' }}>
@@ -94,26 +91,24 @@ class ProfileScreen extends React.Component {
                             <TextInput
                                 value={this.state.lastName}
                                 onChangeText={this.handleLastNameChange}
-                                style={{ color: '#000', borderBottomColor: '#000', borderBottomWidth: 1, paddingVertical: 5 }}
+                                style={styles.input}
                             />
                         </View>
 
                     </View>
-                    <View style={{ paddingHorizontal: 20, paddingVertical: 15 }}>
+                    <View style={styles.container}>
                         <Button title='Aktualizuj Profil' onPress={this.handleUpdate} disabled={this.state.disableButton} />
                     </View>
                 </View>
             </View>
-        );
+        )
     }
 }
-
-
 
 const mapStateToProps = state => {
     return {
         user: state.user.user,
-    };
+    }
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -121,4 +116,52 @@ const mapDispatchToProps = dispatch => ({
     userProfileUpdate: user => dispatch(userProfileUpdate(user))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen)
+
+const styles = StyleSheet.create({
+    header: {
+        backgroundColor: '#fff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e3e3e3',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    headerTouchable: {
+        paddingHorizontal: 10,
+        height: 45,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    headerTitle: {
+        marginLeft: 15,
+        fontWeight: 'bold'
+    },
+    headerSubtitle: {
+        paddingHorizontal: 10,
+        lineHeight: 45,
+        fontSize: 10,
+        color: '#8f8f8f',
+        textTransform: 'uppercase'
+    },
+    separator: {
+        marginVertical: 8,
+        width: '100%',
+        height: 1,
+        backgroundColor: '#b6b6b6'
+    },
+    container: {
+        paddingHorizontal: 20,
+        paddingVertical: 15
+    },
+    input: {
+        paddingVertical: 5,
+        color: '#000',
+        borderBottomColor: '#e3e3e3',
+        borderBottomWidth: 1
+    },
+    inputDisabled: {
+        paddingVertical: 5,
+        color: '#000'
+    }
+})
