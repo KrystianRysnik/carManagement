@@ -74,7 +74,7 @@ class AdminUserScreen extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        users: state.user.listUser,
+        users: state.user.users,
     };
 }
 

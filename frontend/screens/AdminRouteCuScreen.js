@@ -208,7 +208,7 @@ class AdminRouteCuScreen extends React.Component {
 const mapStateToProps = state => {
     return {
         cars: state.car.cars,
-        users: state.user.listUser
+        users: state.user.users
     };
 }
 

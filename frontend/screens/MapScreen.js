@@ -98,9 +98,9 @@ class MapScreen extends React.Component {
             distance: this.state.distance,
             purpose: this.state.purpose,
             driver: {
-                email: this.props.currentUser.email,
-                firstName: this.props.currentUser.firstName,
-                lastName: this.props.currentUser.lastName
+                email: this.props.user.email,
+                firstName: this.props.user.firstName,
+                lastName: this.props.user.lastName
             },
             markers: this.state.markers
         })
@@ -280,9 +280,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        currentUser: state.user.currentUser,
-        vin: state.car.currentCar.vin,
-        licensePlate: state.car.currentCar.licensePlate
+        user: state.user.user,
+        vin: state.car.car.vin,
+        licensePlate: state.car.car.licensePlate
     };
 }
 

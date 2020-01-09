@@ -1,6 +1,6 @@
 const initialState = {
-    cars: [],
-    currentCar: {}
+    car: {},
+    cars: []
 }
 
 export default function reducer(state = initialState, action) {
@@ -8,7 +8,7 @@ export default function reducer(state = initialState, action) {
         case 'GET_ALL_CARS':
             return { ...state, cars: action.payload }
         case 'SELECT_CAR':
-            return { ...state, currentCar: action.payload }
+            return { ...state, car: action.payload }
         default:
             return state;
     }

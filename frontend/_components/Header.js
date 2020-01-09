@@ -10,10 +10,10 @@ class Header extends React.Component {
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ margin: 15, height: 50, width: 50, borderRadius: 25, backgroundColor: '#b6b6b6' }}>
-                        <Text style={{ textAlign: 'center', lineHeight: 50, color: '#ffffff', fontSize: 26, textTransform: 'uppercase' }}>{this.props.currentUser.firstName != undefined && this.props.currentUser.firstName.charAt(0)}{this.props.currentUser.lastName != undefined && this.props.currentUser.lastName.charAt(0)}</Text>
+                        <Text style={{ textAlign: 'center', lineHeight: 50, color: '#ffffff', fontSize: 26, textTransform: 'uppercase' }}>{this.props.user.firstName != undefined && this.props.user.firstName.charAt(0)}{this.props.user.lastName != undefined && this.props.user.lastName.charAt(0)}</Text>
                     </View>
                     <View>
-                        <Text style={{ color: '#ffffff', fontSize: 15, fontWeight: 'bold' }}>{this.props.currentUser.firstName} {this.props.currentUser.lastName}</Text>
+                        <Text style={{ color: '#ffffff', fontSize: 15, fontWeight: 'bold' }}>{this.props.user.firstName} {this.props.user.lastName}</Text>
                         <Text style={{ color: '#ffffff', fontSize: 10 }} onPress={() => NavigationService.navigate('Profile')}>Zobacz profil</Text>
                     </View>
                 </View>
@@ -24,7 +24,7 @@ class Header extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        currentUser: state.user.currentUser,
+        user: state.user.user,
     };
 }
 

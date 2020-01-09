@@ -17,9 +17,9 @@ class ProfileScreen extends React.Component {
 
     componentDidMount() {
         this.setState({
-            firstName: this.props.profile.firstName,
-            lastName: this.props.profile.lastName,
-            email: this.props.profile.email
+            firstName: this.props.user.firstName,
+            lastName: this.props.user.lastName,
+            email: this.props.user.email
         })
     }
 
@@ -38,8 +38,8 @@ class ProfileScreen extends React.Component {
     }
 
     checkDifferences = () => {
-        if (this.state.firstName == this.props.profile.firstName
-            && this.state.lastName == this.props.profile.lastName
+        if (this.state.firstName == this.props.user.firstName
+            && this.state.lastName == this.props.user.lastName
             || this.state.firstName == ''
             || this.state.lastName == '')
             this.setState({ disableButton: true })
@@ -112,7 +112,7 @@ class ProfileScreen extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        profile: state.user.currentUser,
+        user: state.user.user,
     };
 }
 

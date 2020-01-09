@@ -81,7 +81,7 @@ class AdminCarScreen extends React.Component {
 const mapStateToProps = state => {
     return {
         cars: state.car.cars,
-        licensePlate: state.car.currentCar.licensePlate
+        licensePlate: state.car.car.licensePlate
     };
 }
 
