@@ -2,7 +2,7 @@ import React from 'react'
 import { View, ScrollView, Text, TextInput, Picker, Button, TouchableOpacity, StyleSheet } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { connect } from 'react-redux'
-import { routeUpdate } from '../_actions'
+import { routeGet, routeUpdate } from '../_actions'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import NavigationService from '../NavigationService'
 import moment from 'moment'
@@ -28,40 +28,33 @@ class AdminRouteCuScreen extends React.Component {
         }
     }
 
-    componentDidMount() {
-        let item = this.props.navigation.state.params
-        this.setState({
-            _id: item._id,
-            carVin: item.carVin,
-            startTrace: moment(item.startTrace).toDate(),
-            stopTrace: moment(item.stopTrace).toDate(),
-            duration: moment(moment(item.stopTrace).diff(moment(item.startTrace))).format('HH:mm:ss').toString(),
-            distance: item.distance.toString(),
-            purpose: item.purpose,
-            driverEmail: item.driver.email,
-            driverFirstName: item.driver.firstName,
-            driverLastName: item.driver.lastName,
+    _init = async id => {
+        await this.props.routeGet(id)
+        const { route } = await this.props
+        await this.setState({
+            _id: route._id,
+            carVin: route.carVin,
+            startTrace: moment(route.startTrace).toDate(),
+            stopTrace: moment(route.stopTrace).toDate(),
+            duration: moment(moment(route.stopTrace).diff(moment(route.startTrace))).format('HH:mm:ss').toString(),
+            distance: route.distance.toString(),
+            purpose: route.purpose,
+            driverEmail: route.driver.email,
+            driverFirstName: route.driver.firstName,
+            driverLastName: route.driver.lastName,
             disableButton: true
         })
+    }
 
+    componentDidMount() {
+        let item = this.props.navigation.state.params
+        this._init(item._id)
     }
 
     componentDidUpdate(prevProps) {
         let item = this.props.navigation.state.params
         if (item != prevProps.navigation.state.params) {
-            this.setState({
-                _id: item._id,
-                carVin: item.carVin,
-                startTrace: moment(item.startTrace).toDate(),
-                stopTrace: moment(item.stopTrace).toDate(),
-                duration: moment(moment(item.stopTrace).diff(moment(item.startTrace))).format('HH:mm:ss').toString(),
-                distance: item.distance.toString(),
-                purpose: item.purpose,
-                driverEmail: item.driver.email,
-                driverFirstName: item.driver.firstName,
-                driverLastName: item.driver.lastName,
-                disableButton: true
-            })
+            this._init(item._id)
         }
     }
 
@@ -113,7 +106,7 @@ class AdminRouteCuScreen extends React.Component {
     }
 
     checkDifferences = () => {
-        let item = this.props.navigation.state.params
+        let item = this.props.route
         if (this.state.driverEmail == item.driver.email
             && this.state.carVin == item.carVin
             && this.state.distance == item.distance
@@ -214,11 +207,13 @@ class AdminRouteCuScreen extends React.Component {
 const mapStateToProps = state => {
     return {
         cars: state.car.cars,
-        users: state.user.users
+        users: state.user.users,
+        route: state.route.route
     }
 }
 
 const mapDispatchToProps = dispatch => ({
+    routeGet: id => dispatch(routeGet(id)),
     routeUpdate: route => dispatch(routeUpdate(route))
 })
 

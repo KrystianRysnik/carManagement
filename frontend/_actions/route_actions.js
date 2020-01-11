@@ -5,6 +5,20 @@ const instance = axios.create({
     baseURL: 'https://car-management-backend.herokuapp.com/'
 });
 
+export const routeGet = id => {
+    return dispatch => {
+        instance.get(`/route/id/${id}`)
+        .then(res => {
+            console.log('🟢 Get Route Succesfull!')
+            dispatch(getRoute(res.data))
+        })
+        .catch (error => {
+            console.log('🔴 Get Route Error!')
+            console.log(error)
+        })
+    }
+}
+
 export const routeDelete = id => {
     return dispatch => {
         instance.delete(`/route/delete/${id}`)
@@ -58,6 +72,11 @@ export const routeList = () => {
             })
     }
 }
+
+const getRoute = route => ({
+    type: 'GET_ROUTE',
+    payload: route
+})
 
 const getAllRoutes = routes => ({
     type: 'GET_ALL_ROUTES',

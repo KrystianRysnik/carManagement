@@ -15,9 +15,21 @@ router.post('/route/add', async (req, res) => {
     }
 })
 
+router.get('/route/id/:id', async (req, res) => {
+    // Get route
+    console.log( req.params.id )
+        const route = await Route.findById( req.params.id )
+        if (route) {
+            res.status(200).send(route)
+        }
+        else {
+            res.status(400).send('Something went wrong!')
+        }
+    })
+
 router.get('/route/list', async (req, res) => {
     // List of routes
-    Route.find({}, { 'markers._id': 0 }, (err, routes) => {
+    Route.find({}, { '__v': 0, 'markers': 0 }, (err, routes) => {
         if (err) {
             res.status(400).send('Something went wrong!')
             next()
