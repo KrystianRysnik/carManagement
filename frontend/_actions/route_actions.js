@@ -24,7 +24,7 @@ export const routeDelete = id => {
         instance.delete(`/route/delete/${id}`)
             .then(res => {
                 console.log('🟢 Delete Route Succesfull!')
-                // dispatch()
+                dispatch(deleteRoute(id))
             })
             .catch(error => {
                 console.log('🔴 Delete Route Error!')
@@ -67,7 +67,7 @@ export const routeList = () => {
                 dispatch(getAllRoutes(res.data))
             })
             .catch(error => {
-                console.log('🔴 List Cars Error!')
+                console.log('🔴 List Routes Error!')
                 console.log(error)
             })
     }
@@ -81,4 +81,9 @@ const getRoute = route => ({
 const getAllRoutes = routes => ({
     type: 'GET_ALL_ROUTES',
     payload: routes
+})
+
+const deleteRoute = route => ({
+    type: 'DELETE_ROUTE',
+    payload: route
 })
