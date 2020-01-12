@@ -20,7 +20,7 @@ router.put('/car/update', async (req, res) => {
     try {
         await Car.updateOne(
             {
-                "vin": req.body.originalVin
+                "_id": req.body._id
             },
             {
                 $set: {
@@ -38,11 +38,11 @@ router.put('/car/update', async (req, res) => {
     }
 })
 
-router.delete('/car/delete/:vin', async (req, res) => {
+router.delete('/car/delete/:id', async (req, res) => {
     // Update car
     try {
         await Car.deleteOne({
-            vin: req.params.vin
+            _id: req.params.id
         })
         res.status(200).send('Done')
     }
@@ -53,7 +53,7 @@ router.delete('/car/delete/:vin', async (req, res) => {
 
 router.get('/car/list', async (req, res) => {
     // List of cars
-    Car.find({}, (err, cars) => {
+    Car.find({}, { '__v': 0 }, (err, cars) => {
         if (err) {
             res.status(400).send('Something went wrong!')
             next()

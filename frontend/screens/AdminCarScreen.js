@@ -22,7 +22,7 @@ class AdminCarScreen extends React.Component {
                 },
                 {
                     text: 'Usuń',
-                    onPress: () => this.props.carDelete(car.vin)
+                    onPress: () => this.props.carDelete(car._id)
                 },
             ],
             { cancelable: false },

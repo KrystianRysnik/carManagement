@@ -31,7 +31,7 @@ export const carAdd = car => {
             engineSize: car.engineSize
         })
             .then(res => {
-                dispatch(carsList())
+                dispatch(addCar(res.data.car))
                 console.log('🟢 Add Car Succesfull!')
             })
             .catch(error => {
@@ -44,7 +44,7 @@ export const carAdd = car => {
 export const carUpdate = car => {
     return dispatch => {
         instance.put('/car/update', {
-            originalVin: car.originalVin,
+            _id: car._id,
             name: car.name,
             vin: car.vin,
             mileage: car.mileage,
@@ -52,7 +52,14 @@ export const carUpdate = car => {
             engineSize: car.engineSize
         })
             .then(res => {
-                dispatch(carsList())
+                dispatch(updateCar({
+                    _id: car._id,
+                    name: car.name,
+                    vin: car.vin,
+                    mileage: parseInt(car.mileage),
+                    licensePlate: car.licensePlate,
+                    engineSize: parseInt(car.engineSize)
+                }))
                 console.log('🟢 Update Car Succesfull!')
             })
             .catch(error => {
@@ -62,11 +69,11 @@ export const carUpdate = car => {
     }
 }
 
-export const carDelete = vin => {
+export const carDelete = id => {
     return dispatch => {
-        instance.delete(`/car/delete/${vin}`)
+        instance.delete(`/car/delete/${id}`)
             .then(res => {
-                dispatch(carsList())
+                dispatch(deleteCar(id))
                 console.log('🟢 Delete Car Succesfull!')
             })
             .catch(error => {
@@ -90,4 +97,19 @@ const getAllCars = carObj => ({
 const selectCar = carObj => ({
     type: 'SELECT_CAR',
     payload: carObj
+})
+
+const addCar = car => ({
+    type: 'ADD_CAR',
+    payload: car
+})
+
+const deleteCar = id => ({
+    type: 'DELETE_CAR',
+    payload: id
+})
+
+const updateCar = car => ({
+    type: 'UPDATE_CAR',
+    payload: car
 })

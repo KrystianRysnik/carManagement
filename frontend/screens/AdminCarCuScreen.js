@@ -9,7 +9,7 @@ class AdminCarCuScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            originalVin: '',
+            _id: '',
             name: '',
             vin: '',
             mileage: '',
@@ -22,7 +22,7 @@ class AdminCarCuScreen extends React.Component {
     componentDidMount() {
         let item = this.props.navigation.state.params
         this.setState({
-            originalVin: `${item.vin}`,
+            _id: `${item._id}`,
             name: `${item.name}`,
             vin: `${item.vin}`,
             mileage: `${item.mileage}`,
@@ -36,7 +36,7 @@ class AdminCarCuScreen extends React.Component {
         let item = this.props.navigation.state.params
         if (item != prevProps.navigation.state.params) {
             this.setState({
-                originalVin: `${item.vin}`,
+                _id: `${item._id}`,
                 name: `${item.name}`,
                 vin: `${item.vin}`,
                 mileage: `${item.mileage}`,
