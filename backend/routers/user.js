@@ -35,7 +35,6 @@ router.post('/user/login', async (req, res) => {
 
 router.put('/user/profile/update', async (req, res) => {
     // Update user
-    console.log(req.body)
     try {
         await User.updateOne(
             {
@@ -75,7 +74,6 @@ router.post('/user/add', async (req, res) => {
 
 router.put('/user/update', async (req, res) => {
     // Update user
-    console.log(req.body)
     try {
         await User.updateOne(
             {
