@@ -99,7 +99,7 @@ export const userAdd = user => {
         })
             .then(res => {
                 console.log('🟢 Add User Succesfull!')
-                dispatch(userList())
+                dispatch(addUser(res.data))
             })
             .catch(error => {
                 console.log('🔴 Add User Error!')
@@ -112,13 +112,18 @@ export const userAdd = user => {
 export const userUpdate = user => {
     return dispatch => {
         instance.put('/user/update', {
-            originalEmail: user.originalEmail,
+            _id: user._id,
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName
         })
             .then(res => {
-                dispatch(userList())
+                dispatch(updateUser({
+                    _id: user._id,
+                    email: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName
+                }))
                 console.log('🟢 Update User Succesfull!')
             })
             .catch(error => {
@@ -128,15 +133,15 @@ export const userUpdate = user => {
     }
 }
 
-export const userDelete = email => {
+export const userDelete = id => {
     return dispatch => {
-        instance.delete(`/user/delete/${email}`)
+        instance.delete(`/user/delete/${id}`)
             .then(res => {
-                dispatch(userList())
-                console.log('🟢 Update User Succesfull!')
+                dispatch(deleteUser(id))
+                console.log('🟢 Delete User Succesfull!')
             })
             .catch(error => {
-                console.log('🔴 Update Car Error!')
+                console.log('🔴 Delete Car Error!')
                 console.log(error);
             })
     }
@@ -191,4 +196,19 @@ const listUser = userObj => ({
 
 const logoutUser = () => ({
     type: 'LOGOUT_USER'
+})
+
+const addUser = user => ({
+    type: 'ADD_USER',
+    payload: user
+})
+
+const updateUser = user => ({
+    type: 'UPDATE_USER',
+    payload: user
+})
+
+const deleteUser = id => ({
+    type: 'DELETE_USER',
+    payload: id
 })

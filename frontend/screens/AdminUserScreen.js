@@ -25,7 +25,7 @@ class AdminUserScreen extends React.Component {
                 },
                 {
                     text: 'Usuń',
-                    onPress: () => this.props.userDelete(user.email)
+                    onPress: () => this.props.userDelete(user._id)
                 },
             ],
             { cancelable: false },
@@ -62,7 +62,7 @@ class AdminUserScreen extends React.Component {
                                 </View>
                             </View>
                         )}
-                        keyExtractor={(item => item.email)}
+                        keyExtractor={(item => item._id)}
                     />
                 </View>
             </View>

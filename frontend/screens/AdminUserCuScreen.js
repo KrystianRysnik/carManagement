@@ -9,10 +9,10 @@ class AdminUserCuScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            _id: '',
             firstName: '',
             lastName: '',
             email: '',
-            originalEmail: '',
             disableButton: true
         }
     }
@@ -20,11 +20,11 @@ class AdminUserCuScreen extends React.Component {
     componentDidMount() {
         let item = this.props.navigation.state.params
         this.setState({
+            _id: `${item._id}`,
             firstName: `${item.firstName}`,
             lastName: `${item.lastName}`,
             email: `${item.email}`,
             password: ``,
-            originalEmail: `${item.email}`,
             disableButton: true
         })
     }
@@ -33,10 +33,10 @@ class AdminUserCuScreen extends React.Component {
         let item = this.props.navigation.state.params
         if (item != prevProps.navigation.state.params) {
             this.setState({
+                _id: `${item._id}`,
                 firstName: `${item.firstName}`,
                 lastName: `${item.lastName}`,
                 email: `${item.email}`,
-                originalEmail: `${item.email}`,
                 disableButton: true
             })
         }

@@ -61,7 +61,12 @@ router.post('/user/add', async (req, res) => {
         const user = new User(req.body)
         await user.save()
        // const token = await user.generateAuthToken()
-        res.status(201).send('Dodano')
+        res.status(201).send({
+            _id: user._id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+        })
     }
     catch (error) {
         res.status(400).send(error)
@@ -74,7 +79,7 @@ router.put('/user/update', async (req, res) => {
     try {
         await User.updateOne(
             {
-                "email": req.body.originalEmail
+                "_id": req.body._id
             },
             {
                 $set: {
@@ -91,11 +96,11 @@ router.put('/user/update', async (req, res) => {
     }
 })
 
-router.delete('/user/delete/:email', async (req, res) => {
+router.delete('/user/delete/:id', async (req, res) => {
     // Delete user
     try {
         await User.deleteOne({
-            email: req.params.email
+            _id: req.params.id
         })
         res.status(200).send('Done')
     }
@@ -125,7 +130,7 @@ router.post('/user/logout', auth, async (req, res) => {
 
 router.get('/user/list', async (req, res) => {
     // List of users
-    User.find({}, { '_id': 0, 'password': 0, 'tokens': 0 }, (err, users) => {
+    User.find({}, { '__v': 0, 'password': 0, 'tokens': 0 }, (err, users) => {
         if (err) {
             res.status(400).send('Something went wrong!')
             next()
