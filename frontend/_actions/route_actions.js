@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 
 const instance = axios.create({
     //baseURL: 'http://192.168.0.19:3000'
@@ -8,14 +9,14 @@ const instance = axios.create({
 export const routeGet = id => {
     return dispatch => {
         instance.get(`/route/id/${id}`)
-        .then(res => {
-            console.log('🟢 Get Route Succesfull!')
-            dispatch(getRoute(res.data))
-        })
-        .catch (error => {
-            console.log('🔴 Get Route Error!')
-            console.log(error)
-        })
+            .then(res => {
+                console.log('🟢 Get Route Succesfull!')
+                dispatch(getRoute(res.data))
+            })
+            .catch(error => {
+                console.log('🔴 Get Route Error!')
+                console.log(error)
+            })
     }
 }
 
@@ -50,7 +51,19 @@ export const routeUpdate = route => {
         })
             .then(res => {
                 console.log('🟢 Update Route Succesfull!')
-                // dispatch()
+                dispatch(updateRoute({
+                    _id: route._id,
+                    carVin: route.carVin,
+                    startTrace: moment(route.startTrace).toJSON(),
+                    stopTrace: moment(route.stopTrace).toJSON(),
+                    distance: parseFloat(route.distance),
+                    purpose: route.purpose,
+                    driver: {
+                        email: route.driverEmail,
+                        firstName: route.driverFirstName,
+                        lastName: route.driverLastName
+                    }
+                }))
             })
             .catch(error => {
                 console.log('🔴 Update Route Error!')
@@ -81,6 +94,11 @@ const getRoute = route => ({
 const getAllRoutes = routes => ({
     type: 'GET_ALL_ROUTES',
     payload: routes
+})
+
+const updateRoute = route => ({
+    type: 'UPDATE_ROUTE',
+    payload: route
 })
 
 const deleteRoute = route => ({
