@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, ScrollView, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native'
+import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux'
 import { userAdd, userUpdate } from '../_actions'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -13,33 +14,37 @@ class AdminUserCuScreen extends React.Component {
             firstName: '',
             lastName: '',
             email: '',
+            role: '',
+            checked: false,
             disableButton: true
         }
     }
 
     componentDidMount() {
         let item = this.props.navigation.state.params
-        this.setState({
-            _id: `${item._id}`,
-            firstName: `${item.firstName}`,
-            lastName: `${item.lastName}`,
-            email: `${item.email}`,
-            password: ``,
-            disableButton: true
-        })
+        this._refreshState(item)
     }
 
     componentDidUpdate(prevProps) {
         let item = this.props.navigation.state.params
         if (item != prevProps.navigation.state.params) {
+            this._refreshState(item)
+        }
+    }
+
+    _refreshState = (item) => {
+        setTimeout(() => {
             this.setState({
                 _id: `${item._id}`,
                 firstName: `${item.firstName}`,
                 lastName: `${item.lastName}`,
                 email: `${item.email}`,
+                password: '',
+                role: `${item.role}`,
+                checked: item.role == 'admin' ? true : false,
                 disableButton: true
             })
-        }
+        }, 500)
     }
 
     handleBack = () => {
@@ -66,11 +71,20 @@ class AdminUserCuScreen extends React.Component {
         this.checkDifferences()
     }
 
+    handlePrivilegeChange = async checked => {
+       await this.setState({
+           checked: !this.state.checked,
+           role: !this.state.checked ? 'admin' : 'user'
+        })
+       this.checkDifferences()
+    }
+
     checkDifferences = () => {
         let item = this.props.navigation.state.params
         if (this.state.firstName == item.firstName
             && this.state.lastName == item.lastName
             && this.state.email == item.email
+            && this.state.role == item.role
             || (this.state.password == '' && item.email == '')
             || this.state.firstName == ''
             || this.state.lastName == ''
@@ -78,6 +92,8 @@ class AdminUserCuScreen extends React.Component {
             this.setState({ disableButton: true })
         else
             this.setState({ disableButton: false })
+
+        console.log(this.state)
     }
 
     handleUpdate = () => {
@@ -139,6 +155,14 @@ class AdminUserCuScreen extends React.Component {
                             style={styles.input}
                         />
                         )}
+
+                        <View style={{ flexDirection: 'row', paddingTop: 15 }}>
+                            <CheckBox
+                                value={this.state.checked}
+                                onValueChange={this.handlePrivilegeChange}
+                            />
+                            <Text style={{ marginTop: 5 }}> Uprawnienia administratora</Text>
+                        </View>
                     </View>
                     <View style={styles.container}>
                         {this.props.navigation.state.params.email == '' ? (

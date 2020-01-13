@@ -28,6 +28,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 
 import Hidden from './_components/Hidden'
 import Header from './_components/Header'
+import AdminBtn from './_components/AdminBtn'
 
 const AuthStack = createStackNavigator(
   {
@@ -98,10 +99,7 @@ const AppDrawer = createDrawerNavigator(
     Admin: {
       screen: AdminScreen,
       navigationOptions: {
-        drawerLabel: 'Panel Administratora',
-        drawerIcon: (
-          <Icon name='security' size={24} color='#000' />
-        )
+        drawerLabel: <AdminBtn />
       }
     },
     AdminCar: {

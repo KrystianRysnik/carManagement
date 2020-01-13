@@ -48,6 +48,7 @@ class AdminUserScreen extends React.Component {
                             <View style={styles.itemList}>
                                 <Text style={{ fontWeight: 'bold' }}>{item.firstName} {item.lastName}</Text>
                                 <Text>{item.email}</Text>
+                                { item.role === 'admin' && (<Text style={{ fontWeight: 'bold', color: 'red'} }>Posiada uprawnienia administratora</Text>) }
                                 <View style={styles.buttons}>
                                     <View style={styles.editBtn}>
                                         <TouchableOpacity activeOpacity={0.5} onPress={() => NavigationService.navigate('AddEditUser', item)}>

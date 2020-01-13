@@ -83,7 +83,7 @@ export const userProfileUpdate = user => {
                 console.log('🟢 Update User Succesfull!')
             })
             .catch(error => {
-                console.log('🔴 Update Car Error!')
+                console.log('🔴 Update User Error!')
                 console.log(error);
             })
     }
@@ -95,7 +95,8 @@ export const userAdd = user => {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            password: user.password
+            password: user.password,
+            role: user.role
         })
             .then(res => {
                 console.log('🟢 Add User Succesfull!')
@@ -115,19 +116,21 @@ export const userUpdate = user => {
             _id: user._id,
             email: user.email,
             firstName: user.firstName,
-            lastName: user.lastName
+            lastName: user.lastName,
+            role: user.role
         })
             .then(res => {
                 dispatch(updateUser({
                     _id: user._id,
                     email: user.email,
                     firstName: user.firstName,
-                    lastName: user.lastName
+                    lastName: user.lastName,
+                    role: user.role
                 }))
                 console.log('🟢 Update User Succesfull!')
             })
             .catch(error => {
-                console.log('🔴 Update Car Error!')
+                console.log('🔴 Update User Error!')
                 console.log(error);
             })
     }

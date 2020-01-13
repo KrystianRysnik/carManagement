@@ -30,6 +30,10 @@ const userSchema = mongoose.Schema({
         required: true,
         minLength: 7
     },
+    role: {
+        type: String,
+        default: 'user'
+    },
     tokens: [{
         token: {
             type: String,

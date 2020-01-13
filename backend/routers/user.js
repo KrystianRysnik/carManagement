@@ -59,12 +59,12 @@ router.post('/user/add', async (req, res) => {
     try {
         const user = new User(req.body)
         await user.save()
-       // const token = await user.generateAuthToken()
         res.status(201).send({
             _id: user._id,
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
+            role: user.role
         })
     }
     catch (error) {
@@ -83,10 +83,12 @@ router.put('/user/update', async (req, res) => {
                 $set: {
                     email: req.body.email,
                     firstName: req.body.firstName,
-                    lastName: req.body.lastName
+                    lastName: req.body.lastName,
+                    role: req.body.role
                 }
             })
-        const user = await User.findOne({ email: req.body.email })
+        const user = await User.findOne({ _id: req.body._id })
+        console.log(req.body.user)
         res.status(200).send(user)
     }
     catch (error) {
