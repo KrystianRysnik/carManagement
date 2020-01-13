@@ -22,7 +22,7 @@ class AdminRouteScreen extends React.Component {
     handleDelete = route => {
         Alert.alert(
             `Usuwanie Trasy`,
-            `Czy napewno chcesz usunąć trasę z dnia ${route.startTrace}?`,
+            `Czy napewno chcesz usunąć trasę z dnia ${moment(route.startTrace).format('DD/MM/YYYY')}?`,
             [
                 {
                     text: 'Anuluj',
@@ -52,9 +52,10 @@ class AdminRouteScreen extends React.Component {
                     <FlatList data={routes}
                         renderItem={({ item }) => (
                             <View style={styles.itemList}>
-                                <Text>Data: <Text style={{ fontWeight: 'bold' }}>{moment(item.startTrace).format('DD MMM YYYY, HH:mm')}</Text></Text>
+                                <Text>Data: <Text style={{ fontWeight: 'bold' }}>{moment(item.startTrace).format('DD/MM/YYYY')}</Text></Text>
                                 <Text>Kierowca: {item.driver.firstName} {item.driver.lastName}</Text>
                                 <Text>Samochód: {item.carVin} </Text>
+                                <Text>Cel wyjazdu: {item.purpose}</Text>
                                 <Text>Dystans: {item.distance.toFixed(2)} km</Text>
                                 <Text>Czas trwania: {moment(moment(item.stopTrace).diff(moment(item.startTrace))).utc().format('HH:mm:ss')}</Text>
 

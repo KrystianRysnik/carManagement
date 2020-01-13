@@ -79,7 +79,7 @@ class RouteScreen extends React.Component {
             options.html += `<tr>
                 <td>${i}</td>
                 <td>${moment(item.startTrace).format('DD.MM.YYYY')}</td>
-                <td>[...]</td>
+                <td>${item.purpose}</td>
                 <td>${item.distance.toFixed(2)}</td>
                 <td>${item.driver.firstName} ${item.driver.lastName}</td>
             </tr>`
@@ -157,12 +157,12 @@ class RouteScreen extends React.Component {
                     <View style={styles.separator}></View>
                     <Text>Wybierz datę początkową:</Text>
                     <TouchableOpacity onPress={() => this.setState({ showDateStart: true })}>
-                        <Text style={{ padding: 8, fontSize: 16 }}>{moment(dateStart).format('DD.MM.YYYY')}</Text>
+                        <Text style={{ padding: 8, fontSize: 16 }}>{moment(dateStart).format('DD/MM/YYYY')}</Text>
                     </TouchableOpacity>
                     <View style={styles.separator}></View>
                     <Text>Wybierz datę końcową:</Text>
                     <TouchableOpacity onPress={() => this.setState({ showDateEnd: true })}>
-                        <Text style={{ padding: 8, marginBottom: 6, fontSize: 16 }}>{moment(dateEnd).format('DD.MM.YYYY')}</Text>
+                        <Text style={{ padding: 8, marginBottom: 6, fontSize: 16 }}>{moment(dateEnd).format('DD/MM/YYYY')}</Text>
                     </TouchableOpacity>
                     <Button title='Generuj raport' onPress={this.handleSubmit} />
                 </View>
