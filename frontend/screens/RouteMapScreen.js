@@ -54,7 +54,7 @@ class RouteMapScreen extends React.Component {
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
-                        <Text style={styles.headerTitle}>Traza z {moment(route.startTrace).format('DD/MM/YYYY, HH:mm')} </Text>
+                        <Text style={styles.headerTitle}>Traza z {moment(route.startTrace).format('DD/MM/YYYY')} </Text>
                     </TouchableOpacity>
                 </View>
 
@@ -65,7 +65,7 @@ class RouteMapScreen extends React.Component {
                     </View>
                     <View style={{ width: '50%' }}>
                         <Text style={styles.detailsSubheading}>CZAS TRWANIA</Text>
-                        <Text style={styles.detailsHeading}>{moment(moment(route.stopTrace).diff(moment(route.startTrace))).format('HH:mm:ss')}</Text>
+                        <Text style={styles.detailsHeading}>{moment(moment(route.stopTrace).diff(moment(route.startTrace))).utc().format('HH:mm:ss')}</Text>
                     </View>
                 </View>
             </View >

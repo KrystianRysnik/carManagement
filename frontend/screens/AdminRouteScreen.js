@@ -56,7 +56,7 @@ class AdminRouteScreen extends React.Component {
                                 <Text>Kierowca: {item.driver.firstName} {item.driver.lastName}</Text>
                                 <Text>Samochód: {item.carVin} </Text>
                                 <Text>Dystans: {item.distance.toFixed(2)} km</Text>
-                                <Text>Czas trwania: {moment(moment(item.stopTrace).diff(moment(item.startTrace))).format('HH:mm:ss')}</Text>
+                                <Text>Czas trwania: {moment(moment(item.stopTrace).diff(moment(item.startTrace))).utc().format('HH:mm:ss')}</Text>
 
                                 <View style={styles.buttons}>
                                     <View style={styles.editBtn}>

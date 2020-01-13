@@ -32,11 +32,11 @@ class RouteScreen extends React.Component {
                         renderItem={({ item }) => (
                             <View style={styles.listItem}>
                                 <TouchableOpacity style={{ padding: 15 }} onPress={() => NavigationService.navigate('RouteMap', item)}>
-                                    <Text>Data: <Text style={{ fontWeight: 'bold' }}>{moment(item.startTrace).format('DD MMM YYYY, HH:mm')}</Text></Text>
+                                    <Text>Data: <Text style={{ fontWeight: 'bold' }}>{moment(item.startTrace).format('DD/MMM/YYYY')}</Text></Text>
                                     <Text>Kierowca: {item.driver.firstName} {item.driver.lastName}</Text>
                                     <Text>Samochód: {item.carVin} </Text>
                                     <Text>Dystans: {item.distance.toFixed(2)} km</Text>
-                                    <Text>Czas trwania: {moment(moment(item.stopTrace).diff(moment(item.startTrace))).format('HH:mm:ss')}</Text>
+                                    <Text>Czas trwania: {moment(moment(item.stopTrace).diff(moment(item.startTrace))).utc().format('HH:mm:ss')}</Text>
                                 </TouchableOpacity>
                             </View>
                         )}

@@ -36,7 +36,7 @@ class AdminRouteCuScreen extends React.Component {
             carVin: route.carVin,
             startTrace: moment(route.startTrace).toDate(),
             stopTrace: moment(route.stopTrace).toDate(),
-            duration: moment(moment(route.stopTrace).diff(moment(route.startTrace))).format('HH:mm:ss').toString(),
+            duration: moment(moment(route.stopTrace).diff(moment(route.startTrace))).utc().format('HH:mm:ss').toString(),
             distance: route.distance.toString(),
             purpose: route.purpose,
             driverEmail: route.driver.email,

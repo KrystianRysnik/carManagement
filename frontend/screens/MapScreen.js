@@ -54,12 +54,12 @@ class MapScreen extends React.Component {
         this.setState({ purpose: '' })
     }
 
-    handlePurposeChange = purpose => {
-        this.setState({ purpose: purpose })
+    handlePurposeChange = async purpose => {
+        await this.setState({ purpose: purpose })
         if (this.state.purpose != '') {
-            this.setState({ btnDisabled: true })
-        } else {
             this.setState({ btnDisabled: false })
+        } else {
+            this.setState({ btnDisabled: true })
         }
     }
 
@@ -218,12 +218,12 @@ class MapScreen extends React.Component {
 
                 <View style={styles.details}>
                     <View style={{ width: '50%' }}>
-                        <Text style={styles.detailsSubheading}>DYSTANS {this.state.purpose}</Text>
+                        <Text style={styles.detailsSubheading}>DYSTANS</Text>
                         <Text style={styles.detailsHeading}>{parseFloat(this.state.distance).toFixed(2)} km</Text>
                     </View>
                     <View style={{ width: '50%' }}>
                         <Text style={styles.detailsSubheading}>CZAS TRWANIA</Text>
-                        <Text style={styles.detailsHeading}>{this.state.diffTime ? moment(this.state.diffTime).format('HH:mm:ss') : '00:00:00'}</Text>
+                        <Text style={styles.detailsHeading}>{this.state.diffTime ? moment(this.state.diffTime).utc().format('HH:mm:ss') : '00:00:00'}</Text>
                     </View>
                 </View>
                 <Modal
