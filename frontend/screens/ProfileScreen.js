@@ -73,7 +73,7 @@ class ProfileScreen extends React.Component {
                         <Text style={{ color: '#000', marginTop: 15 }}>Email</Text>
                         <TextInput
                             value={this.state.email}
-                            style={styles.inputDisabled}
+                            style={styles.input}
                             editable={false}
                         />
                     </View>
@@ -159,9 +159,5 @@ const styles = StyleSheet.create({
         color: '#000',
         borderBottomColor: '#e3e3e3',
         borderBottomWidth: 1
-    },
-    inputDisabled: {
-        paddingVertical: 5,
-        color: '#000'
     }
 })
