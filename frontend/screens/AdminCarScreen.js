@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import { Alert, View, Text, TouchableOpacity, FlatList, StyleSheet, ToastAndroid } from 'react-native'
 import { connect } from 'react-redux'
 import { carDelete } from '../_actions'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -22,7 +22,17 @@ class AdminCarScreen extends React.Component {
                 },
                 {
                     text: 'Usuń',
-                    onPress: () => this.props.carDelete(car._id)
+                    onPress: () => {
+                        this.props.carDelete(car._id)
+                        setTimeout(() => {
+                            if (this.props.error.delete == false) {
+                                ToastAndroid.showWithGravityAndOffset(
+                                    'Pomyśline usunięto pojazd',
+                                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                                );
+                            }
+                        }, 250)
+                    }
                 },
             ],
             { cancelable: false },
@@ -75,6 +85,7 @@ class AdminCarScreen extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        error: state.car.error,
         cars: state.car.cars,
         licensePlate: state.car.car.licensePlate
     }

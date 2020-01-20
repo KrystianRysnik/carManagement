@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, ScrollView, Text, TextInput, Button, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native'
 import { connect } from 'react-redux'
 import { carAdd, carUpdate } from '../_actions'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -93,14 +93,42 @@ class AdminCarCuScreen extends React.Component {
             this.setState({ disableButton: false })
     }
 
-    handleCreate = () => {
-        this.props.carAdd(this.state)
-        this.setState({ disableButton: true })
+    handleCreate = async () => {
+        await this.props.carAdd(this.state)
+        setTimeout(() => {
+            if (this.props.error.add == true) {
+                ToastAndroid.showWithGravityAndOffset(
+                    'Wystąpił błąd podczas dodawania pojazdu',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                );
+            }
+            else {
+                ToastAndroid.showWithGravityAndOffset(
+                    'Pomyślnie dodano pojazd',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                );
+                this.setState({ disableButton: true })
+            }
+        }, 250)
     }
 
     handleUpdate = () => {
         this.props.carUpdate(this.state)
-        this.setState({ disableButton: true })
+        setTimeout(() => {
+            if (this.props.error.update == true) {
+                ToastAndroid.showWithGravityAndOffset(
+                    'Wystąpił błąd podczas aktualizacji pojazdu',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                );
+            }
+            else {
+                ToastAndroid.showWithGravityAndOffset(
+                    'Pomyślnie zaktualizowano pojazd',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                );
+                this.setState({ disableButton: true })
+            }
+        }, 250)
     }
 
     render() {
@@ -162,12 +190,18 @@ class AdminCarCuScreen extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        error: state.car.error,
+    }
+}
+
 const mapDispatchToProps = dispatch => ({
     carAdd: car => dispatch(carAdd(car)),
     carUpdate: car => dispatch(carUpdate(car))
 })
 
-export default connect(null, mapDispatchToProps)(AdminCarCuScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(AdminCarCuScreen)
 
 const styles = StyleSheet.create({
     header: {
