@@ -22,6 +22,15 @@ class ProfileScreen extends React.Component {
         })
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props != prevProps)
+        this.setState({
+            firstName: this.props.user.firstName,
+            lastName: this.props.user.lastName,
+            email: this.props.user.email
+        })
+    }
+
     handleLogout = async () => {
         const token = await AsyncStorage.getItem('@token')
         this.props.userSignOut(token)

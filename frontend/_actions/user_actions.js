@@ -80,9 +80,11 @@ export const userProfileUpdate = user => {
         })
             .then(res => {
                 dispatch(loginUser(res.data))
+                dispatch(updateUserSuccess())
                 console.log('🟢 Update User Succesfull!')
             })
             .catch(error => {
+                dispatch(updateUserError())
                 console.log('🔴 Update User Error!')
                 console.log(error);
             })
@@ -99,10 +101,12 @@ export const userAdd = user => {
             role: user.role
         })
             .then(res => {
-                console.log('🟢 Add User Succesfull!')
                 dispatch(addUser(res.data))
+                dispatch(addUserSuccess())
+                console.log('🟢 Add User Succesfull!')
             })
             .catch(error => {
+                dispatch(addUserError())
                 console.log('🔴 Add User Error!')
                 console.log(error);
             })
@@ -127,9 +131,11 @@ export const userUpdate = user => {
                     lastName: user.lastName,
                     role: user.role
                 }))
+                dispatch(updateUserSuccess())
                 console.log('🟢 Update User Succesfull!')
             })
             .catch(error => {
+                dispatch(updateUserError())
                 console.log('🔴 Update User Error!')
                 console.log(error);
             })
@@ -141,9 +147,11 @@ export const userDelete = id => {
         instance.delete(`/user/delete/${id}`)
             .then(res => {
                 dispatch(deleteUser(id))
+                dispatch(deleteUserSuccess())
                 console.log('🟢 Delete User Succesfull!')
             })
             .catch(error => {
+                dispatch(deleteUserError())
                 console.log('🔴 Delete Car Error!')
                 console.log(error);
             })
@@ -214,4 +222,28 @@ const updateUser = user => ({
 const deleteUser = id => ({
     type: 'DELETE_USER',
     payload: id
+})
+
+const addUserSuccess = () => ({
+    type: 'ADD_USER_SUCCESS'
+})
+
+const addUserError = () => ({
+    type: 'ADD_USER_ERROR'
+})
+
+const updateUserSuccess = () => ({
+    type: 'UPDATE_USER_SUCCESS'
+})
+
+const updateUserError = () => ({
+    type: 'UPDATE_USER_ERROR'
+})
+
+const deleteUserSuccess = () => ({
+    type: 'DELETE_USER_SUCCESS'
+})
+
+const deleteUserError = () => ({
+    type: 'DELETE_USER_ERROR'
 })

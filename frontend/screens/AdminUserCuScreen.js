@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, ScrollView, Text, ToastAndroid, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native'
 import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux'
 import { userAdd, userUpdate } from '../_actions'
@@ -72,11 +72,11 @@ class AdminUserCuScreen extends React.Component {
     }
 
     handlePrivilegeChange = async checked => {
-       await this.setState({
-           checked: !this.state.checked,
-           role: !this.state.checked ? 'admin' : 'user'
+        await this.setState({
+            checked: !this.state.checked,
+            role: !this.state.checked ? 'admin' : 'user'
         })
-       this.checkDifferences()
+        this.checkDifferences()
     }
 
     checkDifferences = () => {
@@ -96,15 +96,44 @@ class AdminUserCuScreen extends React.Component {
         console.log(this.state)
     }
 
-    handleUpdate = () => {
-        this.props.userUpdate(this.state)
-        this.setState({ disableButton: true })
+    handleUpdate = async () => {
+        await this.props.userUpdate(this.state)
+        setTimeout(() => {
+            if (this.props.error.update == true) {
+                ToastAndroid.showWithGravityAndOffset(
+                    'Wystąpił błąd podczas aktualizacji użytkownika',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                );
+            }
+            else {
+                ToastAndroid.showWithGravityAndOffset(
+                    'Pomyślnie zaktualizowano użytkownika',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                );
+                this.setState({ disableButton: true })
+            }
+        }, 250)
     }
 
-    handleCreate = () => {
-        this.props.userAdd(this.state)
-        this.setState({ disableButton: true })
+    handleCreate = async () => {
+        await this.props.userAdd(this.state)
+        setTimeout(() => {
+            if (this.props.error.add == true) {
+                ToastAndroid.showWithGravityAndOffset(
+                    'Wystąpił błąd podczas dodawania użytkownika',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                )
+            }
+            else {
+                ToastAndroid.showWithGravityAndOffset(
+                    'Pomyślnie dodano użytkownika',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                )
+                this.setState({ disableButton: true })
+            }
+        }, 250)
     }
+
 
     render() {
         return (
@@ -177,12 +206,18 @@ class AdminUserCuScreen extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        error: state.user.error
+    }
+}
+
 const mapDispatchToProps = dispatch => ({
     userAdd: user => dispatch(userAdd(user)),
     userUpdate: user => dispatch(userUpdate(user))
 })
 
-export default connect(null, mapDispatchToProps)(AdminUserCuScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(AdminUserCuScreen)
 
 const styles = StyleSheet.create({
     header: {
