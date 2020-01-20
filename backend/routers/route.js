@@ -8,7 +8,7 @@ router.post('/route/add', async (req, res) => {
     try {
         const route = new Route(req.body)
         await route.save()
-        res.status(200).send({ route })
+        res.status(200).send(route)
     }
     catch (error) {
         res.status(400).send(error)

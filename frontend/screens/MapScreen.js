@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, Text, TextInput, TouchableOpacity, Button, Modal, Alert, StyleSheet } from 'react-native'
+import { routeAdd } from '../_actions'
+import { View, Text, TextInput, TouchableOpacity, ToastAndroid, Button, Modal, Alert, StyleSheet } from 'react-native'
 import MapView, { Polyline } from 'react-native-maps'
 import NavigationService from '../NavigationService'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -98,34 +99,30 @@ class MapScreen extends React.Component {
 
     stopTracking = async () => {
         await this.setState({ stopTrace: moment(new Date).toJSON() })
-        axios.post('https://car-management-backend.herokuapp.com/route/add', {
-            carVin: this.props.vin,
-            startTrace: this.state.startTrace,
-            stopTrace: this.state.stopTrace,
-            distance: this.state.distance,
-            purpose: this.state.purpose,
-            driver: {
-                email: this.props.user.email,
-                firstName: this.props.user.firstName,
-                lastName: this.props.user.lastName
-            },
-            markers: this.state.markers
-        })
-            .then(res => {
-                console.log('🟢 Add Route Succesfull!')
+        await this.props.routeAdd(this.state, this.props.user, this.props.vin)
+        setTimeout(() => {
+            if (this.props.error.add == true) {
+                ToastAndroid.showWithGravityAndOffset(
+                    'Wystąpił błąd podczas dodawania trast',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                );
+            }
+            else {
                 id = 0
                 this.setState({
                     isTracking: false,
                     markers: [],
+                    diffTime: '',
                     distance: 0
                 })
                 Geolocation.clearWatch(this.state.watchID)
                 clearInterval(this.interval)
-            })
-            .catch(error => {
-                console.log('🔴 Add Route Error!')
-                console.log(error)
-            })
+                ToastAndroid.showWithGravityAndOffset(
+                    'Pomyślnie dodano trasę',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                );
+            }
+        }, 500)
     }
 
     handleNavigation = () => {
@@ -259,13 +256,18 @@ class MapScreen extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        error: state.route.error,
         user: state.user.user,
         vin: state.car.car.vin,
         licensePlate: state.car.car.licensePlate
     }
 }
 
-export default connect(mapStateToProps)(MapScreen)
+const mapDispatchToProps = dispatch => ({
+    routeAdd: (data, user, vin) => dispatch(routeAdd(data, user, vin)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapScreen)
 
 const styles = StyleSheet.create({
     container: {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView, Text, TextInput, Picker, Button, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, ScrollView, Text, TextInput, Picker, Button, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { connect } from 'react-redux'
 import { routeGet, routeUpdate } from '../_actions'
@@ -24,14 +24,29 @@ class AdminRouteCuScreen extends React.Component {
             disableButton: true,
             showDateStart: false,
             showDateEnd: false,
+            isFetching: true,
             mode: 'date'
         }
     }
 
-    _init = async id => {
+    componentDidMount() {
+        let item = this.props.navigation.state.params
+        this._refreshState(item._id)
+    }
+
+    componentDidUpdate(prevProps) {
+        let item = this.props.navigation.state.params
+        if (item != prevProps.navigation.state.params) {
+            this._refreshState(item._id)
+        }
+    }
+
+    _refreshState = async id => {
+
+        this.setState({ isFetching: true });
         await this.props.routeGet(id)
         const { route } = await this.props
-        await this.setState({
+        this.setState({
             _id: route._id,
             carVin: route.carVin,
             startTrace: moment(route.startTrace).toDate(),
@@ -42,20 +57,9 @@ class AdminRouteCuScreen extends React.Component {
             driverEmail: route.driver.email,
             driverFirstName: route.driver.firstName,
             driverLastName: route.driver.lastName,
-            disableButton: true
-        })
-    }
-
-    componentDidMount() {
-        let item = this.props.navigation.state.params
-        this._init(item._id)
-    }
-
-    componentDidUpdate(prevProps) {
-        let item = this.props.navigation.state.params
-        if (item != prevProps.navigation.state.params) {
-            this._init(item._id)
-        }
+            disableButton: true,
+            isFetching: false
+        });
     }
 
     handleBack = () => {
@@ -124,8 +128,22 @@ class AdminRouteCuScreen extends React.Component {
         let time = this.state.duration.split(':')
         await this.setState({ stopTrace: this.state.startTrace })
         await this.setState({ stopTrace: moment(this.state.stopTrace).add({ hours: parseInt(time[0]), minutes: parseInt(time[1]), seconds: parseInt(time[2]) }).toDate() })
-        this.props.routeUpdate(this.state)
-        this.setState({ disableButton: true })
+        await this.props.routeUpdate(this.state)
+        setTimeout(() => {
+            if (this.props.error.update == true) {
+                ToastAndroid.showWithGravityAndOffset(
+                    'Wystąpił błąd podczas aktualizacji trasy',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                );
+            }
+            else {
+                ToastAndroid.showWithGravityAndOffset(
+                    'Pomyślnie zaktualizowano trase',
+                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                );
+                this.setState({ disableButton: true })
+            }
+        }, 250)
     }
 
     render() {
@@ -137,7 +155,9 @@ class AdminRouteCuScreen extends React.Component {
             return (<Picker.Item label={`${item.email} - ${item.firstName} ${item.lastName}`} key={item.email} value={item.email} />)
         })
 
-        return (
+        let { isFetching } = this.state
+
+        return (isFetching  ? <Text>Wczytywanie</Text> :
             <View style={{ flex: 1 }}>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
@@ -206,6 +226,7 @@ class AdminRouteCuScreen extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        error: state.route.error,
         cars: state.car.cars,
         users: state.user.users,
         route: state.route.route

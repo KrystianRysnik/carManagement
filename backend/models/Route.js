@@ -22,7 +22,8 @@ const routeSchema = mongoose.Schema({
     },
     purpose: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     driver: {
         email: {

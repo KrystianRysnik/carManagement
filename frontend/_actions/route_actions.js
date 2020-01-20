@@ -6,14 +6,48 @@ const instance = axios.create({
     baseURL: 'https://car-management-backend.herokuapp.com/'
 });
 
-export const routeGet = id => {
+export const routeAdd = (data, user, vin) => {
+    return dispatch => {
+        instance.post('/route/add', {
+            carVin: vin,
+            startTrace: data.startTrace,
+            stopTrace: data.stopTrace,
+            distance: data.distance,
+            purpose: data.purpose,
+            driver: {
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName
+            },
+            markers: data.markers
+        })
+            .then(res => {
+                dispatch(addRouteSuccess())
+                if (user.role == 'admin') {
+                    let data = res.data
+                    data.markers = undefined
+                    dispatch(addRoute(data))
+                }
+                console.log('🟢 Add Route Succesfull!')
+            })
+            .catch(error => {
+                dispatch(addRouteError())
+                console.log('🔴 Add Route Error!')
+                console.log(error)
+            })
+    }
+}
+
+export const routeGet = (id) => {
     return dispatch => {
         instance.get(`/route/id/${id}`)
             .then(res => {
-                console.log('🟢 Get Route Succesfull!')
                 dispatch(getRoute(res.data))
+                dispatch(getRouteSuccess())
+                console.log('🟢 Get Route Succesfull!')
             })
             .catch(error => {
+                dispatch(getRouteSuccess())
                 console.log('🔴 Get Route Error!')
                 console.log(error)
             })
@@ -24,10 +58,12 @@ export const routeDelete = id => {
     return dispatch => {
         instance.delete(`/route/delete/${id}`)
             .then(res => {
-                console.log('🟢 Delete Route Succesfull!')
                 dispatch(deleteRoute(id))
+                dispatch(deleteRouteSuccess())
+                console.log('🟢 Delete Route Succesfull!')
             })
             .catch(error => {
+                dispatch(deleteRouteError())
                 console.log('🔴 Delete Route Error!')
                 console.log(error)
             })
@@ -64,8 +100,10 @@ export const routeUpdate = route => {
                         lastName: route.driverLastName
                     }
                 }))
+                dispatch(updateRouteSuccess())
             })
             .catch(error => {
+                dispatch(updateRouteError())
                 console.log('🔴 Update Route Error!')
                 console.log(error);
             })
@@ -76,15 +114,22 @@ export const routeList = () => {
     return dispatch => {
         instance.get('/route/list')
             .then(res => {
-                console.log('🟢 List Routes Succesfull!')
                 dispatch(getAllRoutes(res.data))
+                dispatch(getAllRouteSuccess())
+                console.log('🟢 List Routes Succesfull!')
             })
             .catch(error => {
+                dispatch(getAllRouteError())
                 console.log('🔴 List Routes Error!')
                 console.log(error)
             })
     }
 }
+
+const addRoute = route => ({
+    type: 'ADD_ROUTE',
+    payload: route
+})
 
 const getRoute = route => ({
     type: 'GET_ROUTE',
@@ -105,3 +150,44 @@ const deleteRoute = route => ({
     type: 'DELETE_ROUTE',
     payload: route
 })
+
+const addRouteSuccess = () => ({
+    type: 'ADD_ROUTE_SUCCESS'
+})
+
+const addRouteError = () => ({
+    type: 'ADD_ROUTE_ERROR'
+})
+
+const getRouteSuccess = () => ({
+    type: 'GET_ROUTE_SUCCESS'
+})
+
+const getRouteError = () => ({
+    type: 'GET_ROUTE_ERROR'
+})
+
+const getAllRouteSuccess = () => ({
+    type: 'GET_ALL_ROUTE_SUCCESS'
+})
+
+const getAllRouteError = () => ({
+    type: 'GET_ALL_ROUTE_ERROR'
+})
+
+const updateRouteSuccess = () => ({
+    type: 'UPDATE_ROUTE_SUCCESS'
+})
+
+const updateRouteError = () => ({
+    type: 'UPDATE_ROUTE_ERROR'
+})
+
+const deleteRouteSuccess = () => ({
+    type: 'DELETE_ROUTE_SUCCESS'
+})
+
+const deleteRouteError = () => ({
+    type: 'DELETE_ROUTE_ERROR'
+})
+

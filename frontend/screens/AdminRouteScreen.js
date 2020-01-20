@@ -30,7 +30,17 @@ class AdminRouteScreen extends React.Component {
                 },
                 {
                     text: 'Usuń',
-                    onPress: () => this.props.routeDelete(route._id)
+                    onPress: async () => {
+                        await this.props.routeDelete(route._id)
+                        setTimeout(() => {
+                            if (this.props.error.delete == false) {
+                                ToastAndroid.showWithGravityAndOffset(
+                                    'Pomyśline usunięto trase',
+                                    ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+                                );
+                            }
+                        }, 250)
+                    }
                 },
             ],
             { cancelable: false },
