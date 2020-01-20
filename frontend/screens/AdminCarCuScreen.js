@@ -112,8 +112,8 @@ class AdminCarCuScreen extends React.Component {
         }, 250)
     }
 
-    handleUpdate = () => {
-        this.props.carUpdate(this.state)
+    handleUpdate = async () => {
+        await this.props.carUpdate(this.state)
         setTimeout(() => {
             if (this.props.error.update == true) {
                 ToastAndroid.showWithGravityAndOffset(

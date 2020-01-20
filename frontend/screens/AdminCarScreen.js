@@ -22,8 +22,8 @@ class AdminCarScreen extends React.Component {
                 },
                 {
                     text: 'Usuń',
-                    onPress: () => {
-                        this.props.carDelete(car._id)
+                    onPress: async () => {
+                        await this.props.carDelete(car._id)
                         setTimeout(() => {
                             if (this.props.error.delete == false) {
                                 ToastAndroid.showWithGravityAndOffset(
