@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Alert, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import { View, Text, ToastAndroid, Alert, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { routeDelete, routeList } from '../_actions'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -93,6 +93,7 @@ class AdminRouteScreen extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        error: state.route.error,
         routes: state.route.routes
     }
 }

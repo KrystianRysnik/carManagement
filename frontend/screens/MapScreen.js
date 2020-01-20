@@ -65,7 +65,19 @@ class MapScreen extends React.Component {
     }
 
     startTracking = () => {
-        if (this.props.vin && this.state.purpose) {
+        if (!this.props.vin) {
+            ToastAndroid.showWithGravityAndOffset(
+                'Zanim pojedziesz Wybierz samochód',
+                ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+            )
+        }
+        else if (!this.state.purpose) {
+            ToastAndroid.showWithGravityAndOffset(
+                'Cel wyjazdu jest wymagany',
+                ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
+            )
+        }
+        else {
             const watchID = Geolocation.watchPosition((position) => {
                 let distance = 0
                 if (this.state.previousCoordinate) {
@@ -103,9 +115,9 @@ class MapScreen extends React.Component {
         setTimeout(() => {
             if (this.props.error.add == true) {
                 ToastAndroid.showWithGravityAndOffset(
-                    'Wystąpił błąd podczas dodawania trast',
+                    'Wystąpił błąd podczas dodawania trasy',
                     ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
-                );
+                )
             }
             else {
                 id = 0
@@ -118,7 +130,7 @@ class MapScreen extends React.Component {
                 Geolocation.clearWatch(this.state.watchID)
                 clearInterval(this.interval)
                 ToastAndroid.showWithGravityAndOffset(
-                    'Pomyślnie dodano trasę',
+                    'Pomyślnie dodano trase',
                     ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 50
                 );
             }
