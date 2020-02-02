@@ -5,11 +5,12 @@ const instance = axios.create({
     baseURL: 'https://car-management-backend.herokuapp.com/'
 });
 
-//instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-
 export const carsList = () => {
-    return dispatch => {
-        instance.get('/car/list')
+    return (dispatch, getState) => {
+        instance.get('/car/list',
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
+        })
             .then(res => {
                 console.log('🟢 List Cars Succesfull!')
                 dispatch(getAllCars(res.data))
@@ -24,13 +25,16 @@ export const carsList = () => {
 }
 
 export const carAdd = car => {
-    return dispatch => {
+    return (dispatch, getState) => {
         instance.post('/car/add', {
             name: car.name,
             vin: car.vin,
             mileage: car.mileage,
             licensePlate: car.licensePlate,
             engineSize: car.engineSize
+        },
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
         })
             .then(res => {
                 dispatch(addCar(res.data.car))
@@ -46,7 +50,7 @@ export const carAdd = car => {
 }
 
 export const carUpdate = car => {
-    return dispatch => {
+    return (dispatch, getState) => {
         instance.put('/car/update', {
             _id: car._id,
             name: car.name,
@@ -54,6 +58,9 @@ export const carUpdate = car => {
             mileage: car.mileage,
             licensePlate: car.licensePlate,
             engineSize: car.engineSize
+        },
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
         })
             .then(res => {
                 dispatch(updateCar({
@@ -76,8 +83,11 @@ export const carUpdate = car => {
 }
 
 export const carDelete = id => {
-    return dispatch => {
-        instance.delete(`/car/delete/${id}`)
+    return (dispatch, getState) => {
+        instance.delete(`/car/delete/${id}`,
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
+        })
             .then(res => {
                 dispatch(deleteCar(id))
                 dispatch(deleteCarSuccess())

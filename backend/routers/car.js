@@ -1,9 +1,10 @@
 const express = require('express')
 const Car = require('../models/Car')
+const auth = require('../middleware/auth')
 
 const router = express.Router()
 
-router.post('/car/add', async (req, res) => {
+router.post('/car/add', auth, async (req, res) => {
     // Add new car
     try {
         const car = new Car(req.body)
@@ -15,7 +16,7 @@ router.post('/car/add', async (req, res) => {
     }
 })
 
-router.put('/car/update', async (req, res) => {
+router.put('/car/update', auth, async (req, res) => {
     // Update car
     try {
         await Car.updateOne(
@@ -38,7 +39,7 @@ router.put('/car/update', async (req, res) => {
     }
 })
 
-router.delete('/car/delete/:id', async (req, res) => {
+router.delete('/car/delete/:id', auth, async (req, res) => {
     // Update car
     try {
         await Car.deleteOne({
@@ -51,7 +52,7 @@ router.delete('/car/delete/:id', async (req, res) => {
     }
 })
 
-router.get('/car/list', async (req, res) => {
+router.get('/car/list', auth, async (req, res) => {
     // List of cars
     Car.find({}, { '__v': 0 }, (err, cars) => {
         if (err) {

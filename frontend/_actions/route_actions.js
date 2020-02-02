@@ -7,7 +7,7 @@ const instance = axios.create({
 });
 
 export const routeAdd = (data, user, vin) => {
-    return dispatch => {
+    return (dispatch, getState) => {
         instance.post('/route/add', {
             carVin: vin,
             startTrace: data.startTrace,
@@ -20,6 +20,9 @@ export const routeAdd = (data, user, vin) => {
                 lastName: user.lastName
             },
             markers: data.markers
+        },
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
         })
             .then(res => {
                 dispatch(addRouteSuccess())
@@ -40,8 +43,11 @@ export const routeAdd = (data, user, vin) => {
 
 export const routeGet = (id, withMarkers) => {
     console.log(`/route/${id}/${withMarkers}`)
-    return dispatch => {
-        instance.get(`/route/${id}/${withMarkers}`)
+    return (dispatch, getState) => {
+        instance.get(`/route/${id}/${withMarkers}`,
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
+        })
             .then(res => {
                 dispatch(getRoute(res.data))
                 dispatch(getRouteSuccess())
@@ -56,8 +62,11 @@ export const routeGet = (id, withMarkers) => {
 }
 
 export const routeDelete = id => {
-    return dispatch => {
-        instance.delete(`/route/delete/${id}`)
+    return (dispatch, getState) => {
+        instance.delete(`/route/delete/${id}`,
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
+        })
             .then(res => {
                 dispatch(deleteRoute(id))
                 dispatch(deleteRouteSuccess())
@@ -72,7 +81,7 @@ export const routeDelete = id => {
 }
 
 export const routeUpdate = route => {
-    return dispatch => {
+    return (dispatch, getState) => {
         instance.put('/route/update', {
             _id: route._id,
             carVin: route.carVin,
@@ -85,6 +94,9 @@ export const routeUpdate = route => {
                 firstName: route.driverFirstName,
                 lastName: route.driverLastName
             }
+        },
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
         })
             .then(res => {
                 console.log('🟢 Update Route Succesfull!')
@@ -112,8 +124,11 @@ export const routeUpdate = route => {
 }
 
 export const routeList = () => {
-    return dispatch => {
-        instance.get('/route/list')
+    return (dispatch, getState) => {
+        instance.get('/route/list',
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
+        })
             .then(res => {
                 dispatch(getAllRoutes(res.data))
                 dispatch(getAllRouteSuccess())

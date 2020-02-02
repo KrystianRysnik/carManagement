@@ -1,9 +1,10 @@
 const express = require('express')
 const Route = require('../models/Route')
+const auth = require('../middleware/auth')
 
 const router = express.Router()
 
-router.post('/route/add', async (req, res) => {
+router.post('/route/add', auth, async (req, res) => {
     // Add new route
     try {
         const route = new Route(req.body)
@@ -15,7 +16,7 @@ router.post('/route/add', async (req, res) => {
     }
 })
 
-router.get('/route/:id/:withMarkers', async (req, res) => {
+router.get('/route/:id/:withMarkers', auth, async (req, res) => {
     // Get route
     let route
     if (`${req.params.withMarkers == 'true'}`)
@@ -29,7 +30,7 @@ router.get('/route/:id/:withMarkers', async (req, res) => {
         res.status(400).send('Something went wrong!')
 })
 
-router.get('/route/list', async (req, res) => {
+router.get('/route/list', auth, async (req, res) => {
     // List of routes
     Route.find({}, { '__v': 0, 'markers': 0 }, (err, routes) => {
         if (err) {
@@ -40,7 +41,7 @@ router.get('/route/list', async (req, res) => {
     });
 })
 
-router.put('/route/update', async (req, res) => {
+router.put('/route/update', auth, async (req, res) => {
     // Update route
     try {
         await Route.updateOne(
@@ -64,7 +65,7 @@ router.put('/route/update', async (req, res) => {
     }
 })
 
-router.delete('/route/delete/:id', async (req, res) => {
+router.delete('/route/delete/:id', auth, async (req, res) => {
     // Delete route
     try {
         await Route.deleteOne({
@@ -77,7 +78,7 @@ router.delete('/route/delete/:id', async (req, res) => {
     }
 })
 
-router.post('/route/report', async (req, res) => {
+router.post('/route/report', auth, async (req, res) => {
     // List of routes from X (date) to Y (date) for Z (car)
     Route.find({
         startTrace: { $gte: new Date(req.body.dateStart), $lte: new Date(req.body.dateEnd) },
