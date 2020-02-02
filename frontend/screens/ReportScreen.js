@@ -57,7 +57,7 @@ class RouteScreen extends React.Component {
             </tr>
           </table>
 
-          <h1 style="text-align: center; font-size: 16pt;">EWIDENCJA PRZEBIEGU POJAZDU DLA CELÓW VAT</h1>
+          <h1 style="text-align: center; font-size: 16pt;">EWIDENCJA PRZEBIEGU POJAZDU</h1>
           <h3 style="text-align: center;">od ${moment(this.state.dateStart).format('DD MMM YYYY')} do ${moment(this.state.dateEnd).format('DD MMM YYYY')}</h3>`,
             fileName: `${car.licensePlate}_${moment(this.state.dateStart).format('DD-MM-YYYY')}`,
             directory: 'Downloads',
@@ -100,6 +100,8 @@ class RouteScreen extends React.Component {
             dateEnd: this.state.dateEnd,
             licensePlate: car.licensePlate,
             vin: car.vin
+        }, {
+            headers: {'Authorization': `Bearer ${this.props.token}`}
         })
             .then(res => {
                 console.log('🟢 File Downloaded Succesfull!')
@@ -183,6 +185,7 @@ class RouteScreen extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        token: state.user.token,
         cars: state.car.cars
     }
 }

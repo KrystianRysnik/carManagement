@@ -55,7 +55,7 @@ class RouteMapScreen extends React.Component {
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
-                        <Text style={styles.headerTitle}>Traza z {moment(route.startTrace).format('DD/MM/YYYY')} </Text>
+                        <Text style={styles.headerTitle}>Trasa z {moment(route.startTrace).format('DD/MM/YYYY')} </Text>
                     </TouchableOpacity>
                 </View>
 

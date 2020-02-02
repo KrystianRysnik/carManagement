@@ -17,14 +17,14 @@ class RouteScreen extends React.Component {
     }
 
     render() {
-        const { routes } = this.props
+        const routes = this.props.routes.filter(route => route.driver.email === this.props.email)
 
         return (
             <View style={{ flex: 1 }}>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
                         <Icon name='keyboard-backspace' size={24} color='#000' />
-                        <Text style={styles.headerTitle}>Historia Tras</Text>
+                        <Text style={styles.headerTitle}>Moja Historia Tras</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1 }}>
@@ -33,7 +33,6 @@ class RouteScreen extends React.Component {
                             <View style={styles.listItem}>
                                 <TouchableOpacity style={{ padding: 15 }} onPress={() => NavigationService.navigate('RouteMap', item)}>
                                     <Text>Data: <Text style={{ fontWeight: 'bold' }}>{moment(item.startTrace).format('DD/MM/YYYY')}</Text></Text>
-                                    <Text>Kierowca: {item.driver.firstName} {item.driver.lastName}</Text>
                                     <Text>Samochód: {item.carVin} </Text>
                                     <Text>Cel wyjazdu: {item.purpose}</Text>
                                     <Text>Dystans: {item.distance.toFixed(2)} km</Text>
@@ -51,6 +50,7 @@ class RouteScreen extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        email: state.user.user.email,
         routes: state.route.routes
     }
 }
