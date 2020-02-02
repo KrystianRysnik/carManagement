@@ -22,11 +22,6 @@ class LoadingScreen extends React.Component {
                     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
                 ])
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    console.log('You can use the location & external storage')
-                } else {
-                    console.log('Location and/or external storage permission denied')
-                }
             }
         } catch (err) {
             console.warn(err)
