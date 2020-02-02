@@ -24,7 +24,6 @@ class AdminRouteCuScreen extends React.Component {
             disableButton: true,
             showDateStart: false,
             showDateEnd: false,
-            isFetching: true,
             mode: 'date'
         }
     }
@@ -42,9 +41,7 @@ class AdminRouteCuScreen extends React.Component {
     }
 
     _refreshState = async id => {
-
-        this.setState({ isFetching: true });
-        await this.props.routeGet(id)
+        await this.props.routeGet(id, false)
         const { route } = await this.props
         this.setState({
             _id: route._id,
@@ -58,7 +55,6 @@ class AdminRouteCuScreen extends React.Component {
             driverFirstName: route.driver.firstName,
             driverLastName: route.driver.lastName,
             disableButton: true,
-            isFetching: false
         });
     }
 
@@ -234,7 +230,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    routeGet: id => dispatch(routeGet(id)),
+    routeGet: (id, withMarkers) => dispatch(routeGet(id, withMarkers)),
     routeUpdate: route => dispatch(routeUpdate(route))
 })
 

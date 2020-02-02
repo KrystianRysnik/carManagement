@@ -15,13 +15,16 @@ class RouteMapScreen extends React.Component {
 
     componentDidMount() {
         let item = this.props.navigation.state.params
-        this.props.routeGet(item._id)
+        this.props.routeGet(item._id, true)
     }
 
     componentDidUpdate(prevProps) {
         let item = this.props.navigation.state.params
         if (item != prevProps.navigation.state.params) {
-            this.props.routeGet(item._id)
+            this.props.routeGet(item._id, true)
+            setTimeout(() => {
+                this.mapRef.fitToCoordinates(this.props.route.markers.map((marker) => marker.coordinate), { edgePadding: { top: 10, right: 10, bottom: 10, left: 10 }, animated: true })
+            }, 500)
         }
     }
 
@@ -41,14 +44,12 @@ class RouteMapScreen extends React.Component {
                         rotateEnabled={false}
                         showsCompass={false}
                         ref={(ref) => { this.mapRef = ref }}
-                        onLayout={() => this.mapRef.fitToCoordinates(route.markers.map((marker) => marker.coordinate), { edgePadding: { top: 10, right: 10, bottom: 10, left: 10 }, animated: false })}>
+                        onLayout={() => this.mapRef.fitToCoordinates(route.markers.map((marker) => marker.coordinate), { edgePadding: { top: 10, right: 10, bottom: 10, left: 10 }, animated: true })}>
                         <Polyline
                             coordinates={route.markers.map((marker) => marker.coordinate)}
                             strokeWidth={5} />
                     </MapView>
-                ) : (
-                       <ActivityIndicator size={'large'} />
-                    )}
+                ) : null}
 
 
                 <View style={styles.header}>
@@ -57,6 +58,13 @@ class RouteMapScreen extends React.Component {
                         <Text style={styles.headerTitle}>Traza z {moment(route.startTrace).format('DD/MM/YYYY')} </Text>
                     </TouchableOpacity>
                 </View>
+
+                {route.markers != undefined ? null : (
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <ActivityIndicator size={'large'} />
+                        <Text>Ładowanie</Text>
+                    </View>
+                )}
 
                 <View style={styles.details}>
                     <View style={{ width: '50%' }}>
@@ -80,7 +88,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    routeGet: id => dispatch(routeGet(id))
+    routeGet: (id, withMarkers) => dispatch(routeGet(id, withMarkers))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RouteMapScreen)

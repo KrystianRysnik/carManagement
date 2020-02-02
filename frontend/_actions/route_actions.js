@@ -38,9 +38,10 @@ export const routeAdd = (data, user, vin) => {
     }
 }
 
-export const routeGet = (id) => {
+export const routeGet = (id, withMarkers) => {
+    console.log(`/route/${id}/${withMarkers}`)
     return dispatch => {
-        instance.get(`/route/id/${id}`)
+        instance.get(`/route/${id}/${withMarkers}`)
             .then(res => {
                 dispatch(getRoute(res.data))
                 dispatch(getRouteSuccess())
