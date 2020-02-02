@@ -29,6 +29,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import Hidden from './_components/Hidden'
 import Header from './_components/Header'
 import AdminBtn from './_components/AdminBtn'
+import ReportBtn from './_components/ReportBtn'
 
 const AuthStack = createStackNavigator(
   {
@@ -90,10 +91,7 @@ const AppDrawer = createDrawerNavigator(
     Report: {
       screen: ReportScreen,
       navigationOptions: {
-        drawerLabel: 'Generowanie Raportu',
-        drawerIcon: (
-          <Icon name='picture-as-pdf' size={24} color='#000' />
-        )
+        drawerLabel: <ReportBtn />
       }
     },
     Admin: {
