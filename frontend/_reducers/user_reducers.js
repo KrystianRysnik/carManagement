@@ -1,4 +1,5 @@
 const initialState = {
+    token: '',
     user: {},
     users: [],
     error: {
@@ -10,6 +11,11 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
+        case 'SET_TOKEN':
+            return { ...state, token: action.payload }
+        case 'REMOVE_TOKEN':
+            return { ...state, token: '' }
+
         case 'LOGIN_USER':
             return { ...state, user: action.payload }
         case 'LOGOUT_USER':

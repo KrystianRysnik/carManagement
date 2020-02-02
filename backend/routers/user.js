@@ -33,7 +33,7 @@ router.post('/user/login', async (req, res) => {
     }
 })
 
-router.put('/user/profile/update', async (req, res) => {
+router.put('/user/profile/update', auth, async (req, res) => {
     // Update user
     try {
         await User.updateOne(
@@ -54,7 +54,7 @@ router.put('/user/profile/update', async (req, res) => {
     }
 })
 
-router.post('/user/add', async (req, res) => {
+router.post('/user/add', auth, async (req, res) => {
     // Create new user
     try {
         const user = new User(req.body)
@@ -72,7 +72,7 @@ router.post('/user/add', async (req, res) => {
     }
 })
 
-router.put('/user/update', async (req, res) => {
+router.put('/user/update', auth, async (req, res) => {
     // Update user
     try {
         await User.updateOne(
@@ -88,7 +88,6 @@ router.put('/user/update', async (req, res) => {
                 }
             })
         const user = await User.findOne({ _id: req.body._id })
-        console.log(req.body.user)
         res.status(200).send(user)
     }
     catch (error) {
@@ -96,7 +95,7 @@ router.put('/user/update', async (req, res) => {
     }
 })
 
-router.delete('/user/delete/:id', async (req, res) => {
+router.delete('/user/delete/:id', auth, async (req, res) => {
     // Delete user
     try {
         await User.deleteOne({
@@ -128,7 +127,7 @@ router.post('/user/logout', auth, async (req, res) => {
     }
 })
 
-router.get('/user/list', async (req, res) => {
+router.get('/user/list', auth, async (req, res) => {
     // List of users
     User.find({}, { '__v': 0, 'password': 0, 'tokens': 0 }, (err, users) => {
         if (err) {

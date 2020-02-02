@@ -5,12 +5,9 @@ import NavigationService from '../NavigationService';
 
 
 const instance = axios.create({
-    //baseURL: 'http://192.168.0.19:3000'
-    baseURL: 'https://car-management-backend.herokuapp.com/'
-});
-
-//instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-
+    //baseURL: 'http://192.168.0.19:3000',
+    baseURL: 'https://car-management-backend.herokuapp.com/',
+})
 
 export const userSignUp = user => {
     return dispatch => {
@@ -23,6 +20,7 @@ export const userSignUp = user => {
             .then(res => {
                 console.log('🟢 Register Succesfull!')
                 AsyncStorage.setItem('@token', res.data.token)
+                dispatch(setToken(res.data.token))
                 dispatch(loginUser(res.data.user))
                 dispatch(carsList())
                 NavigationService.navigate('App', null)
@@ -43,6 +41,7 @@ export const userSignIn = user => {
             .then(res => {
                 console.log('🟢 Login Succesfull! /w Login Form')
                 AsyncStorage.setItem('@token', res.data.token)
+                dispatch(setToken(res.data.token))
                 dispatch(loginUser(res.data.user))
                 dispatch(carsList())
                 NavigationService.navigate('App', null)
@@ -56,12 +55,15 @@ export const userSignIn = user => {
 
 export const userSignOut = token => {
     return dispatch => {
-        instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        instance.post('/user/logout')
+        instance.post('/user/logout', {},
+        {
+            headers: {'Authorization': `Bearer ${token}`}
+        })
             .then(res => {
                 console.log('🟢 Logout Succesfull!')
                 AsyncStorage.removeItem('@token')
                 dispatch(logoutUser())
+                dispatch(removeToken())
                 NavigationService.navigate('Auth', null)
             })
             .catch(error => {
@@ -72,11 +74,14 @@ export const userSignOut = token => {
 }
 
 export const userProfileUpdate = user => {
-    return dispatch => {
+    return (dispatch, getState) => {
         instance.put('/user/profile/update', {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName
+        },
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
         })
             .then(res => {
                 dispatch(loginUser(res.data))
@@ -92,13 +97,16 @@ export const userProfileUpdate = user => {
 }
 
 export const userAdd = user => {
-    return dispatch => {
+    return (dispatch, getState) => {
         instance.post('/user/add', {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
             password: user.password,
             role: user.role
+        },
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
         })
             .then(res => {
                 dispatch(addUser(res.data))
@@ -115,13 +123,16 @@ export const userAdd = user => {
 
 
 export const userUpdate = user => {
-    return dispatch => {
+    return (dispatch, getState) => {
         instance.put('/user/update', {
             _id: user._id,
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role
+        },
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
         })
             .then(res => {
                 dispatch(updateUser({
@@ -143,8 +154,11 @@ export const userUpdate = user => {
 }
 
 export const userDelete = id => {
-    return dispatch => {
-        instance.delete(`/user/delete/${id}`)
+    return (dispatch, getState) => {
+        instance.delete(`/user/delete/${id}`,
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
+        })
             .then(res => {
                 dispatch(deleteUser(id))
                 dispatch(deleteUserSuccess())
@@ -161,11 +175,14 @@ export const userDelete = id => {
 export const userProfile = token => {
     return dispatch => {
         if (token) {
-            instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            instance.get('/user/profile')
+            instance.get('/user/profile',
+            {
+                headers: {'Authorization': `Bearer ${token}`}
+            })
                 .then(res => {
                     console.log('🟢 Login Succesfull! /w Reopen App')
                     dispatch(loginUser(res.data))
+                    dispatch(setToken(token))
                     dispatch(carsList())
                     NavigationService.navigate('App', null)
                 })
@@ -182,8 +199,11 @@ export const userProfile = token => {
 }
 
 export const userList = () => {
-    return dispatch => {
-        instance.get('/user/list')
+    return (dispatch, getState) => {
+        instance.get('/user/list',
+        {
+            headers: {'Authorization': `Bearer ${getState().user.token}`}
+        })
             .then(res => {
                 console.log('🟢 List User Succesfull!')
                 dispatch(listUser(res.data))
@@ -194,6 +214,16 @@ export const userList = () => {
             })
     }
 }
+
+const setToken = token => ({
+    type: 'SET_TOKEN',
+    payload: token
+})
+
+const removeToken = () => ({
+    type: 'REMOVE_TOKEN',
+})
+
 
 const loginUser = userObj => ({
     type: 'LOGIN_USER',
