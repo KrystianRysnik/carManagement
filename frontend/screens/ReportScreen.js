@@ -9,6 +9,24 @@ import axios from 'axios'
 
 import RNHTMLtoPDF from 'react-native-html-to-pdf'
 
+const style = `<style>
+.v100 {
+    width: 100%;
+}
+th {
+    text-align: center;
+}
+.border,
+.border th,
+.border td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+</style>`;
+
 class RouteScreen extends React.Component {
     state = {
         value: '',
@@ -41,39 +59,30 @@ class RouteScreen extends React.Component {
 
     async createPDF(data, car) {
         let options = {
-            html: `<style>
-            .border,
-            .border th,
-            .border td {
-                border: 1px solid black;
-                border-collapse: collapse;
-            }
-          </style>
-          <table style="width: 100%;">
+            html: `${style}
+          <table class="v100">
             <tr>
                 <td style="width: 50%;">(dane podatnika)</td>
                 <td style="width: 50%;">Numer rejestracyjny pojazdu: ${car.licensePlate}<br/>
             Pojemność silnika: ${car.engineSize} cm</td>
             </tr>
           </table>
-
           <h1 style="text-align: center; font-size: 16pt;">EWIDENCJA PRZEBIEGU POJAZDU</h1>
-          <h3 style="text-align: center;">od ${moment(this.state.dateStart).format('DD MMM YYYY')} do ${moment(this.state.dateEnd).format('DD MMM YYYY')}</h3>`,
+          <h3 style="text-align: center;">od ${moment(this.state.dateStart).format('DD.MM.YYYY')} 
+          do ${moment(this.state.dateEnd).format('DD.MM.YYYY')}</h3>`,
             fileName: `${car.licensePlate}_${moment(this.state.dateStart).format('DD-MM-YYYY')}`,
             directory: 'Downloads',
             width: 595,
             height: 842
         }
-
-        options.html += `<table class="border">
+        options.html += `<table class="border v100">
             <tr>
                 <th>Lp</th>
                 <th>Data wyjazdu</th>
                 <th>Cel wyjazdu</th>
-                <th>Liczba przejechanych kilometrów</th>
-                <th>Imię i nazwisko osoby kierującej</th>
+                <th>Liczba przejechanych <br>kilometrów</th>
+                <th>Imię i nazwisko <br>osoby kierującej</th>
             </tr>`
-
         let i = 1
         for (let item of data) {
             options.html += `<tr>
@@ -85,12 +94,9 @@ class RouteScreen extends React.Component {
             </tr>`
             i++
         }
-
-
         options.html += `</table>`
 
         let file = await RNHTMLtoPDF.convert(options)
-        // console.log(file.filePath);
         alert(file.filePath)
     }
 
