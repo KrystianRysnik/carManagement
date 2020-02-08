@@ -21,16 +21,14 @@ export const routeAdd = (data, user, vin) => {
             },
             markers: data.markers
         },
-        {
-            headers: {'Authorization': `Bearer ${getState().user.token}`}
-        })
+            {
+                headers: { 'Authorization': `Bearer ${getState().user.token}` }
+            })
             .then(res => {
                 dispatch(addRouteSuccess())
-                if (user.role == 'admin') {
-                    let data = res.data
-                    data.markers = undefined
-                    dispatch(addRoute(data))
-                }
+                let data = res.data
+                data.markers = undefined
+                dispatch(addRoute(data))
                 console.log('🟢 Add Route Succesfull!')
             })
             .catch(error => {
@@ -45,9 +43,9 @@ export const routeGet = (id, withMarkers) => {
     console.log(`/route/${id}/${withMarkers}`)
     return (dispatch, getState) => {
         instance.get(`/route/${id}/${withMarkers}`,
-        {
-            headers: {'Authorization': `Bearer ${getState().user.token}`}
-        })
+            {
+                headers: { 'Authorization': `Bearer ${getState().user.token}` }
+            })
             .then(res => {
                 dispatch(getRoute(res.data))
                 dispatch(getRouteSuccess())
@@ -64,9 +62,9 @@ export const routeGet = (id, withMarkers) => {
 export const routeDelete = id => {
     return (dispatch, getState) => {
         instance.delete(`/route/delete/${id}`,
-        {
-            headers: {'Authorization': `Bearer ${getState().user.token}`}
-        })
+            {
+                headers: { 'Authorization': `Bearer ${getState().user.token}` }
+            })
             .then(res => {
                 dispatch(deleteRoute(id))
                 dispatch(deleteRouteSuccess())
@@ -95,9 +93,9 @@ export const routeUpdate = route => {
                 lastName: route.driverLastName
             }
         },
-        {
-            headers: {'Authorization': `Bearer ${getState().user.token}`}
-        })
+            {
+                headers: { 'Authorization': `Bearer ${getState().user.token}` }
+            })
             .then(res => {
                 console.log('🟢 Update Route Succesfull!')
                 dispatch(updateRoute({
@@ -126,9 +124,9 @@ export const routeUpdate = route => {
 export const routeList = () => {
     return (dispatch, getState) => {
         instance.get('/route/list',
-        {
-            headers: {'Authorization': `Bearer ${getState().user.token}`}
-        })
+            {
+                headers: { 'Authorization': `Bearer ${getState().user.token}` }
+            })
             .then(res => {
                 dispatch(getAllRoutes(res.data))
                 dispatch(getAllRouteSuccess())
