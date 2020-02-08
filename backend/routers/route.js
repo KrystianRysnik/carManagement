@@ -19,7 +19,7 @@ router.post('/route/add', auth, async (req, res) => {
 router.get('/route/:id/:withMarkers', auth, async (req, res) => {
     // Get route
     let route
-    if (`${req.params.withMarkers == 'true'}`)
+    if (`${req.params.withMarkers}` == 'true')
         route = await Route.findById(req.params.id)
     else
         route = await Route.findById(req.params.id, { 'markers': 0 })
