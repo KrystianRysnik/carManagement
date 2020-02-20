@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { routeAdd } from '../_actions'
+import { routeAdd, carUpdate } from '../_actions'
 import { View, Text, TextInput, TouchableOpacity, ToastAndroid, Button, Modal, Alert, StyleSheet } from 'react-native'
 import MapView, { Polyline } from 'react-native-maps'
 import NavigationService from '../NavigationService'
@@ -111,6 +111,14 @@ class MapScreen extends React.Component {
 
     stopTracking = async () => {
         await this.setState({ stopTrace: moment(new Date).toJSON() })
+        await this.props.carUpdate({
+            _id: this.props.car._id,
+            name: this.props.car.name,
+            vin: this.props.car.vin,
+            mileage: parseInt(this.props.car.mileage) + parseInt(this.state.distance),
+            licensePlate: this.props.car.licensePlate,
+            engineSize: this.props.car.engineSize
+        })
         await this.props.routeAdd(this.state, this.props.user, this.props.vin)
         setTimeout(() => {
             if (this.props.error.add == true) {
@@ -270,6 +278,7 @@ const mapStateToProps = state => {
     return {
         error: state.route.error,
         user: state.user.user,
+        car: state.car.car,
         vin: state.car.car.vin,
         licensePlate: state.car.car.licensePlate
     }
@@ -277,6 +286,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
     routeAdd: (data, user, vin) => dispatch(routeAdd(data, user, vin)),
+    carUpdate: (car) => dispatch(carUpdate(car))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapScreen)
