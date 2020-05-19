@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import NavigationService from '../NavigationService'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import moment from 'moment'
-import axios from 'axios'
+import { instance } from '../settings';
 
 import RNHTMLtoPDF from 'react-native-html-to-pdf'
 
@@ -101,7 +101,7 @@ class RouteScreen extends React.Component {
     }
 
     getReport = (car) => {
-        axios.post('https://car-management-backend.herokuapp.com/route/report', {
+        instance.post('/route/report', {
             dateStart: this.state.dateStart,
             dateEnd: this.state.dateEnd,
             licensePlate: car.licensePlate,

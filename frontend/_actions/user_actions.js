@@ -1,13 +1,7 @@
-import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import { carsList } from './car_actions';
 import NavigationService from '../NavigationService';
-
-
-const instance = axios.create({
-    //baseURL: 'http://192.168.0.19:3000',
-    baseURL: 'https://car-management-backend.herokuapp.com/',
-})
+import { instance } from '../settings';
 
 export const userSignUp = user => {
     return dispatch => {
