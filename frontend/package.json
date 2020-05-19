@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
+    "android": "npx react-native run-android",
+    "ios": "npx react-native run-ios",
+    "start": "npx react-native start",
     "test": "jest",
     "lint": "eslint ."
   },
@@ -17,7 +17,7 @@
     "haversine": "^1.1.1",
     "moment": "^2.24.0",
     "react": "16.9.0",
-    "react-native": "0.61.2",
+    "react-native": "^0.62.2",
     "react-native-config": "^0.11.7",
     "react-native-geolocation-service": "^3.1.0",
     "react-native-gesture-handler": "^1.4.1",
