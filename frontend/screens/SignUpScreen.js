@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, TextInput, Text, Button, Image, ImageBackground, StyleSheet } from 'react-native'
+import { View, Text, Button, Image, ImageBackground, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { userSignUp } from '../_actions'
 import NavigationService from '../NavigationService'
+import Input from '../_components/Input'
 
 class SignUpScreen extends React.Component {
     state = {
@@ -12,20 +13,11 @@ class SignUpScreen extends React.Component {
         password: ""
     }
 
-    handleFirstNameChange = firstName => {
-        this.setState({ firstName: firstName })
-    }
-
-    handleLastNameChange = lastName => {
-        this.setState({ lastName: lastName })
-    }
-
-    handleEmailChange = email => {
-        this.setState({ email: email })
-    }
-
-    handlePasswordChange = password => {
-        this.setState({ password: password })
+    handleChange = (name, value) => {
+        this.setState(prevState => ({
+            ...prevState,
+            [name]: value
+        }))
     }
 
     handleSubmit = () => {
@@ -40,36 +32,31 @@ class SignUpScreen extends React.Component {
                         <Image source={require('../_assets/logo_white.png')} style={styles.logo} />
 
                         <View style={{ width: '80%' }}>
-
-                            <Text style={styles.inputLabel}>Imię</Text>
-                            <TextInput
+                            <Input
+                                primary
+                                name='Imię'
                                 value={this.state.firstName}
-                                onChangeText={this.handleFirstNameChange}
-                                style={styles.input}
+                                onChangeFn={value => this.handleChange('firstName', value)}
                             />
-
-                            <Text style={styles.inputLabel}>Nazwisko</Text>
-                            <TextInput
+                            <Input
+                                primary
+                                name='Nazwisko'
                                 value={this.state.lastName}
-                                onChangeText={this.handleLastNameChange}
-                                style={styles.input}
+                                onChangeFn={value => this.handleChange('lastName', value)}
                             />
-
-                            <Text style={styles.inputLabel}>Email</Text>
-                            <TextInput
+                            <Input
+                                primary
+                                name='Email'
                                 value={this.state.email}
-                                onChangeText={this.handleEmailChange}
-                                style={styles.input}
+                                onChangeFn={value => this.handleChange('email', value)}
                             />
-
-                            <Text style={styles.inputLabel}>Hasło</Text>
-                            <TextInput
-                                secureTextEntry
+                            <Input
+                                primary
+                                name='Hasło'
                                 value={this.state.password}
-                                onChangeText={this.handlePasswordChange}
-                                style={styles.input}
+                                onChangeFn={value => this.handleChange('password', value)}
+                                secureTextEntry
                             />
-
                             <Button title='Zarejestruj Się' onPress={this.handleSubmit} />
                             <Text style={styles.hint}>Posiadasz Konto? <Text style={{ fontWeight: 'bold' }} onPress={() => NavigationService.navigate('SignIn', null)}>Zaloguj Się</Text></Text>
                         </View>
@@ -90,18 +77,6 @@ const styles = StyleSheet.create({
     logo: {
         width: 180,
         height: 180
-    },
-    inputLabel: {
-        marginTop: 15,
-        fontSize: 12,
-        color: '#fff'
-    },
-    input: {
-        marginBottom: 15,
-        paddingVertical: 5,
-        color: '#fff',
-        borderBottomColor: '#fff',
-        borderBottomWidth: 2,
     },
     hint: {
         marginTop: 15,

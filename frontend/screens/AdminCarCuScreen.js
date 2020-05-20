@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, ScrollView, Text, TextInput, Button, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native'
+import { View, ScrollView, Text, Button, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native'
 import { connect } from 'react-redux'
 import { carAdd, carUpdate } from '../_actions'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import NavigationService from '../NavigationService'
+import Input from '../_components/Input'
 
 class AdminCarCuScreen extends React.Component {
     constructor(props) {
@@ -51,28 +52,11 @@ class AdminCarCuScreen extends React.Component {
         NavigationService.navigate('Admin')
     }
 
-    handleNameChange = async name => {
-        await this.setState({ name: name })
-        this.checkDifferences()
-    }
-
-    handleVinChange = async vin => {
-        await this.setState({ vin: vin })
-        this.checkDifferences()
-    }
-
-    handleMileageChange = async mileage => {
-        await this.setState({ mileage: mileage })
-        this.checkDifferences()
-    }
-
-    handleLicensePlateChange = async licensePlate => {
-        await this.setState({ licensePlate: licensePlate })
-        this.checkDifferences()
-    }
-
-    handleEngineSizeChange = async engineSize => {
-        await this.setState({ engineSize: engineSize })
+    handleChange = (name, value) => {
+        this.setState(prevState => ({
+            ...prevState,
+            [name]: value
+        }))
         this.checkDifferences()
     }
 
@@ -146,35 +130,30 @@ class AdminCarCuScreen extends React.Component {
                 </View>
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.container}>
-                        <Text style={{ color: '#000' }}>Nazwa samochodu</Text>
-                        <TextInput
+                        <Input
+                            name='Nazwa samochodu'
                             value={this.state.name}
-                            onChangeText={this.handleNameChange}
-                            style={styles.input}
+                            onChangeFn={value => this.handleChange('name', value)}
                         />
-                        <Text style={styles.inputLabel}>Numer VIN</Text>
-                        <TextInput
+                        <Input
+                            name='Numer VIN'
                             value={this.state.vin}
-                            onChangeText={this.handleVinChange}
-                            style={styles.input}
+                            onChangeFn={value => this.handleChange('vin', value)}
                         />
-                        <Text style={styles.inputLabel}>Tablica rejestracyjna</Text>
-                        <TextInput
+                        <Input
+                            name='Tablica rejestracyjna'
                             value={this.state.licensePlate}
-                            onChangeText={this.handleLicensePlateChange}
-                            style={styles.input}
+                            onChangeFn={value => this.handleChange('licensePlate', value)}
                         />
-                        <Text style={styles.inputLabel}>Przebieg</Text>
-                        <TextInput
+                        <Input
+                            name='Przebieg'
                             value={this.state.mileage}
-                            onChangeText={this.handleMileageChange}
-                            style={styles.input}
+                            onChangeFn={value => this.handleChange('mileage', value)}
                         />
-                        <Text style={styles.inputLabel}>Pojemność silnika</Text>
-                        <TextInput
+                        <Input
+                            name='Pojemność silnika'
                             value={this.state.engineSize}
-                            onChangeText={this.handleEngineSizeChange}
-                            style={styles.input}
+                            onChangeFn={value => this.handleChange('engineSize', value)}
                         />
                     </View>
                     <View style={styles.container}>

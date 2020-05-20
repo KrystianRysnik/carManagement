@@ -5,7 +5,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import NavigationService from '../NavigationService'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import moment from 'moment'
-import { instance } from '../settings';
+import { instance } from '../settings'
+import Input from '../_components/Input'
 
 import RNHTMLtoPDF from 'react-native-html-to-pdf'
 
@@ -68,7 +69,7 @@ class RouteScreen extends React.Component {
             </tr>
           </table>
           <h1 style="text-align: center; font-size: 16pt;">EWIDENCJA PRZEBIEGU POJAZDU</h1>
-          <h3 style="text-align: center;">od ${moment(this.state.dateStart).format('DD.MM.YYYY')} 
+          <h3 style="text-align: center;">od ${moment(this.state.dateStart).format('DD.MM.YYYY')}
           do ${moment(this.state.dateEnd).format('DD.MM.YYYY')}</h3>`,
             fileName: `${car.licensePlate}_${moment(this.state.dateStart).format('DD-MM-YYYY')}`,
             directory: 'Downloads',
@@ -107,7 +108,7 @@ class RouteScreen extends React.Component {
             licensePlate: car.licensePlate,
             vin: car.vin
         }, {
-            headers: {'Authorization': `Bearer ${this.props.token}`}
+            headers: { 'Authorization': `Bearer ${this.props.token}` }
         })
             .then(res => {
                 console.log('🟢 File Downloaded Succesfull!')
@@ -153,15 +154,16 @@ class RouteScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1, padding: 20 }}>
-                    <Text>Wybierz samochód:</Text>
-                    <Picker
-                        selectedValue={car}
-                        style={{ height: 37 }}
-                        onValueChange={(itemValue, itemIndex) =>
+                    <Input
+                        pickerTag
+                        name='Wybierz samochód:'
+                        value={car}
+                        onChangeFn={(itemValue, itemIndex) =>
                             this.setState({ car: itemValue })
-                        }>
+                        }
+                    >
                         {carsList}
-                    </Picker>
+                    </Input>
                     <View style={styles.separator}></View>
                     <Text>Wybierz datę początkową:</Text>
                     <TouchableOpacity onPress={() => this.setState({ showDateStart: true })}>

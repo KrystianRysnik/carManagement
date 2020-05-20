@@ -1,21 +1,21 @@
 import React from 'react'
-import { View, TextInput, Text, Button, Image, ImageBackground, StyleSheet } from 'react-native'
+import { View, Text, Button, Image, ImageBackground, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { userSignIn } from '../_actions'
 import NavigationService from '../NavigationService'
+import Input from '../_components/Input'
 
 class SignInScreen extends React.Component {
     state = {
-        username: "",
+        email: "",
         password: ""
     }
 
-    handleEmailChange = email => {
-        this.setState({ email: email })
-    }
-
-    handlePasswordChange = password => {
-        this.setState({ password: password })
+    handleChange = (name, value) => {
+        this.setState(prevState => ({
+            ...prevState,
+            [name]: value
+        }))
     }
 
     handleSubmit = () => {
@@ -30,21 +30,19 @@ class SignInScreen extends React.Component {
                         <Image source={require('../_assets/logo_white.png')} style={styles.logo} />
 
                         <View style={{ width: '80%' }}>
-                            <Text style={styles.inputLabel}>Email</Text>
-                            <TextInput
+                            <Input
+                                primary
+                                name='Email'
                                 value={this.state.email}
-                                onChangeText={this.handleEmailChange}
-                                style={styles.input}
+                                onChangeFn={value => this.handleChange('email', value)}
                             />
-
-                            <Text style={styles.inputLabel}>Hasło</Text>
-                            <TextInput
-                                secureTextEntry
+                            <Input
+                                primary
+                                name='Hasło'
                                 value={this.state.password}
-                                onChangeText={this.handlePasswordChange}
-                                style={styles.input}
+                                onChangeText={value => this.handleChange('password', value)}
+                                secureTextEntry
                             />
-
                             <Button title="Zaloguj Się" onPress={this.handleSubmit} />
                             <Text style={styles.hint} onPress={() => NavigationService.navigate('SignUp', null)}>Nie Posiadasz Konta? <Text style={{ fontWeight: 'bold' }}>Zarejestruj Się</Text></Text>
                         </View>
@@ -66,18 +64,6 @@ const styles = StyleSheet.create({
     logo: {
         width: 180,
         height: 180
-    },
-    inputLabel: {
-        marginTop: 15,
-        fontSize: 12,
-        color: '#fff'
-    },
-    input: {
-        marginBottom: 15,
-        paddingVertical: 5,
-        color: '#fff',
-        borderBottomColor: '#fff',
-        borderBottomWidth: 2,
     },
     hint: {
         marginTop: 15,

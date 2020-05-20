@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, ScrollView, Text, ToastAndroid, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, ScrollView, Text, ToastAndroid, Button, TouchableOpacity, StyleSheet } from 'react-native'
 import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux'
 import { userAdd, userUpdate } from '../_actions'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import NavigationService from '../NavigationService'
+import Input from '../_components/Input'
 
 class AdminUserCuScreen extends React.Component {
     constructor(props) {
@@ -51,23 +52,11 @@ class AdminUserCuScreen extends React.Component {
         NavigationService.navigate('Admin')
     }
 
-    handleEmailChange = async email => {
-        await this.setState({ email: email })
-        this.checkDifferences()
-    }
-
-    handleFirstNameChange = async firstName => {
-        await this.setState({ firstName: firstName })
-        this.checkDifferences()
-    }
-
-    handleLastNameChange = async lastName => {
-        await this.setState({ lastName: lastName })
-        this.checkDifferences()
-    }
-
-    handlePasswordChange = async password => {
-        await this.setState({ password: password })
+    handleChange = (name, value) => {
+        this.setState(prevState => ({
+            ...prevState,
+            [name]: value
+        }))
         this.checkDifferences()
     }
 
@@ -150,41 +139,34 @@ class AdminUserCuScreen extends React.Component {
                 </View>
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.container}>
-                        <Text style={{ color: '#000' }}>Email</Text>
-                        <TextInput
+                        <Input
+                            name='Email'
                             value={this.state.email}
-                            onChangeText={this.handleEmailChange}
-                            style={styles.input}
+                            onChangeFn={value => this.handleChange('email', value)}
                         />
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={{ width: '45%' }}>
-                                <Text style={styles.inputLabel}>Imię</Text>
-                                <TextInput
+                                <Input
+                                    name='Imię'
                                     value={this.state.firstName}
-                                    onChangeText={this.handleFirstNameChange}
-                                    style={styles.input}
+                                    onChangeFn={value => this.handleChange('firstName', value)}
                                 />
                             </View>
                             <View style={{ width: '45%' }}>
-                                <Text style={styles.inputLabel}>Nazwisko</Text>
-                                <TextInput
+                                <Input
+                                    name='Nazwisko'
                                     value={this.state.lastName}
-                                    onChangeText={this.handleLastNameChange}
-                                    style={styles.input}
+                                    onChangeFn={value => this.handleChange('lastName', value)}
                                 />
                             </View>
                         </View>
                         {this.props.navigation.state.params.email == '' && (
-                            <Text style={styles.inputLabel}>Hasło</Text>
-
+                            <Input
+                                name='Hasło'
+                                value={this.state.password}
+                                onChangeFn={value => this.handleChange('password', value)}
+                            />
                         )}
-                        {this.props.navigation.state.params.email == '' && (<TextInput
-                            value={this.state.password}
-                            onChangeText={this.handlePasswordChange}
-                            style={styles.input}
-                        />
-                        )}
-
                         <View style={{ flexDirection: 'row', paddingTop: 15 }}>
                             <CheckBox
                                 value={this.state.checked}
@@ -194,11 +176,13 @@ class AdminUserCuScreen extends React.Component {
                         </View>
                     </View>
                     <View style={styles.container}>
-                        {this.props.navigation.state.params.email == '' ? (
-                            <Button title="DODAJ UŻYTKOWNIKA" color='#2ecc71' onPress={this.handleCreate} disabled={this.state.disableButton} />
-                        ) : (
+                        {this.props.navigation.state.params.email == '' ?
+                            (
+                                <Button title="DODAJ UŻYTKOWNIKA" color='#2ecc71' onPress={this.handleCreate} disabled={this.state.disableButton} />
+                            ) : (
                                 <Button title="EDYTUJ UŻYTKOWNIKA" color='#2ecc71' onPress={this.handleUpdate} disabled={this.state.disableButton} />
-                            )}
+                            )
+                        }
                     </View>
                 </ScrollView>
             </View>

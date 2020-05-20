@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import { connect } from 'react-redux'
 import { userSignOut, userProfileUpdate } from '../_actions'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import NavigationService from '../NavigationService'
+import Input from '../_components/Input'
 
 class ProfileScreen extends React.Component {
     state = {
@@ -24,11 +25,11 @@ class ProfileScreen extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props != prevProps)
-        this.setState({
-            firstName: this.props.user.firstName,
-            lastName: this.props.user.lastName,
-            email: this.props.user.email
-        })
+            this.setState({
+                firstName: this.props.user.firstName,
+                lastName: this.props.user.lastName,
+                email: this.props.user.email
+            })
     }
 
     handleLogout = async () => {
@@ -55,15 +56,11 @@ class ProfileScreen extends React.Component {
             this.setState({ disableButton: false })
     }
 
-    handleFirstNameChange = async firstName => {
-        await this.setState({ firstName: firstName })
-        this.checkDifferences()
-
-    }
-
-    handleLastNameChange = async lastName => {
-        await this.setState({ lastName: lastName })
-        this.checkDifferences()
+    handleChange = (name, value) => {
+        this.setState(prevState => ({
+            ...prevState,
+            [name]: value
+        }))
     }
 
     render() {
@@ -79,28 +76,27 @@ class ProfileScreen extends React.Component {
 
                 <View style={{ flex: 1 }}>
                     <View style={styles.container}>
-                        <Text style={{ color: '#000', marginTop: 15 }}>Email</Text>
-                        <TextInput
+                        <Input
+                            name='Email'
                             value={this.state.email}
-                            style={styles.input}
+                            onChangeFn={value => this.handleChange('email', value)}
                             editable={false}
                         />
                     </View>
                     <View style={{ paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ width: '45%' }}>
-                            <Text style={{ color: '#000', marginTop: 15 }}>Imię</Text>
-                            <TextInput
+                            <Input
+                                name='Imię'
                                 value={this.state.firstName}
-                                onChangeText={this.handleFirstNameChange}
-                                style={styles.input}
+                                onChangeFn={value => this.handleChange('firstName', value)}
                             />
                         </View>
                         <View style={{ width: '45%' }}>
-                            <Text style={{ color: '#000', marginTop: 15 }}>Nazwisko</Text>
-                            <TextInput
+
+                            <Input
+                                name='Nazwisko'
                                 value={this.state.lastName}
-                                onChangeText={this.handleLastNameChange}
-                                style={styles.input}
+                                onChangeFn={value => this.handleChange('lastName', value)}
                             />
                         </View>
 

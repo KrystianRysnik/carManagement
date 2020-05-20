@@ -1,11 +1,12 @@
 import React from 'react'
-import { View, ScrollView, Text, TextInput, Picker, Button, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native'
+import { View, ScrollView, Text, Picker, Button, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { connect } from 'react-redux'
 import { routeGet, routeUpdate } from '../_actions'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import NavigationService from '../NavigationService'
 import moment from 'moment'
+import Input from '../_components/Input'
 
 class AdminRouteCuScreen extends React.Component {
     constructor(props) {
@@ -62,11 +63,6 @@ class AdminRouteCuScreen extends React.Component {
         NavigationService.navigate('Admin')
     }
 
-    handleVinChange = async (itemValue, itemIndex) => {
-        await this.setState({ carVin: itemValue })
-        this.checkDifferences()
-    }
-
     handleDriverEmailChange = async (itemValue, itemIndex) => {
         await this.setState({ driverEmail: itemValue })
         await this.props.users.forEach(element => {
@@ -90,18 +86,16 @@ class AdminRouteCuScreen extends React.Component {
         this.checkDifferences()
     }
 
-    handleDurationChange = async duration => {
-        await this.setState({ duration: duration })
+    handleVinChange = async (itemValue, itemIndex) => {
+        await this.setState({ carVin: itemValue })
         this.checkDifferences()
     }
 
-    handleDistanceChange = async distance => {
-        await this.setState({ distance: distance })
-        this.checkDifferences()
-    }
-
-    handlePurposeChange = async purpose => {
-        await this.setState({ purpose: purpose })
+    handleChange = (name, value) => {
+        this.setState(prevState => ({
+            ...prevState,
+            [name]: value
+        }))
         this.checkDifferences()
     }
 
@@ -153,7 +147,7 @@ class AdminRouteCuScreen extends React.Component {
 
         let { isFetching } = this.state
 
-        return (isFetching  ? <Text>Wczytywanie</Text> :
+        return (isFetching ? <Text>Wczytywanie</Text> :
             <View style={{ flex: 1 }}>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerTouchable} onPress={this.handleBack}>
@@ -163,47 +157,41 @@ class AdminRouteCuScreen extends React.Component {
                 </View>
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.container}>
-                        <Text style={{ color: '#000' }}>Numer Vin</Text>
-                        <Picker
-                            selectedValue={this.state.carVin}
-                            style={{ height: 37 }}
-                            onValueChange={this.handleVinChange}>
+                        <Input
+                            pickerTag
+                            name='Numer Vin'
+                            value={this.state.carVin}
+                            onChangeFn={(value, index) => this.handleChange('carVin', value)}
+                        >
                             {carsList}
-                        </Picker>
+                        </Input>
                         <View style={styles.separator}></View>
-
-                        <Text style={styles.inputLabel}>Kierowca</Text>
-                        <Picker
-                            selectedValue={this.state.driverEmail}
-                            style={{ height: 37 }}
-                            onValueChange={this.handleDriverEmailChange}>
+                        <Input
+                            pickerTag
+                            name='Kierowca'
+                            value={this.state.driverEmail}
+                            onChangeFn={(value, index) => this.handleChange('driverEmail', value)}
+                        >
                             {usersList}
-                        </Picker>
+                        </Input>
                         <View style={styles.separator}></View>
-
                         <Text style={styles.inputLabel}>Data rozpoczęcia trasy</Text>
                         <TouchableOpacity onPress={() => this.setState({ showDateStart: true })}><Text style={{ padding: 8, fontSize: 16 }}>{moment(this.state.startTrace).format('DD.MM.YYYY')}</Text></TouchableOpacity>
                         <View style={styles.separator}></View>
-
-                        <Text style={styles.inputLabel}>Cel wyjazdu</Text>
-                        <TextInput
+                        <Input
+                            name='Cel wyjazdu'
                             value={this.state.purpose}
-                            onChangeText={this.handlePurposeChange}
-                            style={styles.input}
+                            onChangeFn={value => this.handleChange('purpose', value)}
                         />
-
-                        <Text style={styles.inputLabel}>Czas trwania (hh:mm:ss)</Text>
-                        <TextInput
+                        <Input
+                            name='Czas trwania (hh:mm:ss)'
                             value={this.state.duration}
-                            onChangeText={this.handleDurationChange}
-                            style={styles.input}
+                            onChangeFn={value => this.handleChange('duration', value)}
                         />
-
-                        <Text style={styles.inputLabel}>Dystans (km)</Text>
-                        <TextInput
+                        <Input
+                            name='Dystans (km)'
                             value={this.state.distance}
-                            onChangeText={this.handleDistanceChange}
-                            style={styles.input}
+                            onChangeFn={value => this.handleChange('distance', value)}
                         />
                     </View>
                     <View style={styles.container}>
