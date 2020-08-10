@@ -9,8 +9,8 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {carDelete} from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {carDelete} from '../_actions';
 import NavigationService from '../NavigationService';
 import LicensePlate from '../_components/LicensePlate';
 
@@ -38,7 +38,7 @@ class AdminCarScreen extends React.Component {
                 ToastAndroid.SHORT,
                 ToastAndroid.BOTTOM,
                 0,
-                50,
+                50
               );
             } else {
               ToastAndroid.showWithGravityAndOffset(
@@ -46,13 +46,13 @@ class AdminCarScreen extends React.Component {
                 ToastAndroid.SHORT,
                 ToastAndroid.BOTTOM,
                 0,
-                50,
+                50
               );
             }
           },
         },
       ],
-      {cancelable: false},
+      {cancelable: false}
     );
   };
 

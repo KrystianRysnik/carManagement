@@ -8,15 +8,16 @@ import {
 } from 'react-native';
 import MapView, {Polyline} from 'react-native-maps';
 import {connect} from 'react-redux';
-import {routeGet} from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavigationService from '../NavigationService';
 import moment from 'moment';
+import {routeGet} from '../_actions';
+import NavigationService from '../NavigationService';
 
 class RouteMapScreen extends React.Component {
   state = {
     isLoading: true,
   };
+
   mapRef = null;
 
   async init(item) {
@@ -25,18 +26,18 @@ class RouteMapScreen extends React.Component {
 
     this.mapRef.fitToCoordinates(
       markers.map((marker) => marker.coordinate),
-      {edgePadding: {top: 10, right: 10, bottom: 10, left: 10}, animated: true},
+      {edgePadding: {top: 10, right: 10, bottom: 10, left: 10}, animated: true}
     );
     this.setState({isLoading: false});
   }
 
   componentDidMount() {
-    let item = this.props.navigation.state.params;
+    const item = this.props.navigation.state.params;
     this.init(item);
   }
 
   componentDidUpdate(prevProps) {
-    let item = this.props.navigation.state.params;
+    const item = this.props.navigation.state.params;
     if (item != prevProps.navigation.state.params) {
       this.setState({isLoading: true});
       this.init(item);
@@ -69,7 +70,7 @@ class RouteMapScreen extends React.Component {
                 {
                   edgePadding: {top: 10, right: 10, bottom: 10, left: 10},
                   animated: true,
-                },
+                }
               );
           }}>
           {!isLoading && (
@@ -99,7 +100,7 @@ class RouteMapScreen extends React.Component {
               alignItems: 'center',
               backgroundColor: 'rgba(255, 255, 255, 0.8)',
             }}>
-            <ActivityIndicator size={'large'} />
+            <ActivityIndicator size="large" />
             <Text>Pobieranie trasy...</Text>
           </View>
         )}

@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 export default class Hidden extends React.Component {
   render() {
-      return null
-    }
+    return null;
   }
+}

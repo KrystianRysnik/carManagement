@@ -21,7 +21,7 @@ export const routeAdd = (route, user, vin) => {
         },
         {
           headers: {Authorization: `Bearer ${getState().user.token}`},
-        },
+        }
       );
       const data = await response.data;
       data.markers = undefined;
@@ -92,7 +92,7 @@ export const routeUpdate = (route) => {
         },
         {
           headers: {Authorization: `Bearer ${getState().user.token}`},
-        },
+        }
       );
       dispatch(
         updateRoute({
@@ -107,7 +107,7 @@ export const routeUpdate = (route) => {
             firstName: route.driverFirstName,
             lastName: route.driverLastName,
           },
-        }),
+        })
       );
       dispatch(updateRouteSuccess());
       console.log('🟢 Update Route Succesfull!');

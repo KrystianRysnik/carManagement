@@ -7,10 +7,10 @@
  */
 
 import React from 'react';
-import { StatusBar } from 'react-native';
-import { Provider } from 'react-redux';
+import {StatusBar} from 'react-native';
+import {Provider} from 'react-redux';
+import {createAppContainer} from 'react-navigation';
 import store from './_store/store';
-import { createAppContainer } from 'react-navigation';
 import AppNavigator from './AppNavigator';
 import NavigationService from './NavigationService';
 
@@ -22,7 +22,7 @@ export default class App extends React.Component {
       <Provider store={store}>
         <StatusBar barStyle="light-content" backgroundColor="#000" />
         <AppContainer
-          ref={navigatorRef => {
+          ref={(navigatorRef) => {
             NavigationService.setNavigator(navigatorRef);
           }}
         />

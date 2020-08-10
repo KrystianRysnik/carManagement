@@ -2,8 +2,8 @@ import React from 'react';
 import {View, Text, Button, TouchableOpacity, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {connect} from 'react-redux';
-import {userSignOut, userProfileUpdate} from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {userSignOut, userProfileUpdate} from '../_actions';
 import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
 
@@ -63,7 +63,7 @@ class ProfileScreen extends React.Component {
         ...prevState,
         [name]: value,
       }),
-      () => this.checkDifferences(),
+      () => this.checkDifferences()
     );
   };
 

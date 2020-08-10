@@ -9,8 +9,8 @@ import {
   StyleSheet,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {userList, userDelete} from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {userList, userDelete} from '../_actions';
 import NavigationService from '../NavigationService';
 
 class AdminUserScreen extends React.Component {
@@ -41,13 +41,13 @@ class AdminUserScreen extends React.Component {
                 ToastAndroid.SHORT,
                 ToastAndroid.BOTTOM,
                 0,
-                50,
+                50
               );
             }
           },
         },
       ],
-      {cancelable: false},
+      {cancelable: false}
     );
   };
 

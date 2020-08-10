@@ -32,7 +32,7 @@ export const carAdd = (car) => {
         },
         {
           headers: {Authorization: `Bearer ${getState().user.token}`},
-        },
+        }
       );
       const data = await response.data;
       dispatch(addCar(data.car));
@@ -61,7 +61,7 @@ export const carUpdate = (car) => {
         },
         {
           headers: {Authorization: `Bearer ${getState().user.token}`},
-        },
+        }
       );
       dispatch(
         updateCar({
@@ -71,7 +71,7 @@ export const carUpdate = (car) => {
           mileage: parseInt(car.mileage),
           licensePlate: car.licensePlate,
           engineSize: parseInt(car.engineSize),
-        }),
+        })
       );
       dispatch(updateCarSuccess());
       console.log('🟢 Update Car Succesfull!');

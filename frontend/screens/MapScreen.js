@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {routeAdd, carUpdate} from '../_actions';
 import {
   View,
   Text,
@@ -13,13 +12,14 @@ import {
   StyleSheet,
 } from 'react-native';
 import MapView, {Polyline} from 'react-native-maps';
-import NavigationService from '../NavigationService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Geolocation from 'react-native-geolocation-service';
 import KeepAwake from 'react-native-keep-awake';
 import haversine from 'haversine';
 import moment from 'moment';
 import axios from 'axios';
+import NavigationService from '../NavigationService';
+import {routeAdd, carUpdate} from '../_actions';
 import LicensePlate from '../_components/LicensePlate';
 
 let id = 0;
@@ -66,7 +66,7 @@ class MapScreen extends React.Component {
   };
 
   handlePurposeChange = async (purpose) => {
-    await this.setState({purpose: purpose});
+    await this.setState({purpose});
     if (this.state.purpose != '') {
       this.setState({btnDisabled: false});
     } else {
@@ -81,7 +81,7 @@ class MapScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
     } else if (!this.state.purpose) {
       ToastAndroid.showWithGravityAndOffset(
@@ -89,7 +89,7 @@ class MapScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
     } else {
       const watchID = Geolocation.watchPosition(
@@ -99,7 +99,7 @@ class MapScreen extends React.Component {
             distance =
               this.state.distance +
               haversine(this.state.previousCoordinate, position.coords);
-            this.setState({distance: distance});
+            this.setState({distance});
           }
 
           this.setState({
@@ -123,7 +123,7 @@ class MapScreen extends React.Component {
           distanceFilter: 10,
           interval: 1000,
           fastestInterval: 1000,
-        },
+        }
       );
       this.setState({
         watchID,
@@ -135,7 +135,7 @@ class MapScreen extends React.Component {
           this.setState({
             diffTime: moment().diff(moment(this.state.startTrace)),
           }),
-        1000,
+        1000
       );
     }
   };
@@ -157,7 +157,7 @@ class MapScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
     } else {
       id = 0;
@@ -174,7 +174,7 @@ class MapScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
     }
   };
@@ -186,7 +186,7 @@ class MapScreen extends React.Component {
   handleMyLocation = () => {
     Geolocation.getCurrentPosition(
       (position) => {
-        let region = {
+        const region = {
           latitude: parseFloat(position.coords.latitude),
           longitude: parseFloat(position.coords.longitude),
           latitudeDelta: 0.004,
@@ -201,7 +201,7 @@ class MapScreen extends React.Component {
         enableHighAccuracy: true,
         timeout: 20000,
         maximumAge: 1000,
-      },
+      }
     );
   };
 
@@ -219,7 +219,7 @@ class MapScreen extends React.Component {
           onPress: () => this.stopTracking(),
         },
       ],
-      {cancelable: false},
+      {cancelable: false}
     );
   };
 
@@ -228,7 +228,7 @@ class MapScreen extends React.Component {
       <View style={{flex: 1}}>
         <MapView
           style={{...StyleSheet.absoluteFillObject}}
-          showsUserLocation={true}
+          showsUserLocation
           showsMyLocationButton={false}
           rotateEnabled={false}
           showsCompass={false}
@@ -293,9 +293,9 @@ class MapScreen extends React.Component {
         </View>
         <Modal
           visible={this.state.modalVisible}
-          animationType={'fade'}
+          animationType="fade"
           onRequestClose={() => this.closeModal()}
-          presentationStyle={'overFullScreen'}
+          presentationStyle="overFullScreen"
           transparent>
           <View style={styles.modalContainer}>
             <View style={styles.innerContainer}>

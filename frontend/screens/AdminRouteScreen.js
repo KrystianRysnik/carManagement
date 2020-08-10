@@ -9,10 +9,10 @@ import {
   StyleSheet,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {routeDelete, routeList} from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavigationService from '../NavigationService';
 import moment from 'moment';
+import {routeDelete, routeList} from '../_actions';
+import NavigationService from '../NavigationService';
 
 class AdminRouteScreen extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class AdminRouteScreen extends React.Component {
     Alert.alert(
       `Usuwanie Trasy`,
       `Czy napewno chcesz usunąć trasę z dnia ${moment(route.startTrace).format(
-        'DD/MM/YYYY',
+        'DD/MM/YYYY'
       )}?`,
       [
         {
@@ -48,7 +48,7 @@ class AdminRouteScreen extends React.Component {
                 ToastAndroid.SHORT,
                 ToastAndroid.BOTTOM,
                 0,
-                50,
+                50
               );
             } else {
               ToastAndroid.showWithGravityAndOffset(
@@ -56,13 +56,13 @@ class AdminRouteScreen extends React.Component {
                 ToastAndroid.SHORT,
                 ToastAndroid.BOTTOM,
                 0,
-                50,
+                50
               );
             }
           },
         },
       ],
-      {cancelable: false},
+      {cancelable: false}
     );
   };
 

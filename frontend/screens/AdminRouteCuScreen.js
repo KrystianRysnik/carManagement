@@ -12,10 +12,10 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from 'react-redux';
-import {routeGet, routeUpdate} from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavigationService from '../NavigationService';
 import moment, {duration} from 'moment';
+import {routeGet, routeUpdate} from '../_actions';
+import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
 
 class AdminRouteCuScreen extends React.Component {
@@ -41,12 +41,12 @@ class AdminRouteCuScreen extends React.Component {
   }
 
   componentDidMount() {
-    let item = this.props.navigation.state.params;
+    const item = this.props.navigation.state.params;
     this._refreshState(item._id);
   }
 
   componentDidUpdate(prevProps) {
-    let item = this.props.navigation.state.params;
+    const item = this.props.navigation.state.params;
     if (item != prevProps.navigation.state.params) {
       this.setState({isLoading: true});
       this._refreshState(item._id);
@@ -90,19 +90,19 @@ class AdminRouteCuScreen extends React.Component {
           });
         }
       },
-      () => this.checkDifferences(),
+      () => this.checkDifferences()
     );
   };
 
   handleStartTraceChange = (event, date) => {
-    let startTrace = date || this.state.startTrace;
+    const startTrace = date || this.state.startTrace;
 
     this.setState(
       {
-        showDateStart: Platform.OS === 'ios' ? true : false,
-        startTrace: startTrace,
+        showDateStart: Platform.OS === 'ios',
+        startTrace,
       },
-      () => this.checkDifferences(),
+      () => this.checkDifferences()
     );
   };
 
@@ -111,7 +111,7 @@ class AdminRouteCuScreen extends React.Component {
   };
 
   checkDifferences = async () => {
-    let item = await this.props.route;
+    const item = await this.props.route;
     if (
       (this.state.driverEmail === item.driver.email &&
         this.state.carVin === item.carVin &&
@@ -139,12 +139,12 @@ class AdminRouteCuScreen extends React.Component {
         ...prevState,
         [name]: value,
       }),
-      () => this.checkDifferences(),
+      () => this.checkDifferences()
     );
   };
 
   handleUpdate = async () => {
-    let time = this.state.duration.split(':');
+    const time = this.state.duration.split(':');
     this.setState({stopTrace: this.state.startTrace});
     this.setState({
       stopTrace: moment(this.state.stopTrace)
@@ -162,7 +162,7 @@ class AdminRouteCuScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
     } else {
       ToastAndroid.showWithGravityAndOffset(
@@ -170,14 +170,14 @@ class AdminRouteCuScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
       this.setState({disableButton: true});
     }
   };
 
   render() {
-    let carsList = this.props.cars.map((item, index) => {
+    const carsList = this.props.cars.map((item, index) => {
       return (
         <Picker.Item
           label={`${item.licensePlate} - ${item.vin}`}
@@ -187,7 +187,7 @@ class AdminRouteCuScreen extends React.Component {
       );
     });
 
-    let usersList = this.props.users.map((item, index) => {
+    const usersList = this.props.users.map((item, index) => {
       return (
         <Picker.Item
           label={`${item.email} - ${item.firstName} ${item.lastName}`}
@@ -197,7 +197,7 @@ class AdminRouteCuScreen extends React.Component {
       );
     });
 
-    let {isLoading} = this.state;
+    const {isLoading} = this.state;
 
     return (
       <View style={{flex: 1}}>
@@ -221,7 +221,7 @@ class AdminRouteCuScreen extends React.Component {
                 }>
                 {carsList}
               </Input>
-              <View style={styles.separator}></View>
+              <View style={styles.separator} />
               <Input
                 pickerTag
                 name="Kierowca"
@@ -231,7 +231,7 @@ class AdminRouteCuScreen extends React.Component {
                 }>
                 {usersList}
               </Input>
-              <View style={styles.separator}></View>
+              <View style={styles.separator} />
               <Text style={styles.inputLabel}>Data rozpoczęcia trasy</Text>
               <TouchableOpacity
                 onPress={() => this.setState({showDateStart: true})}>
@@ -239,7 +239,7 @@ class AdminRouteCuScreen extends React.Component {
                   {moment(this.state.startTrace).format('DD.MM.YYYY')}
                 </Text>
               </TouchableOpacity>
-              <View style={styles.separator}></View>
+              <View style={styles.separator} />
               <Input
                 name="Cel wyjazdu"
                 value={this.state.purpose}
@@ -273,7 +273,7 @@ class AdminRouteCuScreen extends React.Component {
               alignItems: 'center',
               backgroundColor: 'rgba(255, 255, 255, 0.8)',
             }}>
-            <ActivityIndicator size={'large'} />
+            <ActivityIndicator size="large" />
             <Text>Pobieranie danych...</Text>
           </View>
         )}

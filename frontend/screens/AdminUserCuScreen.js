@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {connect} from 'react-redux';
-import {userAdd, userUpdate} from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {userAdd, userUpdate} from '../_actions';
 import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
 
@@ -30,12 +30,12 @@ class AdminUserCuScreen extends React.Component {
   }
 
   componentDidMount() {
-    let item = this.props.navigation.state.params;
+    const item = this.props.navigation.state.params;
     this._refreshState(item);
   }
 
   componentDidUpdate(prevProps) {
-    let item = this.props.navigation.state.params;
+    const item = this.props.navigation.state.params;
     if (item != prevProps.navigation.state.params) {
       this._refreshState(item);
     }
@@ -49,7 +49,7 @@ class AdminUserCuScreen extends React.Component {
       email: `${item.email}`,
       password: '',
       role: `${item.role}`,
-      checked: item.role == 'admin' ? true : false,
+      checked: item.role == 'admin',
       disableButton: true,
     });
   };
@@ -64,7 +64,7 @@ class AdminUserCuScreen extends React.Component {
         ...prevState,
         [name]: value,
       }),
-      () => this.checkDifferences(),
+      () => this.checkDifferences()
     );
   };
 
@@ -74,12 +74,12 @@ class AdminUserCuScreen extends React.Component {
         checked: !this.state.checked,
         role: !this.state.checked ? 'admin' : 'user',
       },
-      () => this.checkDifferences(),
+      () => this.checkDifferences()
     );
   };
 
   checkDifferences = () => {
-    let item = this.props.navigation.state.params;
+    const item = this.props.navigation.state.params;
     if (
       (this.state.firstName == item.firstName &&
         this.state.lastName == item.lastName &&
@@ -102,7 +102,7 @@ class AdminUserCuScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
     } else {
       ToastAndroid.showWithGravityAndOffset(
@@ -110,7 +110,7 @@ class AdminUserCuScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
       this.setState({disableButton: true});
     }
@@ -124,7 +124,7 @@ class AdminUserCuScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
     } else {
       ToastAndroid.showWithGravityAndOffset(
@@ -132,7 +132,7 @@ class AdminUserCuScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
       this.setState({disableButton: true});
     }

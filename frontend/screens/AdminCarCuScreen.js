@@ -9,8 +9,8 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {carAdd, carUpdate} from '../_actions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {carAdd, carUpdate} from '../_actions';
 import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
 
@@ -29,7 +29,7 @@ class AdminCarCuScreen extends React.Component {
   }
 
   componentDidMount() {
-    let item = this.props.navigation.state.params;
+    const item = this.props.navigation.state.params;
     this.setState({
       _id: `${item._id}`,
       name: `${item.name}`,
@@ -42,7 +42,7 @@ class AdminCarCuScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    let item = this.props.navigation.state.params;
+    const item = this.props.navigation.state.params;
     if (item !== prevProps.navigation.state.params) {
       this.setState({
         _id: `${item._id}`,
@@ -61,7 +61,7 @@ class AdminCarCuScreen extends React.Component {
   };
 
   checkDifferences = () => {
-    let item = this.props.navigation.state.params;
+    const item = this.props.navigation.state.params;
     if (
       (this.state.name === item.name &&
         this.state.vin === item.vin &&
@@ -84,7 +84,7 @@ class AdminCarCuScreen extends React.Component {
         ...prevState,
         [name]: value,
       }),
-      () => this.checkDifferences(),
+      () => this.checkDifferences()
     );
   };
 
@@ -96,7 +96,7 @@ class AdminCarCuScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
     } else {
       ToastAndroid.showWithGravityAndOffset(
@@ -104,7 +104,7 @@ class AdminCarCuScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
       this.setState({disableButton: true});
     }
@@ -118,7 +118,7 @@ class AdminCarCuScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
     } else {
       ToastAndroid.showWithGravityAndOffset(
@@ -126,7 +126,7 @@ class AdminCarCuScreen extends React.Component {
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
         0,
-        50,
+        50
       );
       this.setState({disableButton: true});
     }

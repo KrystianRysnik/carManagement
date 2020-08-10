@@ -55,7 +55,7 @@ export const userSignOut = (token) => {
         {},
         {
           headers: {Authorization: `Bearer ${token}`},
-        },
+        }
       );
       AsyncStorage.removeItem('@token');
       dispatch(logoutUser());
@@ -81,7 +81,7 @@ export const userProfileUpdate = (user) => {
         },
         {
           headers: {Authorization: `Bearer ${getState().user.token}`},
-        },
+        }
       );
       const data = await response.data;
       dispatch(loginUser(data));
@@ -109,7 +109,7 @@ export const userAdd = (user) => {
         },
         {
           headers: {Authorization: `Bearer ${getState().user.token}`},
-        },
+        }
       );
       const data = await response.data;
       dispatch(addUser(data));
@@ -137,7 +137,7 @@ export const userUpdate = (user) => {
         },
         {
           headers: {Authorization: `Bearer ${getState().user.token}`},
-        },
+        }
       );
       dispatch(
         updateUser({
@@ -146,7 +146,7 @@ export const userUpdate = (user) => {
           firstName: user.firstName,
           lastName: user.lastName,
           role: user.role,
-        }),
+        })
       );
       dispatch(updateUserSuccess());
       console.log('🟢 Update User Succesfull!');
