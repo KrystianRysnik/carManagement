@@ -1,16 +1,13 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { routeAdd, carUpdate } from '../_actions'
-import { View, Text, TextInput, TouchableOpacity, ToastAndroid, Button, Modal, Alert, StyleSheet } from 'react-native'
-import MapView, { Polyline } from 'react-native-maps'
-import NavigationService from '../NavigationService'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import Geolocation from 'react-native-geolocation-service'
-import KeepAwake from 'react-native-keep-awake'
-import haversine from 'haversine'
-import moment from 'moment'
-import axios from 'axios'
-import LicensePlate from '../_components/LicensePlate'
+import React from 'react';
+import {connect} from 'react-redux';
+import {routeAdd, carUpdate} from '../_actions';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
 
 let id = 0
 
