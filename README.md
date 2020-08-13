@@ -17,10 +17,11 @@ and read the route traveled, displaying the current position and generating a mo
 	* MongoDB
 	* JSON Web Tokens
 * Frontend
-	* React Native
+	* React Native (ES6+, async/await)
 	* Redux
 	* Axios
 	* Google Maps API
+	* Eslint / Prettier
 ## Setup
 1. Install node_modules
 ```
