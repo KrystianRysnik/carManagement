@@ -1,5 +1,6 @@
 import React from 'react';
-import {TextInput, Picker, Text, StyleSheet} from 'react-native';
+import {TextInput, Text, StyleSheet} from 'react-native';
+import {Picker} from '@react-native-community/picker';
 import PropTypes from 'prop-types';
 
 const Input = ({

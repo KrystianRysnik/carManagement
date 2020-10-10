@@ -4,11 +4,11 @@ import {
   Text,
   TouchableOpacity,
   Button,
-  Picker,
   ToastAndroid,
   Platform,
   StyleSheet,
 } from 'react-native';
+import {Picker} from '@react-native-community/picker';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
