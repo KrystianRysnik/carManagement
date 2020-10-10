@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import {routeList} from '../_actions';
 import NavigationService from '../NavigationService';
 
@@ -78,6 +79,35 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RouteScreen);
+
+RouteScreen.propTypes = {
+  routeList: PropTypes.func.isRequired,
+  email: PropTypes.string.isRequired,
+  routes: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      carVin: PropTypes.string,
+      startTrace: PropTypes.instanceOf(Date),
+      stopTrace: PropTypes.instanceOf(Date),
+      distance: PropTypes.number,
+      purpose: PropTypes.string,
+      driver: PropTypes.shape({
+        email: PropTypes.string,
+        firstName: PropTypes.string,
+        lastName: PropTypes.string,
+      }),
+      markers: PropTypes.arrayOf(
+        PropTypes.shape({
+          coordinate: PropTypes.shape({
+            longitude: PropTypes.number,
+            latitude: PropTypes.number,
+          }),
+          key: PropTypes.number,
+        })
+      ),
+    })
+  ).isRequired,
+};
 
 const styles = StyleSheet.create({
   header: {

@@ -10,6 +10,7 @@ import MapView, {Polyline} from 'react-native-maps';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import {routeGet} from '../_actions';
 import NavigationService from '../NavigationService';
 
@@ -139,6 +140,31 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RouteMapScreen);
+
+RouteMapScreen.propTypes = {
+  routeGet: PropTypes.func.isRequired,
+  route: PropTypes.shape({
+    _id: PropTypes.string,
+    carVin: PropTypes.string,
+    startTrace: PropTypes.string,
+    stopTrace: PropTypes.string,
+    distance: PropTypes.number,
+    purpose: PropTypes.string,
+    driver: PropTypes.shape({
+      email: PropTypes.string,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+    }),
+    markers: PropTypes.arrayOf(PropTypes.shape({})),
+  }).isRequired,
+  navigation: PropTypes.shape({
+    state: PropTypes.shape({
+      params: PropTypes.shape({
+        _id: PropTypes.string,
+      }),
+    }),
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   header: {

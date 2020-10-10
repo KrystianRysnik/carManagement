@@ -11,6 +11,7 @@ import {
 import CheckBox from '@react-native-community/checkbox';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 import {userAdd, userUpdate} from '../_actions';
 import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
@@ -227,6 +228,38 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminUserCuScreen);
+
+AdminUserCuScreen.propTypes = {
+  userUpdate: PropTypes.func.isRequired,
+  userAdd: PropTypes.func.isRequired,
+  error: PropTypes.shape({
+    update: PropTypes.bool,
+    add: PropTypes.bool,
+  }).isRequired,
+  navigation: PropTypes.shape({
+    state: PropTypes.shape({
+      params: PropTypes.shape({
+        email: PropTypes.string,
+        role: PropTypes.string,
+        firstName: PropTypes.string,
+        lastName: PropTypes.string,
+      }),
+    }),
+  }),
+};
+
+AdminUserCuScreen.defaultProps = {
+  navigation: PropTypes.shape({
+    state: PropTypes.shape({
+      params: PropTypes.shape({
+        email: null,
+        role: null,
+        firstName: null,
+        lastName: null,
+      }),
+    }),
+  }),
+};
 
 const styles = StyleSheet.create({
   header: {

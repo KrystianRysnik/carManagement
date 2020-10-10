@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 import {carSelect} from '../_actions';
 import NavigationService from '../NavigationService';
 import LicensePlate from '../_components/LicensePlate';
@@ -76,6 +77,24 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CarScreen);
+
+CarScreen.propTypes = {
+  carSelect: PropTypes.func.isRequired,
+  licensePlate: PropTypes.string,
+  cars: PropTypes.arrayOf(
+    PropTypes.shape({
+      licensePlate: PropTypes.string,
+      vin: PropTypes.string,
+      mleage: PropTypes.number,
+      engineSize: PropTypes.number,
+      name: PropTypes.string,
+    })
+  ).isRequired,
+};
+
+CarScreen.defaultProps = {
+  licensePlate: null,
+};
 
 const styles = StyleSheet.create({
   header: {

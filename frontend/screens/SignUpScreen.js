@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import {userSignUp} from '../_actions';
 import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
@@ -108,6 +109,11 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);
+
+SignUpScreen.propTypes = {
+  userSignUp: PropTypes.func.isRequired,
+  signUpError: PropTypes.bool.isRequired,
+};
 
 const styles = StyleSheet.create({
   logo: {

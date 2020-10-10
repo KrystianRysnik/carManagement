@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 import {userList, userDelete} from '../_actions';
 import NavigationService from '../NavigationService';
 
@@ -114,6 +115,23 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminUserScreen);
+
+AdminUserScreen.propTypes = {
+  userDelete: PropTypes.func.isRequired,
+  userList: PropTypes.func.isRequired,
+  error: PropTypes.shape({
+    delete: PropTypes.bool,
+  }).isRequired,
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      email: PropTypes.string,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+      role: PropTypes.string,
+    })
+  ).isRequired,
+};
 
 const styles = StyleSheet.create({
   header: {

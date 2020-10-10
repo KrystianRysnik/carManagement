@@ -1,5 +1,6 @@
 import React from 'react';
 import {TextInput, Picker, Text, StyleSheet} from 'react-native';
+import PropTypes from 'prop-types';
 
 const Input = ({
   primary,
@@ -32,6 +33,23 @@ const Input = ({
 };
 
 export default Input;
+
+Input.propTypes = {
+  primary: PropTypes.bool,
+  pickerTag: PropTypes.bool,
+  name: PropTypes.string,
+  value: PropTypes.string,
+  onChangeFn: PropTypes.func.isRequired,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+};
+
+Input.defaultProps = {
+  name: null,
+  primary: false,
+  pickerTag: false,
+  children: null,
+  value: null,
+};
 
 const styles = StyleSheet.create({
   inputLabelPrimary: {

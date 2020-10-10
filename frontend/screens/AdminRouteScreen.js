@@ -11,6 +11,7 @@ import {
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import {routeDelete, routeList} from '../_actions';
 import NavigationService from '../NavigationService';
 
@@ -136,6 +137,29 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminRouteScreen);
+
+AdminRouteScreen.propTypes = {
+  routeList: PropTypes.func.isRequired,
+  routeDelete: PropTypes.func.isRequired,
+  routes: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      carVin: PropTypes.string,
+      startTrace: PropTypes.string,
+      stopTrace: PropTypes.string,
+      distance: PropTypes.number,
+      purpose: PropTypes.string,
+      driver: PropTypes.shape({
+        email: PropTypes.string,
+        firstName: PropTypes.string,
+        lastName: PropTypes.string,
+      }),
+    })
+  ).isRequired,
+  error: PropTypes.shape({
+    delete: PropTypes.bool,
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   header: {

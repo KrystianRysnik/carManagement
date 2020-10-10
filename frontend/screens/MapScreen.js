@@ -17,6 +17,7 @@ import Geolocation from 'react-native-geolocation-service';
 import KeepAwake from 'react-native-keep-awake';
 import haversine from 'haversine';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import NavigationService from '../NavigationService';
 import {routeAdd, carUpdate} from '../_actions';
 import LicensePlate from '../_components/LicensePlate';
@@ -368,6 +369,35 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);
+
+MapScreen.propTypes = {
+  carUpdate: PropTypes.func.isRequired,
+  routeAdd: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    _id: PropTypes.string,
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+  }).isRequired,
+  car: PropTypes.shape({
+    _id: PropTypes.string,
+    name: PropTypes.string,
+    vin: PropTypes.string,
+    mileage: PropTypes.number,
+    licensePlate: PropTypes.string,
+    engineSize: PropTypes.number,
+  }),
+  error: PropTypes.shape({
+    add: PropTypes.bool,
+  }).isRequired,
+  navigation: PropTypes.shape({
+    toggleDrawer: PropTypes.func,
+  }).isRequired,
+};
+
+MapScreen.defaultProps = {
+  car: null,
+};
 
 const styles = StyleSheet.create({
   container: {

@@ -17,6 +17,10 @@ const LicensePlate = ({value}) => {
 
 export default LicensePlate;
 
+LicensePlate.propTypes = {
+  value: PropTypes.string.isRequired,
+};
+
 const styles = StyleSheet.create({
   container: {
     marginVertical: 5,

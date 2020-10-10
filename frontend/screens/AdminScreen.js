@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropYupes from 'prop-types';
 import {userList} from '../_actions';
 import NavigationService from '../NavigationService';
 
@@ -128,6 +129,10 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(null, mapDispatchToProps)(AdminScreen);
+
+AdminScreen.propTypes = {
+  userList: PropYupes.func.isRequired,
+};
 
 const styles = StyleSheet.create({
   header: {

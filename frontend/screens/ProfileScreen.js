@@ -3,6 +3,7 @@ import {View, Text, Button, TouchableOpacity, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 import {userSignOut, userProfileUpdate} from '../_actions';
 import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
@@ -150,6 +151,17 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
+
+ProfileScreen.propTypes = {
+  userProfileUpdate: PropTypes.func.isRequired,
+  userSignOut: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    _id: PropTypes.string,
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   header: {

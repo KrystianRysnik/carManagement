@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {View, Text, ImageBackground} from 'react-native';
+import PropTypes from 'prop-types';
 import NavigationService from '../NavigationService';
 import backgroundImage from '../_assets/background.png';
 
@@ -52,3 +53,10 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Header);
+
+Header.propTypes = {
+  user: PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+  }).isRequired,
+};

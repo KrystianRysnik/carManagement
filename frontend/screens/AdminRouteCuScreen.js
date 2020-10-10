@@ -15,6 +15,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import {routeGet, routeUpdate} from '../_actions';
 import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
@@ -297,6 +298,48 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminRouteCuScreen);
+
+AdminRouteCuScreen.propTypes = {
+  routeGet: PropTypes.func.isRequired,
+  routeUpdate: PropTypes.func.isRequired,
+  route: PropTypes.shape({
+    _id: PropTypes.string,
+    carVin: PropTypes.string,
+    startTrace: PropTypes.string,
+    stopTrace: PropTypes.string,
+    distance: PropTypes.number,
+    purpose: PropTypes.string,
+    driver: PropTypes.shape({
+      email: PropTypes.string,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+    }),
+  }).isRequired,
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      email: PropTypes.string,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+    })
+  ).isRequired,
+  cars: PropTypes.arrayOf(
+    PropTypes.shape({
+      vin: PropTypes.string,
+      licensePlate: PropTypes.string,
+    })
+  ).isRequired,
+  error: PropTypes.shape({
+    add: PropTypes.bool,
+    update: PropTypes.bool,
+  }).isRequired,
+  navigation: PropTypes.shape({
+    state: PropTypes.shape({
+      params: PropTypes.shape({
+        _id: PropTypes.string,
+      }),
+    }),
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   header: {

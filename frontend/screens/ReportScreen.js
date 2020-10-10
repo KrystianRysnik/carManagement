@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import PropTypes from 'prop-types';
 import NavigationService from '../NavigationService';
 import instance from '../settings';
 import Input from '../_components/Input';
@@ -270,6 +271,19 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(ReportScreen);
+
+ReportScreen.propTypes = {
+  cars: PropTypes.arrayOf(
+    PropTypes.shape({
+      licensePlate: PropTypes.string,
+      vin: PropTypes.string,
+      mleage: PropTypes.number,
+      engineSize: PropTypes.number,
+      name: PropTypes.string,
+    })
+  ).isRequired,
+  token: PropTypes.string.isRequired,
+};
 
 const styles = StyleSheet.create({
   header: {

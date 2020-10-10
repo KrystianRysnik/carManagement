@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 import {carAdd, carUpdate} from '../_actions';
 import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
@@ -207,6 +208,42 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminCarCuScreen);
+
+AdminCarCuScreen.propTypes = {
+  carAdd: PropTypes.func.isRequired,
+  carUpdate: PropTypes.func.isRequired,
+  error: PropTypes.shape({
+    update: PropTypes.bool,
+    add: PropTypes.bool,
+  }).isRequired,
+  navigation: PropTypes.shape({
+    state: PropTypes.shape({
+      params: PropTypes.shape({
+        _id: PropTypes.string,
+        name: PropTypes.string,
+        vin: PropTypes.string,
+        mileage: PropTypes.string,
+        licensePlate: PropTypes.string,
+        engineSize: PropTypes.string,
+      }),
+    }),
+  }),
+};
+
+AdminCarCuScreen.defaultProps = {
+  navigation: PropTypes.shape({
+    state: PropTypes.shape({
+      params: PropTypes.shape({
+        _id: null,
+        name: null,
+        vin: null,
+        mileage: 0,
+        licensePlate: null,
+        engineSize: 0,
+      }),
+    }),
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   header: {
