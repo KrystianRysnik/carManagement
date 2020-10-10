@@ -36,7 +36,7 @@ class AdminUserCuScreen extends React.Component {
 
   componentDidUpdate(prevProps) {
     const item = this.props.navigation.state.params;
-    if (item != prevProps.navigation.state.params) {
+    if (item !== prevProps.navigation.state.params) {
       this._refreshState(item);
     }
   }
@@ -49,7 +49,7 @@ class AdminUserCuScreen extends React.Component {
       email: `${item.email}`,
       password: '',
       role: `${item.role}`,
-      checked: item.role == 'admin',
+      checked: item.role === 'admin',
       disableButton: true,
     });
   };
@@ -68,12 +68,12 @@ class AdminUserCuScreen extends React.Component {
     );
   };
 
-  handlePrivilegeChange = (checked) => {
+  handlePrivilegeChange = () => {
     this.setState(
-      {
-        checked: !this.state.checked,
-        role: !this.state.checked ? 'admin' : 'user',
-      },
+      (prevState) => ({
+        checked: !prevState.checked,
+        role: !prevState.checked ? 'admin' : 'user',
+      }),
       () => this.checkDifferences()
     );
   };
@@ -81,14 +81,14 @@ class AdminUserCuScreen extends React.Component {
   checkDifferences = () => {
     const item = this.props.navigation.state.params;
     if (
-      (this.state.firstName == item.firstName &&
-        this.state.lastName == item.lastName &&
-        this.state.email == item.email &&
-        this.state.role == item.role) ||
-      (this.state.password == '' && item.email == '') ||
-      this.state.firstName == '' ||
-      this.state.lastName == '' ||
-      this.state.email == ''
+      (this.state.firstName === item.firstName &&
+        this.state.lastName === item.lastName &&
+        this.state.email === item.email &&
+        this.state.role === item.role) ||
+      (this.state.password === '' && item.email === '') ||
+      this.state.firstName === '' ||
+      this.state.lastName === '' ||
+      this.state.email === ''
     )
       this.setState({disableButton: true});
     else this.setState({disableButton: false});
@@ -96,7 +96,7 @@ class AdminUserCuScreen extends React.Component {
 
   handleUpdate = async () => {
     await this.props.userUpdate(this.state);
-    if (this.props.error.update == true) {
+    if (this.props.error.update) {
       ToastAndroid.showWithGravityAndOffset(
         'Wystąpił błąd podczas aktualizacji użytkownika',
         ToastAndroid.SHORT,
@@ -118,7 +118,7 @@ class AdminUserCuScreen extends React.Component {
 
   handleCreate = async () => {
     await this.props.userAdd(this.state);
-    if (this.props.error.add == true) {
+    if (this.props.error.add) {
       ToastAndroid.showWithGravityAndOffset(
         'Wystąpił błąd podczas dodawania użytkownika',
         ToastAndroid.SHORT,
@@ -146,7 +146,7 @@ class AdminUserCuScreen extends React.Component {
             style={styles.headerTouchable}
             onPress={this.handleBack}>
             <Icon name="keyboard-backspace" size={24} color="#000" />
-            {this.props.navigation.state.params.email == '' ? (
+            {this.props.navigation.state.params.email === '' ? (
               <Text style={styles.headerTitle}>Dodawanie Użytkownika</Text>
             ) : (
               <Text style={styles.headerTitle}>Edytowanie Użytkownika</Text>
@@ -177,7 +177,7 @@ class AdminUserCuScreen extends React.Component {
                 />
               </View>
             </View>
-            {this.props.navigation.state.params.email == '' && (
+            {this.props.navigation.state.params.email === '' && (
               <Input
                 name="Hasło"
                 value={this.state.password}
@@ -193,7 +193,7 @@ class AdminUserCuScreen extends React.Component {
             </View>
           </View>
           <View style={styles.container}>
-            {this.props.navigation.state.params.email == '' ? (
+            {this.props.navigation.state.params.email === '' ? (
               <Button
                 title="DODAJ UŻYTKOWNIKA"
                 color="#2ecc71"

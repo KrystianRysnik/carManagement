@@ -8,7 +8,8 @@ import NavigationService from '../NavigationService';
 
 class RouteScreen extends React.Component {
   componentDidMount() {
-    this.props.routeList();
+    const {routeList: propsRouteList} = this.props;
+    propsRouteList();
   }
 
   handleBack = () => {
@@ -16,9 +17,8 @@ class RouteScreen extends React.Component {
   };
 
   render() {
-    const routes = this.props.routes.filter(
-      (route) => route.driver.email === this.props.email
-    );
+    const {routes, email} = this.props;
+    const routesList = routes.filter((route) => route.driver.email === email);
 
     return (
       <View style={{flex: 1}}>
@@ -32,7 +32,7 @@ class RouteScreen extends React.Component {
         </View>
         <View style={{flex: 1}}>
           <FlatList
-            data={routes}
+            data={routesList}
             renderItem={({item}) => (
               <View style={styles.listItem}>
                 <TouchableOpacity

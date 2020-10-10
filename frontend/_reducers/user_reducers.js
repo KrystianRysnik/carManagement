@@ -3,6 +3,8 @@ const initialState = {
   user: {},
   users: [],
   error: {
+    signIn: false,
+    signUp: false,
     add: false,
     update: false,
     delete: false,
@@ -37,6 +39,14 @@ export default function reducer(state = initialState, action) {
         users: state.users.filter((user) => user._id !== action.payload),
       };
 
+    case 'SIGN_IN_USER_SUCCESS':
+      return {...state, error: {...state.error, signIn: false}};
+    case 'SIGN_IN_USER_ERROR':
+      return {...state, error: {...state.error, signIn: true}};
+    case 'SIGN_UP_USER_SUCCESS':
+      return {...state, error: {...state.error, signUp: false}};
+    case 'SIGN_UP_USER_ERROR':
+      return {...state, error: {...state.error, signUp: true}};
     case 'ADD_USER_SUCCESS':
       return {...state, error: {...state.error, add: false}};
     case 'ADD_USER_ERROR':

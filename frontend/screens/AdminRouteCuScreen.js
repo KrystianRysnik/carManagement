@@ -9,36 +9,34 @@ import {
   TouchableOpacity,
   StyleSheet,
   ToastAndroid,
+  Platform,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import moment, {duration} from 'moment';
+import moment from 'moment';
 import {routeGet, routeUpdate} from '../_actions';
 import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
 
 class AdminRouteCuScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      _id: '',
-      carVin: '',
-      startTrace: '',
-      stopTrace: '',
-      duration: '',
-      distance: '',
-      purpose: '',
-      driverEmail: '',
-      driverFirstName: '',
-      driverLastName: '',
-      disableButton: true,
-      showDateStart: false,
-      showDateEnd: false,
-      mode: 'date',
-      isLoading: true,
-    };
-  }
+  state = {
+    _id: '',
+    carVin: '',
+    startTrace: '',
+    stopTrace: '',
+    duration: '',
+    distance: '',
+    purpose: '',
+    driverEmail: '',
+    driverFirstName: '',
+    driverLastName: '',
+    disableButton: true,
+    showDateStart: false,
+    showDateEnd: false,
+    mode: 'date',
+    isLoading: true,
+  };
 
   componentDidMount() {
     const item = this.props.navigation.state.params;
@@ -47,7 +45,7 @@ class AdminRouteCuScreen extends React.Component {
 
   componentDidUpdate(prevProps) {
     const item = this.props.navigation.state.params;
-    if (item != prevProps.navigation.state.params) {
+    if (item !== prevProps.navigation.state.params) {
       this.setState({isLoading: true});
       this._refreshState(item._id);
     }
@@ -79,11 +77,11 @@ class AdminRouteCuScreen extends React.Component {
     NavigationService.navigate('Admin');
   };
 
-  handleDriverEmailChange = (itemValue, itemIndex) => {
+  handleDriverEmailChange = (itemValue) => {
     this.setState({driverEmail: itemValue});
     this.props.users.forEach(
       (element) => {
-        if (element.email == this.state.driverEmail) {
+        if (element.email === this.state.driverEmail) {
           this.setState({
             driverFirstName: element.firstName,
             driverLastName: element.lastName,
@@ -95,18 +93,16 @@ class AdminRouteCuScreen extends React.Component {
   };
 
   handleStartTraceChange = (event, date) => {
-    const startTrace = date || this.state.startTrace;
-
     this.setState(
-      {
+      (prevState) => ({
+        startTrace: date || prevState.startTrace,
         showDateStart: Platform.OS === 'ios',
-        startTrace,
-      },
+      }),
       () => this.checkDifferences()
     );
   };
 
-  handleVinChange = (itemValue, itemIndex) => {
+  handleVinChange = (itemValue) => {
     this.setState({carVin: itemValue}, () => this.checkDifferences());
   };
 
@@ -144,19 +140,18 @@ class AdminRouteCuScreen extends React.Component {
   };
 
   handleUpdate = async () => {
-    const time = this.state.duration.split(':');
-    this.setState({stopTrace: this.state.startTrace});
-    this.setState({
-      stopTrace: moment(this.state.stopTrace)
+    const time = await this.state.duration.split(':');
+    this.setState((prevState) => ({
+      stopTrace: moment(prevState.startTrace)
         .add({
-          hours: parseInt(time[0]),
-          minutes: parseInt(time[1]),
-          seconds: parseInt(time[2]),
+          hours: parseInt(time[0], 10),
+          minutes: parseInt(time[1], 10),
+          seconds: parseInt(time[2], 10),
         })
         .toDate(),
-    });
+    }));
     await this.props.routeUpdate(this.state);
-    if (this.props.error.update == true) {
+    if (this.props.error.update === true) {
       ToastAndroid.showWithGravityAndOffset(
         'Wystąpił błąd podczas aktualizacji trasy',
         ToastAndroid.SHORT,
@@ -177,7 +172,7 @@ class AdminRouteCuScreen extends React.Component {
   };
 
   render() {
-    const carsList = this.props.cars.map((item, index) => {
+    const carsList = this.props.cars.map((item) => {
       return (
         <Picker.Item
           label={`${item.licensePlate} - ${item.vin}`}
@@ -187,7 +182,7 @@ class AdminRouteCuScreen extends React.Component {
       );
     });
 
-    const usersList = this.props.users.map((item, index) => {
+    const usersList = this.props.users.map((item) => {
       return (
         <Picker.Item
           label={`${item.email} - ${item.firstName} ${item.lastName}`}
@@ -216,9 +211,7 @@ class AdminRouteCuScreen extends React.Component {
                 pickerTag
                 name="Numer Vin"
                 value={this.state.carVin}
-                onChangeFn={(value, index) =>
-                  this.handleChange('carVin', value)
-                }>
+                onChangeFn={(value) => this.handleChange('carVin', value)}>
                 {carsList}
               </Input>
               <View style={styles.separator} />
@@ -226,9 +219,7 @@ class AdminRouteCuScreen extends React.Component {
                 pickerTag
                 name="Kierowca"
                 value={this.state.driverEmail}
-                onChangeFn={(value, index) =>
-                  this.handleChange('driverEmail', value)
-                }>
+                onChangeFn={(value) => this.handleChange('driverEmail', value)}>
                 {usersList}
               </Input>
               <View style={styles.separator} />

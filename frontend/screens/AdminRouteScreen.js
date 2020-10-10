@@ -15,14 +15,6 @@ import {routeDelete, routeList} from '../_actions';
 import NavigationService from '../NavigationService';
 
 class AdminRouteScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      car: '',
-      routes: [],
-    };
-  }
-
   componentDidMount() {
     this.props.routeList();
   }
@@ -42,7 +34,7 @@ class AdminRouteScreen extends React.Component {
           text: 'Usuń',
           onPress: async () => {
             await this.props.routeDelete(route._id);
-            if (this.props.error.delete == false) {
+            if (!this.props.error.delete) {
               ToastAndroid.showWithGravityAndOffset(
                 'Pomyślnie usunięto trase',
                 ToastAndroid.SHORT,

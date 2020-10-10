@@ -2,24 +2,20 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 
-export default class LicensePlate extends React.Component {
-  static propTypes = {
-    value: PropTypes.string,
-  };
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.left}>
-          <Text style={styles.country}>PL</Text>
-        </View>
-        <View style={styles.right}>
-          <Text style={styles.value}>{this.props.value}</Text>
-        </View>
+const LicensePlate = ({value}) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.left}>
+        <Text style={styles.country}>PL</Text>
       </View>
-    );
-  }
-}
+      <View style={styles.right}>
+        <Text style={styles.value}>{value}</Text>
+      </View>
+    </View>
+  );
+};
+
+export default LicensePlate;
 
 const styles = StyleSheet.create({
   container: {

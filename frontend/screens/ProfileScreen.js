@@ -16,29 +16,38 @@ class ProfileScreen extends React.Component {
   };
 
   componentDidMount() {
+    const {
+      user: {firstName, lastName, email},
+    } = this.props;
     this.setState({
-      firstName: this.props.user.firstName,
-      lastName: this.props.user.lastName,
-      email: this.props.user.email,
+      firstName,
+      lastName,
+      email,
     });
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props != prevProps)
+    if (this.props !== prevProps) {
+      const {
+        user: {firstName, lastName, email},
+      } = this.props;
       this.setState({
-        firstName: this.props.user.firstName,
-        lastName: this.props.user.lastName,
-        email: this.props.user.email,
+        firstName,
+        lastName,
+        email,
       });
+    }
   }
 
   handleLogout = async () => {
     const token = await AsyncStorage.getItem('@token');
-    this.props.userSignOut(token);
+    const {userSignOut: propsUserSignOut} = this.props;
+    propsUserSignOut(token);
   };
 
   handleUpdate = () => {
-    this.props.userProfileUpdate(this.state);
+    const {userProfileUpdate: propsUserProfileUpdate} = this.props;
+    propsUserProfileUpdate(this.state);
     this.setState({disableButton: true});
   };
 
@@ -47,11 +56,14 @@ class ProfileScreen extends React.Component {
   };
 
   checkDifferences = () => {
+    const {
+      user: {firstName: propsFirstName, lastName: propsLastName},
+    } = this.props;
+    const {firstName, lastName} = this.state;
     if (
-      (this.state.firstName == this.props.user.firstName &&
-        this.state.lastName == this.props.user.lastName) ||
-      this.state.firstName == '' ||
-      this.state.lastName == ''
+      (firstName === propsFirstName && lastName === propsLastName) ||
+      firstName === '' ||
+      lastName === ''
     )
       this.setState({disableButton: true});
     else this.setState({disableButton: false});
@@ -68,6 +80,7 @@ class ProfileScreen extends React.Component {
   };
 
   render() {
+    const {email, firstName, lastName, disableButton} = this.state;
     return (
       <View style={{flex: 1}}>
         <View style={styles.header}>
@@ -86,7 +99,7 @@ class ProfileScreen extends React.Component {
           <View style={styles.container}>
             <Input
               name="Email"
-              value={this.state.email}
+              value={email}
               onChangeFn={(value) => this.handleChange('email', value)}
               editable={false}
             />
@@ -100,14 +113,14 @@ class ProfileScreen extends React.Component {
             <View style={{width: '45%'}}>
               <Input
                 name="Imię"
-                value={this.state.firstName}
+                value={firstName}
                 onChangeFn={(value) => this.handleChange('firstName', value)}
               />
             </View>
             <View style={{width: '45%'}}>
               <Input
                 name="Nazwisko"
-                value={this.state.lastName}
+                value={lastName}
                 onChangeFn={(value) => this.handleChange('lastName', value)}
               />
             </View>
@@ -116,7 +129,7 @@ class ProfileScreen extends React.Component {
             <Button
               title="Aktualizuj Profil"
               onPress={this.handleUpdate}
-              disabled={this.state.disableButton}
+              disabled={disableButton}
             />
           </View>
         </View>

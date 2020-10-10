@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, ActivityIndicator, PermissionsAndroid, Text} from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  PermissionsAndroid,
+  Text,
+  Platform,
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {connect} from 'react-redux';
 import {userProfile} from '../_actions';
@@ -18,7 +24,7 @@ class LoadingScreen extends React.Component {
   requestForPermission = async () => {
     try {
       if (Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.requestMultiple([
+        await PermissionsAndroid.requestMultiple([
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         ]);

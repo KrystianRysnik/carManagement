@@ -4,6 +4,7 @@ import {
   Text,
   Button,
   Image,
+  ToastAndroid,
   ImageBackground,
   StyleSheet,
 } from 'react-native';
@@ -11,6 +12,8 @@ import {connect} from 'react-redux';
 import {userSignUp} from '../_actions';
 import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
+import backgorundImage from '../_assets/background.png';
+import logoWhite from '../_assets/logo_white.png';
 
 class SignUpScreen extends React.Component {
   state = {
@@ -27,46 +30,53 @@ class SignUpScreen extends React.Component {
     }));
   };
 
-  handleSubmit = () => {
-    this.props.userSignUp(this.state);
+  handleSubmit = async () => {
+    await this.props.userSignUp(this.state);
+    if (this.props.signUpError) {
+      ToastAndroid.showWithGravityAndOffset(
+        'Wystąpił błąd podczas rejestracji',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        50
+      );
+    }
   };
 
   render() {
+    const {firstName, lastName, email, password} = this.state;
     return (
       <View>
         <ImageBackground
-          source={require('../_assets/background.png')}
+          source={backgorundImage}
           style={{width: '100%', height: '100%'}}>
           <View
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Image
-              source={require('../_assets/logo_white.png')}
-              style={styles.logo}
-            />
+            <Image source={logoWhite} style={styles.logo} />
 
             <View style={{width: '80%'}}>
               <Input
                 primary
                 name="Imię"
-                value={this.state.firstName}
+                value={firstName}
                 onChangeFn={(value) => this.handleChange('firstName', value)}
               />
               <Input
                 primary
                 name="Nazwisko"
-                value={this.state.lastName}
+                value={lastName}
                 onChangeFn={(value) => this.handleChange('lastName', value)}
               />
               <Input
                 primary
                 name="Email"
-                value={this.state.email}
+                value={email}
                 onChangeFn={(value) => this.handleChange('email', value)}
               />
               <Input
                 primary
                 name="Hasło"
-                value={this.state.password}
+                value={password}
                 onChangeFn={(value) => this.handleChange('password', value)}
                 secureTextEntry
               />
@@ -87,11 +97,17 @@ class SignUpScreen extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    signUpError: state.user.error.signUp,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   userSignUp: (userInfo) => dispatch(userSignUp(userInfo)),
 });
 
-export default connect(null, mapDispatchToProps)(SignUpScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);
 
 const styles = StyleSheet.create({
   logo: {

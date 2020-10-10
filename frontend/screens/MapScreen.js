@@ -17,7 +17,6 @@ import Geolocation from 'react-native-geolocation-service';
 import KeepAwake from 'react-native-keep-awake';
 import haversine from 'haversine';
 import moment from 'moment';
-import axios from 'axios';
 import NavigationService from '../NavigationService';
 import {routeAdd, carUpdate} from '../_actions';
 import LicensePlate from '../_components/LicensePlate';
@@ -25,29 +24,26 @@ import LicensePlate from '../_components/LicensePlate';
 let id = 0;
 
 class MapScreen extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      markers: [],
-      watchID: '',
-      distance: 0,
-      purpose: '',
-      isTracking: false,
-      startTrace: '',
-      stopTrace: '',
-      diffTime: '',
-      modalVisible: false,
-      btnDisabled: true,
-    };
-  }
+  state = {
+    markers: [],
+    watchID: '',
+    distance: 0,
+    purpose: '',
+    isTracking: false,
+    startTrace: '',
+    stopTrace: '',
+    diffTime: '',
+    modalVisible: false,
+    btnDisabled: true,
+  };
 
   componentDidMount() {
     this.handleMyLocation();
   }
 
   componentWillUnmount() {
-    Geolocation.clearWatch(this.state.watchID);
+    const {watchID} = this.state;
+    Geolocation.clearWatch(watchID);
     clearInterval(this.interval);
   }
 
@@ -66,16 +62,22 @@ class MapScreen extends React.Component {
   };
 
   handlePurposeChange = async (purpose) => {
-    await this.setState({purpose});
-    if (this.state.purpose != '') {
-      this.setState({btnDisabled: false});
-    } else {
-      this.setState({btnDisabled: true});
-    }
+    this.setState({purpose}, () => {
+      const {purpose: statePurpose} = this.state;
+      if (statePurpose !== '') {
+        this.setState({btnDisabled: false});
+      } else {
+        this.setState({btnDisabled: true});
+      }
+    });
   };
 
   startTracking = () => {
-    if (!this.props.vin) {
+    const {
+      car: {vin},
+    } = this.props;
+    const {purpose, previousCoordinate, distance, markers} = this.state;
+    if (!vin) {
       ToastAndroid.showWithGravityAndOffset(
         'Zanim pojedziesz Wybierz samochód',
         ToastAndroid.SHORT,
@@ -83,7 +85,7 @@ class MapScreen extends React.Component {
         0,
         50
       );
-    } else if (!this.state.purpose) {
+    } else if (!purpose) {
       ToastAndroid.showWithGravityAndOffset(
         'Cel wyjazdu jest wymagany',
         ToastAndroid.SHORT,
@@ -94,27 +96,26 @@ class MapScreen extends React.Component {
     } else {
       const watchID = Geolocation.watchPosition(
         (position) => {
-          let distance = 0;
-          if (this.state.previousCoordinate) {
-            distance =
-              this.state.distance +
-              haversine(this.state.previousCoordinate, position.coords);
-            this.setState({distance});
+          let distanceDiff = 0;
+          if (previousCoordinate) {
+            distanceDiff =
+              distance + haversine(previousCoordinate, position.coords);
+            this.setState({distance: distanceDiff});
           }
 
           this.setState({
             markers: [
-              ...this.state.markers,
+              ...markers,
               {
                 coordinate: {
                   longitude: position.coords.longitude,
                   latitude: position.coords.latitude,
                 },
-                key: id++,
+                key: id + 1,
               },
             ],
             previousCoordinate: position.coords,
-            distance,
+            distance: distanceDiff,
           });
         },
         null,
@@ -127,31 +128,38 @@ class MapScreen extends React.Component {
       );
       this.setState({
         watchID,
-        startTrace: moment(new Date()).toJSON(),
+        startTrace: moment().toJSON(),
         isTracking: true,
       });
-      this.interval = setInterval(
-        () =>
-          this.setState({
-            diffTime: moment().diff(moment(this.state.startTrace)),
-          }),
-        1000
-      );
+      this.interval = setInterval(() => {
+        this.setState((prevState) => ({
+          diffTime: moment().diff(moment(prevState.startTrace)),
+        }));
+      }, 1000);
     }
   };
 
   stopTracking = async () => {
-    await this.setState({stopTrace: moment(new Date()).toJSON()});
-    await this.props.carUpdate({
-      _id: this.props.car._id,
-      name: this.props.car.name,
-      vin: this.props.car.vin,
-      mileage: parseInt(this.props.car.mileage) + parseInt(this.state.distance),
-      licensePlate: this.props.car.licensePlate,
-      engineSize: this.props.car.engineSize,
+    const {
+      routeAdd: propsRouteAdd,
+      carUpdate: propsCarUpdate,
+      error: {add: errorAdd},
+      car: {_id, name, vin, mileage, licensePlate, engineSize},
+      user,
+    } = this.props;
+    const {distance, watchID} = this.state;
+
+    await this.setState({stopTrace: moment().toJSON()});
+    await propsCarUpdate({
+      _id,
+      name,
+      vin,
+      mileage: parseInt(mileage, 10) + parseInt(distance, 10),
+      licensePlate,
+      engineSize,
     });
-    await this.props.routeAdd(this.state, this.props.user, this.props.vin);
-    if (this.props.error.add == true) {
+    await propsRouteAdd(this.state, user, vin);
+    if (errorAdd === true) {
       ToastAndroid.showWithGravityAndOffset(
         'Wystąpił błąd podczas dodawania trasy',
         ToastAndroid.SHORT,
@@ -167,7 +175,7 @@ class MapScreen extends React.Component {
         diffTime: '',
         distance: 0,
       });
-      Geolocation.clearWatch(this.state.watchID);
+      Geolocation.clearWatch(watchID);
       clearInterval(this.interval);
       ToastAndroid.showWithGravityAndOffset(
         'Pomyślnie dodano trase',
@@ -180,7 +188,10 @@ class MapScreen extends React.Component {
   };
 
   handleNavigation = () => {
-    this.props.navigation.toggleDrawer();
+    const {
+      navigation: {toggleDrawer},
+    } = this.props;
+    toggleDrawer();
   };
 
   handleMyLocation = () => {
@@ -224,6 +235,20 @@ class MapScreen extends React.Component {
   };
 
   render() {
+    const {
+      car: {licensePlate},
+    } = this.props;
+    const {
+      initialRegion,
+      distance,
+      markers,
+      isTracking,
+      diffTime,
+      modalVisible,
+      purpose,
+      btnDisabled,
+    } = this.state;
+
     return (
       <View style={{flex: 1}}>
         <MapView
@@ -232,11 +257,11 @@ class MapScreen extends React.Component {
           showsMyLocationButton={false}
           rotateEnabled={false}
           showsCompass={false}
-          initialRegion={this.state.initialRegion}
-          region={this.state.initialRegion}
+          initialRegion={initialRegion}
+          region={initialRegion}
           onUserLocationChange={this.handleMyLocation}>
           <Polyline
-            coordinates={this.state.markers.map((marker) => marker.coordinate)}
+            coordinates={markers.map((marker) => marker.coordinate)}
             strokeWidth={5}
           />
         </MapView>
@@ -255,16 +280,12 @@ class MapScreen extends React.Component {
 
         <View style={styles.licensePlate}>
           <TouchableOpacity onPress={() => NavigationService.navigate('Car')}>
-            <LicensePlate
-              value={
-                this.props.licensePlate ? this.props.licensePlate : 'NO CAR'
-              }
-            />
+            <LicensePlate value={licensePlate || 'NO CAR'} />
           </TouchableOpacity>
         </View>
 
         <View style={styles.traceBtn}>
-          {!this.state.isTracking ? (
+          {!isTracking ? (
             <Button title="START" color="#2ecc71" onPress={this.openModal} />
           ) : (
             <Button
@@ -279,20 +300,20 @@ class MapScreen extends React.Component {
           <View style={{width: '50%'}}>
             <Text style={styles.detailsSubheading}>DYSTANS</Text>
             <Text style={styles.detailsHeading}>
-              {parseFloat(this.state.distance).toFixed(2)} km
+              {parseFloat(distance).toFixed(2)} km
             </Text>
           </View>
           <View style={{width: '50%'}}>
             <Text style={styles.detailsSubheading}>CZAS TRWANIA</Text>
             <Text style={styles.detailsHeading}>
-              {this.state.diffTime
-                ? moment(this.state.diffTime).utc().format('HH:mm:ss')
+              {diffTime
+                ? moment(diffTime).utc().format('HH:mm:ss')
                 : '00:00:00'}
             </Text>
           </View>
         </View>
         <Modal
-          visible={this.state.modalVisible}
+          visible={modalVisible}
           animationType="fade"
           onRequestClose={() => this.closeModal()}
           presentationStyle="overFullScreen"
@@ -303,7 +324,7 @@ class MapScreen extends React.Component {
               <TextInput
                 multiline
                 numberOfLines={4}
-                value={this.state.purpose}
+                value={purpose}
                 onChangeText={this.handlePurposeChange}
                 style={styles.textArea}
               />
@@ -313,7 +334,7 @@ class MapScreen extends React.Component {
                     title="Zapisz"
                     color="#2ecc71"
                     onPress={() => this.saveModal()}
-                    disabled={this.state.btnDisabled}
+                    disabled={btnDisabled}
                   />
                 </View>
                 <View style={{width: '45%'}}>
@@ -338,8 +359,6 @@ const mapStateToProps = (state) => {
     error: state.route.error,
     user: state.user.user,
     car: state.car.car,
-    vin: state.car.car.vin,
-    licensePlate: state.car.car.licensePlate,
   };
 };
 

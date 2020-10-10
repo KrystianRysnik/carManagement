@@ -1,39 +1,35 @@
 import React from 'react';
 import {TextInput, Picker, Text, StyleSheet} from 'react-native';
 
-class Input extends React.Component {
-  render() {
-    const {
-      primary,
-      pickerTag,
-      name,
-      value,
-      onChangeFn,
-      children,
-      ...props
-    } = this.props;
-
-    return (
-      <>
-        <Text style={primary ? styles.inputLabelPrimary : styles.inputLabel}>
-          {name}
-        </Text>
-        {pickerTag ? (
-          <Picker selectedValue={value} onValueChange={onChangeFn}>
-            {children}
-          </Picker>
-        ) : (
-          <TextInput
-            value={value}
-            onChangeText={onChangeFn}
-            style={primary ? styles.inputPrimary : styles.input}
-            {...props}
-          />
-        )}
-      </>
-    );
-  }
-}
+const Input = ({
+  primary,
+  pickerTag,
+  value,
+  onChangeFn,
+  name,
+  children,
+  ...props
+}) => {
+  return (
+    <>
+      <Text style={primary ? styles.inputLabelPrimary : styles.inputLabel}>
+        {name}
+      </Text>
+      {pickerTag ? (
+        <Picker selectedValue={value} onValueChange={onChangeFn}>
+          {children}
+        </Picker>
+      ) : (
+        <TextInput
+          value={value}
+          onChangeText={onChangeFn}
+          style={primary ? styles.inputPrimary : styles.input}
+          {...props}
+        />
+      )}
+    </>
+  );
+};
 
 export default Input;
 

@@ -15,10 +15,6 @@ import NavigationService from '../NavigationService';
 import LicensePlate from '../_components/LicensePlate';
 
 class AdminCarScreen extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleDelete = (car) => {
     Alert.alert(
       `Usuwanie Pojazdu`,
@@ -32,7 +28,7 @@ class AdminCarScreen extends React.Component {
           text: 'Usuń',
           onPress: async () => {
             await this.props.carDelete(car._id);
-            if (this.props.error.delete == false) {
+            if (this.props.error.delete === false) {
               ToastAndroid.showWithGravityAndOffset(
                 'Pomyślnie usunięto pojazd',
                 ToastAndroid.SHORT,

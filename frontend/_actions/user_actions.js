@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import {carsList} from './car_actions';
 import NavigationService from '../NavigationService';
-import {instance} from '../settings';
+import instance from '../settings';
 
 export const userSignUp = (user) => {
   return async (dispatch) => {
@@ -17,10 +17,10 @@ export const userSignUp = (user) => {
       dispatch(setToken(data.token));
       dispatch(loginUser(data.user));
       dispatch(carsList());
+      dispatch(signUpUserSuccess());
       NavigationService.navigate('App', null);
-      console.log('🟢 Register Succesfull!');
     } catch (err) {
-      console.log('🔴 Register Error!');
+      dispatch(signUpUserError());
       console.log(err);
     }
   };
@@ -38,11 +38,11 @@ export const userSignIn = (user) => {
       dispatch(setToken(data.token));
       dispatch(loginUser(data.user));
       dispatch(carsList());
+      dispatch(signInUserSuccess());
       NavigationService.navigate('App', null);
-      console.log('🟢 Login Succesfull! /w Login Form');
     } catch (err) {
-      console.log('🔴 Login Error! /w Login Form');
-      console.log(error);
+      dispatch(signInUserError());
+      console.log(err);
     }
   };
 };
@@ -50,7 +50,7 @@ export const userSignIn = (user) => {
 export const userSignOut = (token) => {
   return async (dispatch) => {
     try {
-      const response = await instance.post(
+      await instance.post(
         '/user/logout',
         {},
         {
@@ -61,9 +61,7 @@ export const userSignOut = (token) => {
       dispatch(logoutUser());
       dispatch(removeToken());
       NavigationService.navigate('Auth', null);
-      console.log('🟢 Logout Succesfull!');
     } catch (err) {
-      console.log('🔴 Logout Error!');
       console.log(err);
     }
   };
@@ -86,10 +84,8 @@ export const userProfileUpdate = (user) => {
       const data = await response.data;
       dispatch(loginUser(data));
       dispatch(updateUserSuccess());
-      console.log('🟢 Update User Succesfull!');
     } catch (err) {
       dispatch(updateUserError());
-      console.log('🔴 Update User Error!');
       console.log(err);
     }
   };
@@ -114,10 +110,8 @@ export const userAdd = (user) => {
       const data = await response.data;
       dispatch(addUser(data));
       dispatch(addUserSuccess());
-      console.log('🟢 Add User Succesfull!');
     } catch (err) {
       dispatch(addUserError());
-      console.log('🔴 Add User Error!');
       console.log(err);
     }
   };
@@ -126,7 +120,7 @@ export const userAdd = (user) => {
 export const userUpdate = (user) => {
   return async (dispatch, getState) => {
     try {
-      const response = await instance.put(
+      await instance.put(
         '/user/update',
         {
           _id: user._id,
@@ -149,10 +143,8 @@ export const userUpdate = (user) => {
         })
       );
       dispatch(updateUserSuccess());
-      console.log('🟢 Update User Succesfull!');
     } catch (err) {
       dispatch(updateUserError());
-      console.log('🔴 Update User Error!');
       console.log(err);
     }
   };
@@ -161,15 +153,13 @@ export const userUpdate = (user) => {
 export const userDelete = (id) => {
   return async (dispatch, getState) => {
     try {
-      const response = await instance.delete(`/user/delete/${id}`, {
+      await instance.delete(`/user/delete/${id}`, {
         headers: {Authorization: `Bearer ${getState().user.token}`},
       });
       dispatch(deleteUser(id));
       dispatch(deleteUserSuccess());
-      console.log('🟢 Delete User Succesfull!');
     } catch (err) {
       dispatch(deleteUserError());
-      console.log('🔴 Delete Car Error!');
       console.log(err);
     }
   };
@@ -187,11 +177,9 @@ export const userProfile = (token) => {
         dispatch(setToken(token));
         dispatch(carsList());
         NavigationService.navigate('App', null);
-        console.log('🟢 Login Succesfull! /w Reopen App');
       } catch (err) {
         AsyncStorage.removeItem('token');
         NavigationService.navigate('Auth', null);
-        console.log('🔴 Login Error! /w Reopen App');
         console.log(err);
       }
     } else {
@@ -208,9 +196,7 @@ export const userList = () => {
       });
       const data = await response.data;
       dispatch(listUser(data));
-      console.log('🟢 List User Succesfull!');
     } catch (err) {
-      console.log('🔴 List User Error!');
       console.log(err);
     }
   };
@@ -252,6 +238,22 @@ const updateUser = (user) => ({
 const deleteUser = (id) => ({
   type: 'DELETE_USER',
   payload: id,
+});
+
+const signInUserSuccess = () => ({
+  type: 'SIGN_IN_USER_SUCCESS',
+});
+
+const signInUserError = () => ({
+  type: 'SIGN_IN_USER_ERROR',
+});
+
+const signUpUserSuccess = () => ({
+  type: 'SIGN_UP_USER_SUCCESS',
+});
+
+const signUpUserError = () => ({
+  type: 'SIGN_UP_USER_ERROR',
 });
 
 const addUserSuccess = () => ({

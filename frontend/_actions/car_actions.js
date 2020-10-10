@@ -1,4 +1,4 @@
-import {instance} from '../settings';
+import instance from '../settings';
 
 export const carsList = () => {
   return async (dispatch, getState) => {
@@ -9,10 +9,8 @@ export const carsList = () => {
       const data = await response.data;
       dispatch(getAllCars(data));
       dispatch(getCarSuccess());
-      console.log('🟢 List Cars Succesfull!');
     } catch (err) {
       dispatch(getCarError());
-      console.log('🔴 List Cars Error!');
       console.log(err);
     }
   };
@@ -37,11 +35,9 @@ export const carAdd = (car) => {
       const data = await response.data;
       dispatch(addCar(data.car));
       dispatch(addCarSuccess());
-      console.log('🟢 Add Car Succesfull!');
     } catch (err) {
       dispatch(addCarError());
-      console.log('🔴 Add Car Error!');
-      console.log(error);
+      console.log(err);
     }
   };
 };
@@ -49,7 +45,7 @@ export const carAdd = (car) => {
 export const carUpdate = (car) => {
   return async (dispatch, getState) => {
     try {
-      const response = await instance.put(
+      await instance.put(
         '/car/update',
         {
           _id: car._id,
@@ -68,16 +64,14 @@ export const carUpdate = (car) => {
           _id: car._id,
           name: car.name,
           vin: car.vin,
-          mileage: parseInt(car.mileage),
+          mileage: parseInt(car.mileage, 10),
           licensePlate: car.licensePlate,
-          engineSize: parseInt(car.engineSize),
+          engineSize: parseInt(car.engineSize, 10),
         })
       );
       dispatch(updateCarSuccess());
-      console.log('🟢 Update Car Succesfull!');
     } catch (err) {
       dispatch(updateCarError());
-      console.log('🔴 Update Car Error!');
       console.log(err);
     }
   };
@@ -86,15 +80,13 @@ export const carUpdate = (car) => {
 export const carDelete = (id) => {
   return async (dispatch, getState) => {
     try {
-      const response = await instance.delete(`/car/delete/${id}`, {
+      await instance.delete(`/car/delete/${id}`, {
         headers: {Authorization: `Bearer ${getState().user.token}`},
       });
       dispatch(deleteCar(id));
       dispatch(deleteCarSuccess());
-      console.log('🟢 Delete Car Succesfull!');
     } catch (err) {
       dispatch(deleteCarError());
-      console.log('🔴 Delete Car Error!');
       console.log(err);
     }
   };

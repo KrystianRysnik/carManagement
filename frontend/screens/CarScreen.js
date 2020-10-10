@@ -41,7 +41,7 @@ class CarScreen extends React.Component {
                   <Text style={{fontWeight: 'bold'}}>
                     {item.name}{' '}
                     <Text style={{color: '#39e600'}}>
-                      {this.props.licensePlate == item.licensePlate
+                      {this.props.licensePlate === item.licensePlate
                         ? '[ WYBRANY ]'
                         : ''}
                     </Text>

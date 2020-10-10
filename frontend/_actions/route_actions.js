@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {instance} from '../settings';
+import instance from '../settings';
 
 export const routeAdd = (route, user, vin) => {
   return async (dispatch, getState) => {
@@ -27,17 +27,14 @@ export const routeAdd = (route, user, vin) => {
       data.markers = undefined;
       dispatch(addRoute(data));
       dispatch(addRouteSuccess());
-      console.log('🟢 Add Route Succesfull!');
     } catch (err) {
       dispatch(addRouteError());
-      console.log('🔴 Add Route Error!');
       console.log(err);
     }
   };
 };
 
 export const routeGet = (id, withMarkers) => {
-  console.log(`/route/${id}/${withMarkers}`);
   return async (dispatch, getState) => {
     try {
       const response = await instance.get(`/route/${id}/${withMarkers}`, {
@@ -46,10 +43,8 @@ export const routeGet = (id, withMarkers) => {
       const data = await response.data;
       dispatch(getRoute(data));
       dispatch(getRouteSuccess());
-      console.log('🟢 Get Route Succesfull!');
     } catch (err) {
-      dispatch(getRouteSuccess());
-      console.log('🔴 Get Route Error!');
+      dispatch(getRouteError());
       console.log(err);
     }
   };
@@ -58,15 +53,13 @@ export const routeGet = (id, withMarkers) => {
 export const routeDelete = (id) => {
   return async (dispatch, getState) => {
     try {
-      const respone = await instance.delete(`/route/delete/${id}`, {
+      await instance.delete(`/route/delete/${id}`, {
         headers: {Authorization: `Bearer ${getState().user.token}`},
       });
       dispatch(deleteRoute(id));
       dispatch(deleteRouteSuccess());
-      console.log('🟢 Delete Route Succesfull!');
     } catch (err) {
       dispatch(deleteRouteError());
-      console.log('🔴 Delete Route Error!');
       console.log(err);
     }
   };
@@ -75,7 +68,7 @@ export const routeDelete = (id) => {
 export const routeUpdate = (route) => {
   return async (dispatch, getState) => {
     try {
-      const response = await instance.put(
+      await instance.put(
         '/route/update',
         {
           _id: route._id,
@@ -110,10 +103,8 @@ export const routeUpdate = (route) => {
         })
       );
       dispatch(updateRouteSuccess());
-      console.log('🟢 Update Route Succesfull!');
     } catch (err) {
       dispatch(updateRouteError());
-      console.log('🔴 Update Route Error!');
       console.log(err);
     }
   };
@@ -128,10 +119,8 @@ export const routeList = () => {
       const data = await response.data;
       dispatch(getAllRoutes(data));
       dispatch(getAllRouteSuccess());
-      console.log('🟢 List Routes Succesfull!');
     } catch (err) {
       dispatch(getAllRouteError());
-      console.log('🔴 List Routes Error!');
       console.log(err);
     }
   };

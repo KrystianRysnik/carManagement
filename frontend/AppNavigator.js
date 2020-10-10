@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, ImageBackground} from 'react-native';
+import {View} from 'react-native';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createDrawerNavigator, DrawerItems} from 'react-navigation-drawer';
 import {createAppContainer} from 'react-navigation';
@@ -25,10 +25,8 @@ import AdminUserCuScreen from './screens/AdminUserCuScreen';
 import AdminRouteScreen from './screens/AdminRouteScreen';
 import AdminRouteCuScreen from './screens/AdminRouteCuScreen';
 
-import Hidden from './_components/Hidden';
 import Header from './_components/Header';
-import AdminBtn from './_components/AdminBtn';
-import ReportBtn from './_components/ReportBtn';
+import NavigationBtn from './_components/NavigationBtn';
 
 const AuthStack = createStackNavigator(
   {
@@ -54,13 +52,13 @@ const AppDrawer = createDrawerNavigator(
     Profile: {
       screen: ProfileScreen,
       navigationOptions: {
-        drawerLabel: <Hidden />,
+        drawerLabel: <NavigationBtn />,
       },
     },
     Map: {
       screen: MapScreen,
       navigationOptions: {
-        drawerLabel: <Hidden />,
+        drawerLabel: <NavigationBtn />,
       },
     },
     Car: {
@@ -80,55 +78,59 @@ const AppDrawer = createDrawerNavigator(
     RouteMap: {
       screen: RouteMapScreen,
       navigationOptions: {
-        drawerLabel: <Hidden />,
+        drawerLabel: <NavigationBtn />,
       },
     },
     Report: {
       screen: ReportScreen,
       navigationOptions: {
-        drawerLabel: <ReportBtn />,
+        drawerLabel: (
+          <NavigationBtn title="Generowanie Raportu" icon="picture-as-pdf" />
+        ),
       },
     },
     Admin: {
       screen: AdminScreen,
       navigationOptions: {
-        drawerLabel: <AdminBtn />,
+        drawerLabel: (
+          <NavigationBtn title="Panel Administratora" icon="security" />
+        ),
       },
     },
     AdminCar: {
       screen: AdminCarScreen,
       navigationOptions: {
-        drawerLabel: <Hidden />,
+        drawerLabel: <NavigationBtn />,
       },
     },
     AddEditCar: {
       screen: AdminCarCuScreen,
       navigationOptions: {
-        drawerLabel: <Hidden />,
+        drawerLabel: <NavigationBtn />,
       },
     },
     AdminUser: {
       screen: AdminUserScreen,
       navigationOptions: {
-        drawerLabel: <Hidden />,
+        drawerLabel: <NavigationBtn />,
       },
     },
     AddEditUser: {
       screen: AdminUserCuScreen,
       navigationOptions: {
-        drawerLabel: <Hidden />,
+        drawerLabel: <NavigationBtn />,
       },
     },
     AdminRoute: {
       screen: AdminRouteScreen,
       navigationOptions: {
-        drawerLabel: <Hidden />,
+        drawerLabel: <NavigationBtn />,
       },
     },
     EditRoute: {
       screen: AdminRouteCuScreen,
       navigationOptions: {
-        drawerLabel: <Hidden />,
+        drawerLabel: <NavigationBtn />,
       },
     },
   },

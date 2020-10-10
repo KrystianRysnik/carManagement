@@ -13,13 +13,13 @@ import {userList} from '../_actions';
 import NavigationService from '../NavigationService';
 
 class AdminScreen extends React.Component {
-  handleBack = () => {
-    NavigationService.goBack();
-  };
-
   componentDidMount() {
     this.props.userList();
   }
+
+  handleBack = () => {
+    NavigationService.goBack();
+  };
 
   render() {
     return (

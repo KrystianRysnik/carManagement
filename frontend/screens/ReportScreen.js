@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   Button,
   Picker,
+  ToastAndroid,
+  Platform,
   StyleSheet,
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -13,7 +15,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import NavigationService from '../NavigationService';
-import {instance} from '../settings';
+import instance from '../settings';
 import Input from '../_components/Input';
 
 const style = `<style>
@@ -34,84 +36,42 @@ th, td {
 }
 </style>`;
 
-class RouteScreen extends React.Component {
+class ReportScreen extends React.Component {
   state = {
-    value: '',
     showDateStart: false,
     showDateEnd: false,
     dateStart: moment().subtract(1, 'months').toDate(),
     dateEnd: moment().toDate(),
     mode: 'date',
-    show: false,
+    error: false,
     car: '',
+    isProcessing: false,
   };
 
   setDateStart = (event, date) => {
-    dateStart = date || this.state.dateStart;
-
-    this.setState({
+    this.setState((prevProps) => ({
       showDateStart: Platform.OS === 'ios',
-      dateStart,
-    });
+      dateStart: date || prevProps.dateStart,
+    }));
   };
 
   setDateEnd = (event, date) => {
-    dateEnd = date || this.state.dateEnd;
-
-    this.setState({
+    this.setState((prevProps) => ({
       showDateEnd: Platform.OS === 'ios',
-      dateEnd,
-    });
+      dateEnd: date || prevProps.dateEnd,
+    }));
   };
 
-  async createPDF(data, car) {
-    const options = {
-      html: `${style}
-          <table class="v100">
-            <tr>
-                <td style="width: 50%;">(dane podatnika)</td>
-                <td style="width: 50%;">Numer rejestracyjny pojazdu: ${
-                  car.licensePlate
-                }<br/>
-            Pojemność silnika: ${car.engineSize} cm</td>
-            </tr>
-          </table>
-          <h1 style="text-align: center; font-size: 16pt;">EWIDENCJA PRZEBIEGU POJAZDU</h1>
-          <h3 style="text-align: center;">od ${moment(
-            this.state.dateStart
-          ).format('DD.MM.YYYY')}
-          do ${moment(this.state.dateEnd).format('DD.MM.YYYY')}</h3>`,
-      fileName: `${car.licensePlate}_${moment(this.state.dateStart).format(
-        'DD-MM-YYYY'
-      )}`,
-      directory: 'Downloads',
-      width: 595,
-      height: 842,
-    };
-    options.html += `<table class="border v100">
-            <tr>
-                <th>Lp</th>
-                <th>Data wyjazdu</th>
-                <th>Cel wyjazdu</th>
-                <th>Liczba przejechanych <br>kilometrów</th>
-                <th>Imię i nazwisko <br>osoby kierującej</th>
-            </tr>`;
-    let i = 1;
-    for (const item of data) {
-      options.html += `<tr>
-                <td>${i}</td>
-                <td>${moment(item.startTrace).format('DD.MM.YYYY')}</td>
-                <td>${item.purpose}</td>
-                <td>${item.distance.toFixed(2)}</td>
-                <td>${item.driver.firstName} ${item.driver.lastName}</td>
-            </tr>`;
-      i++;
-    }
-    options.html += `</table>`;
-
-    const file = await RNHTMLtoPDF.convert(options);
-    alert(file.filePath);
-  }
+  newToast = (message, interval = ToastAndroid.SHORT) => {
+    ToastAndroid.showWithGravityAndOffset(
+      `${message}`,
+      interval,
+      ToastAndroid.BOTTOM,
+      0,
+      50
+    );
+    this.setState({isProcessing: false});
+  };
 
   getReport = (car) => {
     instance
@@ -128,11 +88,12 @@ class RouteScreen extends React.Component {
         }
       )
       .then((res) => {
-        console.log('🟢 File Downloaded Succesfull!');
+        this.setState({error: false});
         this.createPDF(res.data, car);
       })
       .catch((error) => {
-        console.log('🔴 File Downloaded Error!');
+        this.setState({error: true});
+        this.createPDF({}, car);
         console.log(error);
       });
   };
@@ -142,17 +103,82 @@ class RouteScreen extends React.Component {
   };
 
   handleSubmit = () => {
+    let find = false;
+    this.setState({isProcessing: true});
     this.props.cars.forEach((element) => {
-      if (element.vin == this.state.car) {
+      const {vin, licensePlate, engineSize} = element;
+      if (vin === this.state.car) {
         const car = {
-          vin: element.vin,
-          licensePlate: element.licensePlate,
-          engineSize: element.engineSize,
+          vin,
+          licensePlate,
+          engineSize,
         };
         this.getReport(car);
+        find = true;
       }
     });
+    if (!find) {
+      this.newToast('Wystąpił błąd!');
+    }
   };
+
+  async createPDF(data, car) {
+    if (this.state.error) {
+      this.newToast('Wystąpił błąd!');
+    } else {
+      const options = {
+        html: `${style}
+          <table class="v100">
+            <tr>
+                <td style="width: 50%;">(dane podatnika)</td>
+                <td style="width: 50%;">Numer rejestracyjny pojazdu: ${
+                  car.licensePlate
+                }<br/>
+            Pojemność silnika: ${car.engineSize} cm</td>
+            </tr>
+          </table>
+          <h1 style="text-align: center; font-size: 16pt;">EWIDENCJA PRZEBIEGU POJAZDU</h1>
+          <h3 style="text-align: center;">od ${moment(
+            this.state.dateStart
+          ).format('DD.MM.YYYY')}
+          do ${moment(this.state.dateEnd).format('DD.MM.YYYY')}</h3>`,
+        fileName: `${car.licensePlate}_${moment(this.state.dateStart).format(
+          'DD-MM-YYYY'
+        )}`,
+        directory: 'Downloads',
+        width: 595,
+        height: 842,
+      };
+      options.html += `<table class="border v100">
+            <tr>
+                <th>Lp</th>
+                <th>Data wyjazdu</th>
+                <th>Cel wyjazdu</th>
+                <th>Liczba przejechanych <br>kilometrów</th>
+                <th>Imię i nazwisko <br>osoby kierującej</th>
+            </tr>`;
+
+      let i = 0;
+      for (const {
+        startTrace,
+        purpose,
+        distance,
+        driver: {firstName, lastName},
+      } of data) {
+        options.html += `<tr>
+                <td>${(i += 1)}</td>
+                <td>${moment(startTrace).format('DD.MM.YYYY')}</td>
+                <td>${purpose}</td>
+                <td>${distance.toFixed(2)}</td>
+                <td>${firstName} ${lastName}</td>
+            </tr>`;
+      }
+      options.html += `</table>`;
+
+      const file = await RNHTMLtoPDF.convert(options);
+      this.newToast(`Zapisano: ${file.filePath}`, ToastAndroid.LONG);
+    }
+  }
 
   render() {
     const {
@@ -164,12 +190,12 @@ class RouteScreen extends React.Component {
       car,
     } = this.state;
 
-    const carsList = this.props.cars.map((item, index) => {
+    const carsList = this.props.cars.map(({licensePlate, name, vin}) => {
       return (
         <Picker.Item
-          label={`${item.licensePlate} - ${item.name}`}
-          key={item.vin}
-          value={item.vin}
+          label={`${licensePlate} - ${name}`}
+          key={vin}
+          value={vin}
         />
       );
     });
@@ -189,9 +215,7 @@ class RouteScreen extends React.Component {
             pickerTag
             name="Wybierz samochód:"
             value={car}
-            onChangeFn={(itemValue, itemIndex) =>
-              this.setState({car: itemValue})
-            }>
+            onChangeFn={(itemValue) => this.setState({car: itemValue})}>
             {carsList}
           </Input>
           <View style={styles.separator} />
@@ -209,7 +233,13 @@ class RouteScreen extends React.Component {
               {moment(dateEnd).format('DD/MM/YYYY')}
             </Text>
           </TouchableOpacity>
-          <Button title="Generuj raport" onPress={this.handleSubmit} />
+          <Button
+            title={
+              this.state.isProcessing ? 'Generowanie...' : 'Generuj raport'
+            }
+            onPress={this.handleSubmit}
+            disabled={this.state.isProcessing}
+          />
         </View>
         {showDateStart && (
           <DateTimePicker
@@ -239,7 +269,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(RouteScreen);
+export default connect(mapStateToProps)(ReportScreen);
 
 const styles = StyleSheet.create({
   header: {

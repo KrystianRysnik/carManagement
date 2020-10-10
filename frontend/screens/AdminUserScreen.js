@@ -14,10 +14,6 @@ import {userList, userDelete} from '../_actions';
 import NavigationService from '../NavigationService';
 
 class AdminUserScreen extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.userList();
   }
@@ -35,7 +31,7 @@ class AdminUserScreen extends React.Component {
           text: 'Usuń',
           onPress: async () => {
             await this.props.userDelete(user._id);
-            if (this.props.error.delete == false) {
+            if (!this.props.error.delete) {
               ToastAndroid.showWithGravityAndOffset(
                 'Pomyśline usunięto użytkownika',
                 ToastAndroid.SHORT,

@@ -20,8 +20,25 @@ class RouteMapScreen extends React.Component {
 
   mapRef = null;
 
-  async init(item) {
-    await this.props.routeGet(item._id, true);
+  componentDidMount() {
+    const item = this.props.navigation.state.params;
+    this.init(item._id);
+  }
+
+  componentDidUpdate(prevProps) {
+    const item = this.props.navigation.state.params;
+    if (item !== prevProps.navigation.state.params) {
+      this.setState({isLoading: true});
+      this.init(item._id);
+    }
+  }
+
+  handleBack = () => {
+    NavigationService.navigate('Routes');
+  };
+
+  async init(id) {
+    await this.props.routeGet(id, true);
     const {markers} = this.props.route;
 
     this.mapRef.fitToCoordinates(
@@ -31,25 +48,10 @@ class RouteMapScreen extends React.Component {
     this.setState({isLoading: false});
   }
 
-  componentDidMount() {
-    const item = this.props.navigation.state.params;
-    this.init(item);
-  }
-
-  componentDidUpdate(prevProps) {
-    const item = this.props.navigation.state.params;
-    if (item != prevProps.navigation.state.params) {
-      this.setState({isLoading: true});
-      this.init(item);
-    }
-  }
-
-  handleBack = () => {
-    NavigationService.navigate('Routes');
-  };
-
   render() {
-    const {route} = this.props;
+    const {
+      route: {markers, startTrace, stopTrace, distance},
+    } = this.props;
     const {isLoading} = this.state;
 
     return (
@@ -64,9 +66,9 @@ class RouteMapScreen extends React.Component {
             this.mapRef = ref;
           }}
           onLayout={() => {
-            route.markers != undefined &&
+            markers !== undefined &&
               this.mapRef.fitToCoordinates(
-                route.markers.map((marker) => marker.coordinate),
+                markers.map((marker) => marker.coordinate),
                 {
                   edgePadding: {top: 10, right: 10, bottom: 10, left: 10},
                   animated: true,
@@ -75,7 +77,7 @@ class RouteMapScreen extends React.Component {
           }}>
           {!isLoading && (
             <Polyline
-              coordinates={route.markers.map((marker) => marker.coordinate)}
+              coordinates={markers.map((marker) => marker.coordinate)}
               strokeWidth={5}
             />
           )}
@@ -87,7 +89,7 @@ class RouteMapScreen extends React.Component {
             onPress={this.handleBack}>
             <Icon name="keyboard-backspace" size={24} color="#000" />
             <Text style={styles.headerTitle}>
-              Trasa z {moment(route.startTrace).format('DD/MM/YYYY')}{' '}
+              Trasa z {moment(startTrace).format('DD/MM/YYYY')}{' '}
             </Text>
           </TouchableOpacity>
         </View>
@@ -109,13 +111,13 @@ class RouteMapScreen extends React.Component {
           <View style={{width: '50%'}}>
             <Text style={styles.detailsSubheading}>DYSTANS</Text>
             <Text style={styles.detailsHeading}>
-              {parseFloat(route.distance).toFixed(2)} km
+              {parseFloat(distance).toFixed(2)} km
             </Text>
           </View>
           <View style={{width: '50%'}}>
             <Text style={styles.detailsSubheading}>CZAS TRWANIA</Text>
             <Text style={styles.detailsHeading}>
-              {moment(moment(route.stopTrace).diff(moment(route.startTrace)))
+              {moment(moment(stopTrace).diff(moment(startTrace)))
                 .utc()
                 .format('HH:mm:ss')}
             </Text>

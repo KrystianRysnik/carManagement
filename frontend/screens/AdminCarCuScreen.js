@@ -15,18 +15,15 @@ import NavigationService from '../NavigationService';
 import Input from '../_components/Input';
 
 class AdminCarCuScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      _id: '',
-      name: '',
-      vin: '',
-      mileage: '',
-      licensePlate: '',
-      engineSize: '',
-      disableButton: true,
-    };
-  }
+  state = {
+    _id: '',
+    name: '',
+    vin: '',
+    mileage: '',
+    licensePlate: '',
+    engineSize: '',
+    disableButton: true,
+  };
 
   componentDidMount() {
     const item = this.props.navigation.state.params;
@@ -90,7 +87,7 @@ class AdminCarCuScreen extends React.Component {
 
   handleCreate = async () => {
     await this.props.carAdd(this.state);
-    if (this.props.error.add == true) {
+    if (this.props.error.add === true) {
       ToastAndroid.showWithGravityAndOffset(
         'Wystąpił błąd podczas dodawania pojazdu',
         ToastAndroid.SHORT,
@@ -112,7 +109,7 @@ class AdminCarCuScreen extends React.Component {
 
   handleUpdate = async () => {
     await this.props.carUpdate(this.state);
-    if (this.props.error.update == true) {
+    if (this.props.error.update === true) {
       ToastAndroid.showWithGravityAndOffset(
         'Wystąpił błąd podczas aktualizacji pojazdu',
         ToastAndroid.SHORT,
@@ -140,7 +137,7 @@ class AdminCarCuScreen extends React.Component {
             style={styles.headerTouchable}
             onPress={this.handleBack}>
             <Icon name="keyboard-backspace" size={24} color="#000" />
-            {this.props.navigation.state.params.vin == '' ? (
+            {this.props.navigation.state.params.vin === '' ? (
               <Text style={styles.headerTitle}>Dodawanie Pojazdu</Text>
             ) : (
               <Text style={styles.headerTitle}>Edytowanie Pojazdu</Text>
@@ -176,7 +173,7 @@ class AdminCarCuScreen extends React.Component {
             />
           </View>
           <View style={styles.container}>
-            {this.props.navigation.state.params.vin == '' ? (
+            {this.props.navigation.state.params.vin === '' ? (
               <Button
                 title="DODAJ POJAZD"
                 color="#2ecc71"
